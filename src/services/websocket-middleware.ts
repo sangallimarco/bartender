@@ -1,16 +1,16 @@
 import {
     webSocketRouter
 } from "./websocket-router";
-
-import express, { NextFunction, Response, Request } from "express";
-
+import { NextFunction, Response, RequestHandler, Request } from "express";
+import { WebsocketRequest, WebsocketRequestHandler } from "./websocket-types";
 import { EventEmitter } from "events";
 
-interface WsRequest extends Request {
+
+export interface ExtendedRequestHandler extends RequestHandler {
     ws: EventEmitter;
 }
 
-export function webSocketMiddleware(req: WsRequest, res: Response, next: NextFunction): void {
+export const webSocketMiddleware: WebsocketRequestHandler = (req: WebsocketRequest, res: Response, next: NextFunction) => {
     const {
         ws
     } = req;

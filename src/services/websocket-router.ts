@@ -1,4 +1,4 @@
-import { WsCallback, WsListener } from "./websocket-router-types";
+import { WebsocketCallback, WebsocketListener } from "./websocket-types";
 import { EventEmitter } from "events";
 
 export class WebSocketRouter {
@@ -8,8 +8,8 @@ export class WebSocketRouter {
         this.routes = [];
     }
 
-    on(uri: string, callback: WsCallback) {
-        const listener: WsListener = {
+    on(uri: string, callback: WebsocketCallback) {
+        const listener: WebsocketListener = {
             uri,
             callback
         };
@@ -24,7 +24,7 @@ export class WebSocketRouter {
                 uri,
                 data
             } = payloadObject;
-            const route = this.routes.find((x: WsListener) => x.uri === uri);
+            const route = this.routes.find((x: WebsocketListener) => x.uri === uri);
             if (route) {
                 route.callback(ws, uri, data);
             }

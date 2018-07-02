@@ -1,6 +1,6 @@
-import { WsPayload } from "./websocket-router-types";
+import { WebsocketPayload } from "./websocket-types";
 
-export function buildMessage(uri: string, data: WsPayload) {
+export function buildMessage(uri: string, data: WebsocketPayload): string {
     return JSON.stringify({
         uri,
         data

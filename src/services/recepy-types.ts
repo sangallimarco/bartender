@@ -1,8 +1,8 @@
-export enum PUMPS {
+export enum Pumps {
     A, B, C, D, E
 }
 
-export enum INGREDIENTS {
+export enum Ingredients {
     COKE = 'COKE',
     RUM = 'RUM',
     TONIC = 'TONIC',
@@ -16,17 +16,6 @@ export interface Recepy {
 
 export interface RecepyFamily {
     name: string;
-    ingredients: INGREDIENTS[]
+    ingredients: Ingredients[]
     recepies: Recepy[]
 }
-
-const RECEPIES = [{
-    name: 'standard',
-    pumps: [
-        'coca', 'rum', 'tonic', 'aperol'
-    ],
-    recepies: [{
-        name: 'CubaLibre',
-        ingredients: [2, 1, 0, 0]
-    }]
-}];

@@ -8,7 +8,7 @@ import {
     webSocketMiddleware
 } from './services';
 import { EventEmitter } from "events";
-import { WsPayload } from "./services/websocket-router-types";
+import { WebsocketPayload } from "./services/websocket-types";
 
 const {
     app
@@ -20,12 +20,12 @@ const PORT = 8080;
 const ROOT_PATH = __dirname;
 
 // routes
-webSocketRouter.on('/make', (ws: EventEmitter, uri: string, data: WsPayload) => {
+webSocketRouter.on('/make', (ws: EventEmitter, uri: string, data: WebsocketPayload) => {
     console.log('make cocktail', ws, uri);
 });
 
 // testing post processing
-webSocketRouter.on('/test', (ws: EventEmitter, uri: string, data: WsPayload) => {
+webSocketRouter.on('/test', (ws: EventEmitter, uri: string, data: WebsocketPayload) => {
     console.log('test', ws, uri);
 });
 
