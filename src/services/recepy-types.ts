@@ -2,6 +2,11 @@ export enum Pumps {
     A, B, C, D, E
 }
 
+export enum RecepyFamilyName {
+    DEFAULT = 'DEFAULT',
+    COCKTAIL = 'COCKTAIL'
+}
+
 export enum Ingredients {
     COKE = 'COKE',
     RUM = 'RUM',
@@ -15,7 +20,7 @@ export interface Recepy {
 }
 
 export interface RecepyFamily {
-    name: string;
+    name: RecepyFamilyName;
     ingredients: Ingredients[]
     recepies: Recepy[]
 }

@@ -1,9 +1,9 @@
 import {
-    RecepyFamily, Ingredients
+    RecepyFamily, Ingredients, RecepyFamilyName
 } from '../services/recepy-types';
 
 export const RECEPIES: RecepyFamily[] = [{
-    name: 'standard',
+    name: RecepyFamilyName.DEFAULT,
     ingredients: [
         Ingredients.RUM, Ingredients.COKE, Ingredients.APEROL, Ingredients.TONIC
     ],
