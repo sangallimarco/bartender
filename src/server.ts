@@ -1,30 +1,20 @@
 import express from "express";
 import expressWs from 'express-ws';
 import path from "path";
-// import os from 'os';
-
-import {
-    webSocketRouter,
-    webSocketMiddleware
-} from './services';
+import { webSocketRouter, webSocketMiddleware } from './services';
 import { EventEmitter } from "events";
 import { WebsocketPayload } from "./services/websocket-types";
 import { RecepyService } from "./services/recepy-parser";
 
-const {
-    app
-} = expressWs(express());
-
+const { app } = expressWs(express());
 const expressW = expressWs(express())
-
-const recepyMaker = new RecepyService();
-
 const PORT = 8080;
 const ROOT_PATH = __dirname;
+const recepyMaker = new RecepyService();
 
 // routes
 webSocketRouter.on('/make', (ws: EventEmitter, uri: string, data: WebsocketPayload<string>) => {
-    console.log('make cocktail', ws, uri);
+    console.log('make cocktail', ws, uri, data);
     const recepyName: string = data.data;
     recepyMaker.setRecepy(recepyName);
 });
