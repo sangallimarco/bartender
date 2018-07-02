@@ -20,7 +20,6 @@ export interface RecepyFamily {
     recepies: Recepy[]
 }
 
-
 const RECEPIES = [{
     name: 'standard',
     pumps: [
