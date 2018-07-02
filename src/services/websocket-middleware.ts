@@ -1,7 +1,7 @@
 import {
     webSocketRouter
 } from "./websocket-router";
-import { NextFunction, Response, RequestHandler, Request } from "express";
+import { NextFunction, Response, RequestHandler } from "express";
 import { WebsocketRequest, WebsocketRequestHandler } from "./websocket-types";
 import { EventEmitter } from "events";
 
