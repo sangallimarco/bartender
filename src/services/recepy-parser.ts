@@ -2,15 +2,18 @@ import {
     RECEPIES
 } from '../data/recepies';
 import {
-    RecepyFamily, Recepy, RecepyFamilyName
+    RecepyFamily, Recepy, RecepyFamilyName, RecepyIngredientPump
 } from './recepy-types';
+import { PumpsUtils } from './pump-utils';
 
 export class RecepyService {
     private recepyFamily: RecepyFamily;
     private recepy: Recepy;
+    private executing: boolean = false;
 
     constructor() {
         this.setFamily(RecepyFamilyName.DEFAULT);
+        PumpsUtils.init();
     }
 
     setFamily(familyName: string): void {
@@ -25,8 +28,20 @@ export class RecepyService {
         if (found) {
             this.recepy = found;
         }
+    }
 
-        // trigger timers here
+    setPumps() {
+        if (!this.executing) {
+            this.executing = true;
+            const { pumps } = this.recepy;
+            const promises: Promise<void>[] = pumps.map((ingredientPump: RecepyIngredientPump) => {
+                return PumpsUtils.activateWithTimer(ingredientPump.pump, ingredientPump.parts * 1000);
+            });
+            // wait for all timers to resolve
+            Promise.all(promises).then(
+                () => this.executing = false
+            );
+        }
     }
 }
 
