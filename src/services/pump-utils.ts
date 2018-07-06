@@ -22,10 +22,11 @@ export namespace PumpsUtils {
         return new Promise((resolve, reject) => {
             activate(pump).then(() => {
                 setTimeout(() => {
-                    deactivate(pump).then(() => resolve());
+                    deactivate(pump).then(() => {
+                        resolve();
+                    });
                 }, timeout);
             });
         });
-
     }
 }
