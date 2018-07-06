@@ -1,23 +1,39 @@
 import {
-    RecepyFamily, RecepyIngredient, RecepyFamilyName
+    RecepyFamily, RecepyIngredient, RecepyFamilyId
 } from '../services/recepy-types';
 import { Pump } from '../services/pump-types';
 
 export const RECEPIES: RecepyFamily[] = [{
-    name: RecepyFamilyName.DEFAULT,
+    id: RecepyFamilyId.DEFAULT,
+    label: 'Default',
     ingredients: [
-        RecepyIngredient.RUM, RecepyIngredient.COKE, RecepyIngredient.APEROL, RecepyIngredient.TONIC
+        RecepyIngredient.RUM, RecepyIngredient.COKE, RecepyIngredient.GIN, RecepyIngredient.TONIC
     ],
     recepies: [{
-        name: 'CubaLibre',
-        pumps: [
+        id: 'cubalibre',
+        label: 'Cuba Libre',
+        parts: [
             {
                 pump: Pump.A,
-                parts: 2
+                quantity: 2
             },
             {
                 pump: Pump.B,
-                parts: 1
+                quantity: 1
+            }
+        ]
+    },
+    {
+        id: 'gintonic',
+        label: 'Gin Tonic',
+        parts: [
+            {
+                pump: Pump.C,
+                quantity: 1
+            },
+            {
+                pump: Pump.D,
+                quantity: 3
             }
         ]
     }]
