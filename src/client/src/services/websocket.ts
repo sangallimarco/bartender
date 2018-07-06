@@ -53,7 +53,8 @@ class WebSocketService {
     // }
 
     send(uri: string, data: WebSocketData): void {
-        const msg = JSON.stringify({ uri, data });
+        const payload: WebsocketPayload = { uri, data };
+        const msg: string = JSON.stringify(payload);
         this.ws.send(msg);
     }
 }
