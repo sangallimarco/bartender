@@ -12,14 +12,14 @@ export enum RecepyIngredient {
     APEROL = 'APEROL'
 }
 
-export interface RecepyIngredientPump {
+export interface RecepyPumpConfig {
     pump: Pump;
-    parts: number;
+    quantity: number;
 }
 
 export interface Recepy {
     name: string;
-    pumps: RecepyIngredientPump[]
+    parts: RecepyPumpConfig[]
 }
 
 export interface RecepyFamily {

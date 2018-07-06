@@ -2,7 +2,7 @@ import {
     RECEPIES
 } from '../data/recepies';
 import {
-    RecepyFamily, Recepy, RecepyFamilyName, RecepyIngredientPump
+    RecepyFamily, Recepy, RecepyFamilyName, RecepyPumpConfig
 } from './recepy-types';
 import { PumpsUtils } from './pump-utils';
 
@@ -33,9 +33,9 @@ export class RecepyService {
     setPumps() {
         if (!this.executing) {
             this.executing = true;
-            const { pumps } = this.recepy;
-            const promises: Promise<void>[] = pumps.map((ingredientPump: RecepyIngredientPump) => {
-                return PumpsUtils.activateWithTimer(ingredientPump.pump, ingredientPump.parts * 1000);
+            const { parts } = this.recepy;
+            const promises: Promise<void>[] = parts.map((ingredientPump: RecepyPumpConfig) => {
+                return PumpsUtils.activateWithTimer(ingredientPump.pump, ingredientPump.quantity * 1000);
             });
             // wait for all timers to resolve
             Promise.all(promises).then(
