@@ -1,6 +1,8 @@
 import ReconnectingWebSocket from 'reconnecting-websocket';
 
-type WebSocketData = {};
+interface WebSocketData {
+    [key: string]: string | number
+};
 type WebSocketCallback = (data: WebSocketData) => void;
 
 export interface WebsocketPayload {
@@ -31,19 +33,7 @@ class WebSocketService {
         this.ws.addEventListener("message", this.onMessage);
     }
 
-    onMessage = (event: WebSocketEvent) => {
-        const { data: payload } = event;
-        try {
-            const payloadObject: WebsocketPayload = JSON.parse(payload);
-            const { uri, data } = payloadObject;
-            const route = this.routes.find(x => x.uri === uri);
-            if (route) {
-                route.callback(data);
-            }
-        } catch (e) { }
-    };
-
-    on(uri: string, callback: WebSocketCallback): void {
+    public on(uri: string, callback: WebSocketCallback): void {
         const route: WebSocketRoute = { uri, callback };
         this.routes.push(route);
     }
@@ -52,11 +42,25 @@ class WebSocketService {
     //     //
     // }
 
-    send(uri: string, data: WebSocketData): void {
+    public send(uri: string, data: WebSocketData): void {
         const payload: WebsocketPayload = { uri, data };
         const msg: string = JSON.stringify(payload);
         this.ws.send(msg);
     }
+
+    private onMessage = (event: WebSocketEvent) => {
+        const { data: payload } = event;
+        try {
+            const payloadObject: WebsocketPayload = JSON.parse(payload);
+            const { uri, data } = payloadObject;
+            const route = this.routes.find(x => x.uri === uri);
+            if (route) {
+                route.callback(data);
+            }
+        } catch (e) {
+            return e;
+        }
+    };
 }
 
 export const webSocketService = new WebSocketService();
