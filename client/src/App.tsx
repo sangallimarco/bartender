@@ -1,5 +1,6 @@
 import * as React from 'react';
 import './App.css';
+import { RoutePath } from './shared/route-path';
 
 // test only
 import { webSocketService } from './core/websocket';
@@ -15,7 +16,7 @@ class App extends React.Component<{}, AppState> {
   }
 
   public componentDidMount() {
-    webSocketService.on('/test', (data: {}) => {
+    webSocketService.on(RoutePath.TEST, (data: {}) => {
       this.setState({ data });
     });
   }
@@ -31,7 +32,7 @@ class App extends React.Component<{}, AppState> {
   }
 
   private handleClick = () => {
-    webSocketService.send('/test', {});
+    webSocketService.send(RoutePath.TEST, {});
   }
 }
 
