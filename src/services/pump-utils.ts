@@ -1,5 +1,6 @@
 import { Pump } from './pump-types';
 
+// see rpi-gpio.js
 export enum Direction {
     DIR_OUT = 'out',
 }
@@ -12,7 +13,6 @@ if (false) {
 } else {
     gpiop = require('./rpi-gpio-mock');
 }
-// conditional import detect platform here
 
 export namespace PumpsUtils {
 

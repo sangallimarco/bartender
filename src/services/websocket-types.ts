@@ -1,5 +1,6 @@
 import { EventEmitter } from "events";
 import { RequestHandler, NextFunction, Request, Response } from "express";
+import ws from 'ws';
 
 export interface WebsocketPayload<T> {
     uri: string,
@@ -14,7 +15,7 @@ export interface WebsocketListener {
 }
 
 export interface WebsocketRequest extends Request {
-    ws: EventEmitter;
+    ws: ws;
 }
 
 export interface WebsocketRequestHandler extends RequestHandler {

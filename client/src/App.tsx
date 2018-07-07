@@ -15,7 +15,7 @@ class App extends React.Component<{}, AppState> {
   }
 
   public componentDidMount() {
-    webSocketService.on('test', (data: {}) => {
+    webSocketService.on('/test', (data: {}) => {
       this.setState({ data });
     });
   }
@@ -31,7 +31,7 @@ class App extends React.Component<{}, AppState> {
   }
 
   private handleClick = () => {
-    webSocketService.send('test', {});
+    webSocketService.send('/test', {});
   }
 }
 
