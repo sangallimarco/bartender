@@ -1,12 +1,24 @@
-import gpio from 'rpi-gpio';
 import { Pump } from './pump-types';
-const gpiop = gpio.promise;
+
+export enum Direction {
+    DIR_OUT = 'out',
+}
+
+// conditional import detect platform here
+let gpiop;
+if (false) {
+    const gpio = require('rpi-gpio');
+    gpiop = gpio.promise;
+} else {
+    gpiop = require('./rpi-gpio-mock');
+}
+// conditional import detect platform here
 
 export namespace PumpsUtils {
 
     export function init() {
         for (const p in Pump) {
-            gpiop.setup(p, gpio.DIR_OUT);
+            gpiop.setup(p, Direction.DIR_OUT);
         }
     }
 
