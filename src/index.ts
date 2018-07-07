@@ -3,12 +3,10 @@ import path from 'path';
 import expressWs from 'express-ws';
 import ws from 'ws';
 import { webSocketRouter, webSocketMiddleware, WebSocketUtils } from './services';
-import { EventEmitter } from "events";
 import { WebsocketPayload } from "./services/websocket-types";
 import { RecepyService } from "./services/recepy-parser";
 
 const { app } = expressWs(express());
-// const app = express();
 const PORT = 8888;
 const ROOT_PATH = __dirname;
 const recepyMaker = new RecepyService();
