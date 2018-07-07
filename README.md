@@ -1,20 +1,20 @@
 # WIP!!!!!!
 
-## build project
-```
-npm build-all
-npm serve
-```
+## Development
 
-## DEV
-
-## Server
+### Server
 ```
 npm run watch
 ```
 
-### client
+### Client
 ```
 cd client
 npm start
+```
+
+## Build project
+```
+npm build-all
+npm serve
 ```
