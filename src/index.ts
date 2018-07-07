@@ -14,18 +14,15 @@ const recepyMaker = new RecepyService();
 
 // routes
 webSocketRouter.on(RoutePath.MAKE, (ws: ws, uri: string, data: WebsocketPayload<string>) => {
-    console.log('make cocktail', ws, uri, data);
     const recepyName: string = data.data;
     recepyMaker.setRecepy(recepyName);
 });
 
 // testing post processing
 webSocketRouter.on(RoutePath.TEST, (ws: ws, uri: string, data: WebsocketPayload<string>) => {
-    console.log('test', ws, uri);
     const message = WebSocketUtils.buildMessage(RoutePath.TEST, {
         ok: true
     });
-    // const w = ws as any;
     ws.send(message);
 });
 
