@@ -9,7 +9,7 @@ class GPIOMock {
 
     write(pin: number, value: boolean) {
         return new Promise((resolve, reject) => {
-            console.log('write', value);
+            console.log('write', pin, value);
             resolve();
         });
     }

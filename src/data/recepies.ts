@@ -7,18 +7,18 @@ export const RECEPIES: RecepyFamily[] = [{
     id: RecepyFamilyId.DEFAULT,
     label: 'Default',
     ingredients: [
-        RecepyIngredient.RUM, RecepyIngredient.COKE, RecepyIngredient.GIN, RecepyIngredient.TONIC
+        RecepyIngredient.GIN, RecepyIngredient.TONIC, RecepyIngredient.RUM, RecepyIngredient.COKE
     ],
     recepies: [{
         id: 'cubalibre',
         label: 'Cuba Libre',
         parts: [
             {
-                pump: Pump.A,
+                pump: Pump.C,
                 quantity: 2
             },
             {
-                pump: Pump.B,
+                pump: Pump.D,
                 quantity: 1
             }
         ]
@@ -28,11 +28,11 @@ export const RECEPIES: RecepyFamily[] = [{
         label: 'Gin Tonic',
         parts: [
             {
-                pump: Pump.C,
+                pump: Pump.A,
                 quantity: 1
             },
             {
-                pump: Pump.D,
+                pump: Pump.B,
                 quantity: 3
             }
         ]
