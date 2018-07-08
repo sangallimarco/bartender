@@ -31,9 +31,6 @@ webSocketRouter.on(RoutePath.TEST, (ws: ws, uri: string, data: WebsocketPayload<
 });
 
 app.use('/ws', webSocketMiddleware);
-app.get('/test', (res, resp, next) => {
-    resp.write('oo');
-});
 app.use('/app', express.static(path.join(__dirname, '../client/build')));
 app.use('/assets', express.static(path.join(ROOT_PATH, 'assets')));
 

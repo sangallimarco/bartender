@@ -23,15 +23,15 @@ export class RecepyService {
         }
     }
 
-    setRecepy(name: string): void {
-        const found = this.recepyFamily.recepies.find((recepy: Recepy) => recepy.label === name);
+    setRecepy(id: string): void {
+        const found = this.recepyFamily.recepies.find((recepy: Recepy) => recepy.id === id);
         if (found) {
             this.recepy = found;
         }
     }
 
     setPumps(): Promise<void> {
-        if (!this.executing) {
+        if (!this.executing && this.recepy) {
             this.executing = true;
             const { parts } = this.recepy;
             const promises: Promise<void>[] = parts.map((ingredientPump: RecepyPumpConfig) => {
