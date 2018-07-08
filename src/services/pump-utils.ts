@@ -26,12 +26,19 @@ export namespace PumpsUtils {
         });
     }
 
+    export function setValue(pump: Pump, value: boolean) {
+        return gpiop.write(pump, value)
+            .catch((err) => {
+                console.log('Error: ', pump, err.toString())
+            });
+    }
+
     export function activate(pump: Pump): Promise<{}> {
-        return gpiop.write(pump, true);
+        return setValue(pump, true);
     }
 
     export function deactivate(pump: Pump): Promise<{}> {
-        return gpiop.write(pump, false);
+        return setValue(pump, false);
     }
 
     export function activateWithTimer(pump: Pump, timeout: number): Promise<void> {

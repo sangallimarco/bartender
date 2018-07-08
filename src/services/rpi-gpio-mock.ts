@@ -7,9 +7,9 @@ class GPIOMock {
         });
     }
 
-    write(pin: number, dir: string) {
+    write(pin: number, value: boolean) {
         return new Promise((resolve, reject) => {
-            console.log('write', pin);
+            console.log('write', value);
             resolve();
         });
     }
