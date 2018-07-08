@@ -4,7 +4,7 @@
 
 ### Server
 ```
-npm run watch
+NODE_ENV='emulate' npm run watch
 ```
 
 ### Client
@@ -16,5 +16,5 @@ npm start
 ## Build project
 ```
 npm build-all
-npm serve
+npm run serve
 ```
