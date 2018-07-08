@@ -1,9 +1,9 @@
-import { Pump } from './pump-types';
+import { Pump, PumpPin } from './pump-types';
 const { env: { NODE_ENV } } = process;
 
 // see rpi-gpio.js
 export enum Direction {
-    DIR_OUT = 'out',
+    DIR_OUT = 'out'
 }
 
 // conditional import detect platform here
@@ -18,12 +18,12 @@ if (NODE_ENV !== 'emulate') {
 export namespace PumpsUtils {
 
     export function init() {
-        for (const p in Pump) {
-            gpiop.setup(p, Direction.DIR_OUT)
+        PumpPin.forEach((pin: number) => {
+            gpiop.setup(pin, Direction.DIR_OUT)
                 .catch((err) => {
-                    console.log('Error: ', p, err.toString())
+                    console.log('Error: ', pin, err.toString())
                 });
-        }
+        });
     }
 
     export function activate(pump: Pump): Promise<{}> {
