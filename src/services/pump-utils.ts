@@ -1,4 +1,5 @@
 import { Pump } from './pump-types';
+const { env: { NODE_ENV } } = process;
 
 // see rpi-gpio.js
 export enum Direction {
@@ -7,7 +8,7 @@ export enum Direction {
 
 // conditional import detect platform here
 let gpiop;
-if (false) {
+if (NODE_ENV !== 'emulate') {
     const gpio = require('rpi-gpio');
     gpiop = gpio.promise;
 } else {

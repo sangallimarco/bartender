@@ -30,7 +30,7 @@ export class RecepyService {
         }
     }
 
-    setPumps() {
+    setPumps(): Promise<void> {
         if (!this.executing) {
             this.executing = true;
             const { parts } = this.recepy;
@@ -38,8 +38,11 @@ export class RecepyService {
                 return PumpsUtils.activateWithTimer(ingredientPump.pump, ingredientPump.quantity * 1000);
             });
             // wait for all timers to resolve
-            Promise.all(promises).then(
-                () => this.executing = false
+            return Promise.all(promises).then(
+                () => {
+                    this.executing = false;
+                    return;
+                }
             );
         }
     }

@@ -20,10 +20,14 @@ webSocketRouter.on(RoutePath.MAKE, (ws: ws, uri: string, data: WebsocketPayload<
 
 // testing post processing
 webSocketRouter.on(RoutePath.TEST, (ws: ws, uri: string, data: WebsocketPayload<string>) => {
-    const message = WebSocketUtils.buildMessage(RoutePath.TEST, {
-        ok: true
+    recepyMaker.setRecepy('gintonic');
+    recepyMaker.setPumps().then(() => {
+        const message = WebSocketUtils.buildMessage(RoutePath.TEST, {
+            ok: true
+        });
+        ws.send(message);
     });
-    ws.send(message);
+
 });
 
 app.use('/ws', webSocketMiddleware);
