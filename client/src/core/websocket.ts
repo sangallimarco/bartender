@@ -24,8 +24,8 @@ class WebSocketService {
     private ws: ReconnectingWebSocket;
 
     constructor(uri?: string) {
-        const { location: { port } } = window;
-        uri = uri || `ws://localhost:${port}/ws`;
+        const { location: { host } } = window;
+        uri = uri || `ws://${host}/ws`;
 
         this.routes = [];
         this.ws = new ReconnectingWebSocket(uri);
