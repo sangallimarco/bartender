@@ -19,7 +19,10 @@ export namespace PumpsUtils {
 
     export function init() {
         for (const p in Pump) {
-            gpiop.setup(p, Direction.DIR_OUT);
+            gpiop.setup(p, Direction.DIR_OUT)
+                .catch((err) => {
+                    console.log('Error: ', err.toString())
+                });
         }
     }
 
