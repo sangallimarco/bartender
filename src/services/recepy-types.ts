@@ -30,3 +30,8 @@ export interface RecepyFamily {
     ingredients: RecepyIngredient[]
     recepies: Recepy[]
 }
+
+export interface RecepyOption {
+    id: string;
+    label: string;
+}

@@ -1,4 +1,5 @@
 export enum RoutePath {
     TEST = '/test',
-    MAKE = '/make'
+    MAKE = '/make',
+    RECEPIES = '/recepies'
 }

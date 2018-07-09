@@ -2,7 +2,7 @@ import ReconnectingWebSocket from 'reconnecting-websocket';
 import { v4 } from 'uuid';
 
 interface WebSocketData {
-    [key: string]: string | number
+    [key: string]: any
 };
 type WebSocketCallback = (data: WebSocketData) => void;
 
@@ -26,6 +26,8 @@ export interface WebSocketRoute {
 class WebSocketService {
     private routes: WebSocketRoute[];
     private ws: ReconnectingWebSocket;
+    private messages: string[] = [];
+    private ready: boolean = false;
 
     constructor(uri?: string) {
         const { location: { host } } = window;
@@ -33,8 +35,18 @@ class WebSocketService {
 
         this.routes = [];
         this.ws = new ReconnectingWebSocket(uri);
-        // this.ws.addEventListener('connect', this.onMessage);
+        this.ws.addEventListener('open', () => {
+            this.ready = true;
+        });
+        this.ws.addEventListener('close', () => {
+            this.ready = false;
+        }
+        );
         this.ws.addEventListener("message", this.onMessage);
+
+        setInterval(() => {
+            this.processQueue();
+        }, 100);
     }
 
     public on(uri: string, callback: WebSocketCallback): WebSocketListener {
@@ -50,7 +62,16 @@ class WebSocketService {
     public send(uri: string, data: WebSocketData): void {
         const payload: WebsocketPayload = { uri, data };
         const msg: string = JSON.stringify(payload);
-        this.ws.send(msg);
+        this.messages.push(msg);
+    }
+
+    private processQueue() {
+        if (this.messages.length > 0 && this.ready) {
+            const item = this.messages.shift();
+            if (item) {
+                this.ws.send(item);
+            }
+        }
     }
 
     private onMessage = (event: WebSocketEvent) => {

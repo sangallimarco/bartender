@@ -13,6 +13,14 @@ const ROOT_PATH = __dirname;
 const recepyMaker = new RecepyService();
 
 // routes
+webSocketRouter.on(RoutePath.RECEPIES, (ws: ws, uri: string, data: WebsocketPayload<string>) => {
+    const recepies = recepyMaker.getRecepies();
+    const message = WebSocketUtils.buildMessage(RoutePath.RECEPIES, {
+        recepies
+    });
+    ws.send(message);
+});
+
 webSocketRouter.on(RoutePath.MAKE, (ws: ws, uri: string, data: WebsocketPayload<string>) => {
     const recepyName: string = data.data;
     recepyMaker.setRecepy(recepyName);

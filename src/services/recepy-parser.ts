@@ -2,7 +2,7 @@ import {
     RECEPIES
 } from '../data/recepies';
 import {
-    RecepyFamily, Recepy, RecepyFamilyId, RecepyPumpConfig
+    RecepyFamily, Recepy, RecepyFamilyId, RecepyPumpConfig, RecepyOption
 } from './recepy-types';
 import { PumpsUtils } from './pump-utils';
 
@@ -27,6 +27,18 @@ export class RecepyService {
         const found = this.recepyFamily.recepies.find((recepy: Recepy) => recepy.id === id);
         if (found) {
             this.recepy = found;
+        }
+    }
+
+    getRecepies(): RecepyOption[] {
+        if (this.recepyFamily) {
+            const { recepies } = this.recepyFamily;
+            return recepies.map((recepy: Recepy) => {
+                const { id, label } = recepy;
+                return { id, label };
+            });
+        } else {
+            return [];
         }
     }
 

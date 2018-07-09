@@ -6,39 +6,62 @@ import { RoutePath } from './shared/route-path';
 import { webSocketService, WebSocketListener } from './core/websocket';
 
 interface AppState {
-  data: {}
+  data: {},
+  recepies: RecepyOption[]
 };
+
+interface RecepyOption {
+  id: string;
+  label: string;
+}
 
 class App extends React.Component<{}, AppState> {
 
   public state: AppState = {
-    data: {}
+    data: {},
+    recepies: []
   }
 
-  private detachListener: WebSocketListener;
+  private listeners: WebSocketListener[] = [];
 
   public componentDidMount() {
-    this.detachListener = webSocketService.on(RoutePath.TEST, (data: {}) => {
-      this.setState({ data });
-    });
+    this.listeners.push(
+      webSocketService.on(RoutePath.TEST, (data: {}) => {
+        this.setState({ data });
+      })
+    );
+    this.listeners.push(
+      webSocketService.on(RoutePath.RECEPIES, (data) => {
+        const recepies = data as RecepyOption[];
+        this.setState({ recepies });
+      })
+    );
+
+    webSocketService.send(RoutePath.RECEPIES, {});
   }
 
   public componentWillUnmount() {
-    this.detachListener();
+    this.listeners.forEach((i) => i());
   }
 
   public render() {
-    const { data } = this.state;
+    const { data, recepies } = this.state;
     return (
       <div className="App">
         TEST here {JSON.stringify(data)}
+        recepies {JSON.stringify(recepies)}
         <button onClick={this.handleClick}>CLICK</button>
+        <button onClick={this.handleClickLoad}>CLICK</button>
       </div>
     );
   }
 
   private handleClick = () => {
     webSocketService.send(RoutePath.TEST, { name: 'gintonic' });
+  }
+
+  private handleClickLoad = () => {
+    webSocketService.send(RoutePath.RECEPIES, {});
   }
 }
 
