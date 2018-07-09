@@ -3,7 +3,7 @@ import './App.css';
 import { RoutePath } from './shared/route-path';
 
 // test only
-import { webSocketService } from './core/websocket';
+import { webSocketService, WebSocketListener } from './core/websocket';
 
 interface AppState {
   data: {}
@@ -15,10 +15,16 @@ class App extends React.Component<{}, AppState> {
     data: {}
   }
 
+  private detachListener: WebSocketListener;
+
   public componentDidMount() {
-    webSocketService.on(RoutePath.TEST, (data: {}) => {
+    this.detachListener = webSocketService.on(RoutePath.TEST, (data: {}) => {
       this.setState({ data });
     });
+  }
+
+  public componentWillUnmount() {
+    this.detachListener();
   }
 
   public render() {
@@ -32,7 +38,7 @@ class App extends React.Component<{}, AppState> {
   }
 
   private handleClick = () => {
-    webSocketService.send(RoutePath.TEST, {});
+    webSocketService.send(RoutePath.TEST, { name: 'gintonic' });
   }
 }
 

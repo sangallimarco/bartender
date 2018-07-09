@@ -7,7 +7,8 @@
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
     "react-scripts-ts": "2.16.0",
-    "reconnecting-websocket": "^4.0.0-rc5"
+    "reconnecting-websocket": "^4.0.0-rc5",
+    "uuid": "^3.3.2"
   },
   "scripts": {
     "start": "react-scripts-ts start",
@@ -20,6 +21,7 @@
     "@types/node": "^10.5.2",
     "@types/react": "^16.4.6",
     "@types/react-dom": "^16.0.6",
+    "@types/uuid": "^3.4.3",
     "typescript": "^2.9.2"
   },
   "proxy": {

@@ -1,4 +1,5 @@
 import ReconnectingWebSocket from 'reconnecting-websocket';
+import { v4 } from 'uuid';
 
 interface WebSocketData {
     [key: string]: string | number
@@ -10,11 +11,14 @@ export interface WebsocketPayload {
     data: WebSocketData
 }
 
+export type WebSocketListener = () => void;
+
 export interface WebSocketEvent {
     data: string;
 }
 
 export interface WebSocketRoute {
+    uuid: string;
     uri: string;
     callback: WebSocketCallback;
 }
@@ -33,14 +37,15 @@ class WebSocketService {
         this.ws.addEventListener("message", this.onMessage);
     }
 
-    public on(uri: string, callback: WebSocketCallback): void {
-        const route: WebSocketRoute = { uri, callback };
+    public on(uri: string, callback: WebSocketCallback): WebSocketListener {
+        const uuid = v4();
+        const route: WebSocketRoute = { uuid, uri, callback };
         this.routes.push(route);
-    }
 
-    // destroy(listener) {
-    //     //
-    // }
+        return () => {
+            this.detachListener(uuid);
+        }
+    }
 
     public send(uri: string, data: WebSocketData): void {
         const payload: WebsocketPayload = { uri, data };
@@ -61,6 +66,10 @@ class WebSocketService {
             return e;
         }
     };
+
+    private detachListener(uuid: string) {
+        this.routes = this.routes.filter((route: WebSocketRoute) => route.uuid !== uuid);
+    }
 }
 
 export const webSocketService = new WebSocketService();
