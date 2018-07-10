@@ -2,6 +2,7 @@ import { webSocketService, WebSocketListener } from '../../core/websocket';
 import * as React from 'react';
 import './recepy.css';
 import { RoutePath } from '../../shared/route-path';
+import RecepyItem from './recepy-item';
 
 interface RecepyListProps {
     processing: boolean,
@@ -55,19 +56,20 @@ export class RecepyList extends React.Component<{}, RecepyListProps> {
         const { processing, recepies } = this.state;
         return (
             <div className="App">
-                TEST here {JSON.stringify(processing)}
-                recepies {JSON.stringify(recepies)}
-                <button onClick={this.handleClick}>CLICK</button>
-                <button onClick={this.handleClickLoad}>CLICK</button>
+                {this.renderItems(recepies)}
+                {JSON.stringify(processing)}
             </div>
         );
     }
 
-    private handleClick = () => {
+    private HandleSelected = (id: string) => {
         webSocketService.send(RoutePath.MAKE, { name: 'gintonic' });
     }
 
-    private handleClickLoad = () => {
-        webSocketService.send(RoutePath.RECEPIES, {});
+    private renderItems(items: RecepyOption[]) {
+        return items.map((i: RecepyOption) => {
+            const { label, id } = i;
+            return <RecepyItem key={id} label={label} id={id} onClick={this.HandleSelected} />;
+        })
     }
 }
