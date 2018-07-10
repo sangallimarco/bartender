@@ -1,14 +1,11 @@
 import ReconnectingWebSocket from 'reconnecting-websocket';
 import { v4 } from 'uuid';
 
-interface WebSocketData {
-    [key: string]: any
-};
-type WebSocketCallback = (data: WebSocketData) => void;
+type WebSocketCallback<T> = (data: T) => void;
 
-export interface WebsocketPayload {
-    uri: string,
-    data: WebSocketData
+export interface WebsocketPayload<T> {
+    uri: string;
+    data: T;
 }
 
 export type WebSocketListener = () => void;
@@ -20,7 +17,7 @@ export interface WebSocketEvent {
 export interface WebSocketRoute {
     uuid: string;
     uri: string;
-    callback: WebSocketCallback;
+    callback: WebSocketCallback<any>;
 }
 
 class WebSocketService {
@@ -49,7 +46,7 @@ class WebSocketService {
         }, 100);
     }
 
-    public on(uri: string, callback: WebSocketCallback): WebSocketListener {
+    public on<T>(uri: string, callback: WebSocketCallback<T>): WebSocketListener {
         const uuid = v4();
         const route: WebSocketRoute = { uuid, uri, callback };
         this.routes.push(route);
@@ -59,8 +56,8 @@ class WebSocketService {
         }
     }
 
-    public send(uri: string, data: WebSocketData): void {
-        const payload: WebsocketPayload = { uri, data };
+    public send<T>(uri: string, data: T): void {
+        const payload: WebsocketPayload<T> = { uri, data };
         const msg: string = JSON.stringify(payload);
         this.messages.push(msg);
     }
@@ -77,7 +74,7 @@ class WebSocketService {
     private onMessage = (event: WebSocketEvent) => {
         const { data: payload } = event;
         try {
-            const payloadObject: WebsocketPayload = JSON.parse(payload);
+            const payloadObject = JSON.parse(payload);
             const { uri, data } = payloadObject;
             const route = this.routes.find(x => x.uri === uri);
             if (route) {

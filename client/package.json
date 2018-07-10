@@ -4,10 +4,13 @@
   "homepage": "/app",
   "private": true,
   "dependencies": {
+    "history": "^4.7.2",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
+    "react-router-dom": "^4.3.1",
     "react-scripts-ts": "2.16.0",
     "reconnecting-websocket": "^4.0.0-rc5",
+    "styled-components": "^3.3.3",
     "uuid": "^3.3.2"
   },
   "scripts": {
@@ -17,10 +20,12 @@
     "eject": "react-scripts-ts eject"
   },
   "devDependencies": {
+    "@types/history": "^4.6.2",
     "@types/jest": "^23.1.4",
     "@types/node": "^10.5.2",
     "@types/react": "^16.4.6",
     "@types/react-dom": "^16.0.6",
+    "@types/react-router-dom": "^4.2.7",
     "@types/uuid": "^3.4.3",
     "typescript": "^2.9.2"
   },

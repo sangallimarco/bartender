@@ -1,9 +1,11 @@
 import * as React from 'react';
 import './App.css';
-import { RoutePath } from './shared/route-path';
+// import { RoutePath } from './shared/route-path';
+import { Router, Route } from 'react-router';
+import { RecepyList } from './features/recepy/recepy-list';
+import createBrowserHistory from 'history/createBrowserHistory';
 
-// test only
-import { webSocketService, WebSocketListener } from './core/websocket';
+const customHistory = createBrowserHistory()
 
 interface AppState {
   data: {},
@@ -17,51 +19,14 @@ interface RecepyOption {
 
 class App extends React.Component<{}, AppState> {
 
-  public state: AppState = {
-    data: {},
-    recepies: []
-  }
-
-  private listeners: WebSocketListener[] = [];
-
-  public componentDidMount() {
-    this.listeners.push(
-      webSocketService.on(RoutePath.TEST, (data: {}) => {
-        this.setState({ data });
-      })
-    );
-    this.listeners.push(
-      webSocketService.on(RoutePath.RECEPIES, (data) => {
-        const recepies = data as RecepyOption[];
-        this.setState({ recepies });
-      })
-    );
-
-    webSocketService.send(RoutePath.RECEPIES, {});
-  }
-
-  public componentWillUnmount() {
-    this.listeners.forEach((i) => i());
-  }
-
   public render() {
-    const { data, recepies } = this.state;
     return (
       <div className="App">
-        TEST here {JSON.stringify(data)}
-        recepies {JSON.stringify(recepies)}
-        <button onClick={this.handleClick}>CLICK</button>
-        <button onClick={this.handleClickLoad}>CLICK</button>
+        <Router history={customHistory}>
+          <Route path="/" component={RecepyList} />
+        </Router>
       </div>
     );
-  }
-
-  private handleClick = () => {
-    webSocketService.send(RoutePath.TEST, { name: 'gintonic' });
-  }
-
-  private handleClickLoad = () => {
-    webSocketService.send(RoutePath.RECEPIES, {});
   }
 }
 

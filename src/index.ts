@@ -21,17 +21,19 @@ webSocketRouter.on(RoutePath.RECEPIES, (ws: ws, uri: string, data: WebsocketPayl
     ws.send(message);
 });
 
-webSocketRouter.on(RoutePath.MAKE, (ws: ws, uri: string, data: WebsocketPayload<string>) => {
-    const recepyName: string = data.data;
-    recepyMaker.setRecepy(recepyName);
-});
-
 // testing post processing
-webSocketRouter.on(RoutePath.TEST, (ws: ws, uri: string, data: WebsocketPayload<string>) => {
+webSocketRouter.on(RoutePath.MAKE, (ws: ws, uri: string, data: WebsocketPayload<string>) => {
     recepyMaker.setRecepy('gintonic');
+
+    const message = WebSocketUtils.buildMessage(RoutePath.MAKE, {
+        processing: true
+    });
+    ws.send(message);
+
     recepyMaker.setPumps().then(() => {
-        const message = WebSocketUtils.buildMessage(RoutePath.TEST, {
-            ok: true
+        1
+        const message = WebSocketUtils.buildMessage(RoutePath.MAKE, {
+            processing: false
         });
         ws.send(message);
     });
