@@ -20,7 +20,7 @@ export default class Dialog extends React.Component<DialogProps, any> {
             <div className={className}>
                 <div className="dialog__container">
                     <div className="dialog__message">{message}</div>
-                    <div className="dialog__confirm"><Button type={ButtonType.ACTION} onClick={onConfirm}>OK</Button></div>
+                    <div className="dialog__confirm"><Button type={ButtonType.ACTION} onClick={onConfirm}>CONFIRM</Button></div>
                     <div className="dialog__dismiss"><Button type={ButtonType.DEFAULT} onClick={onDismiss}>CANCEL</Button></div>
                 </div>
             </div>

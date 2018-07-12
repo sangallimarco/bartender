@@ -7,6 +7,7 @@
     height: 100vh;
     top: 0;
     visibility: hidden;
+    background-color: rgba(0, 0, 0, 0.5);
 }
 
 .dialog__container {
@@ -22,6 +23,8 @@
     color: white;
     font-size: 2rem;
     padding: 1rem;
+    display: flex;
+    justify-content: center;
 }
 
 .dialog__dismiss {

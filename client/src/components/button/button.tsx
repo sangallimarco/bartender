@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { CSSUtils } from '../../core/classnames';
+import { CSSUtils } from '../../core/css-utils';
 import './button.css';
 
 export enum ButtonType {
