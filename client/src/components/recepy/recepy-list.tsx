@@ -3,10 +3,14 @@ import * as React from 'react';
 import './recepy.css';
 import { RoutePath } from '../../shared/route-path';
 import RecepyItem from './recepy-item';
+import Dialog from '../dialog/dialog';
 
 interface RecepyListProps {
     processing: boolean,
     recepies: RecepyOption[]
+    message: string;
+    id: string;
+    dialogVisible: boolean;
 };
 
 interface RecepyOption {
@@ -25,6 +29,9 @@ interface RecepiesData {
 export class RecepyList extends React.Component<{}, RecepyListProps> {
 
     public state: RecepyListProps = {
+        dialogVisible: false,
+        id: '',
+        message: '',
         processing: false,
         recepies: []
     }
@@ -53,17 +60,29 @@ export class RecepyList extends React.Component<{}, RecepyListProps> {
     }
 
     public render() {
-        const { processing, recepies } = this.state;
+        const { processing, recepies, message, dialogVisible } = this.state;
         return (
-            <div className="App">
+            <div className="recepy-list">
                 {this.renderItems(recepies)}
                 {JSON.stringify(processing)}
+                <Dialog active={dialogVisible} onConfirm={this.handleConfirm} onDismiss={this.handleDismiss} message={message} />
             </div>
         );
     }
 
-    private HandleSelected = (id: string) => {
-        webSocketService.send(RoutePath.MAKE, { name: 'gintonic' });
+    private handleConfirm = () => {
+        const { id } = this.state;
+        webSocketService.send(RoutePath.MAKE, { name: id });
+        this.setState({ dialogVisible: false });
+    }
+
+    private handleDismiss = () => {
+        this.setState({ dialogVisible: false });
+    }
+
+    private HandleSelected = (id: string, label: string) => {
+        const message = `Confirm ${label}?`;
+        this.setState({ id, dialogVisible: true, message });
     }
 
     private renderItems(items: RecepyOption[]) {

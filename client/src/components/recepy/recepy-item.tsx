@@ -4,7 +4,7 @@ import './recepy-item.css';
 export interface RecepyItemProps {
     label: string;
     id: string;
-    onClick: (id: string) => void;
+    onClick: (id: string, label: string) => void;
 }
 
 export default class RecepyItem extends React.PureComponent<RecepyItemProps, any> {
@@ -19,7 +19,7 @@ export default class RecepyItem extends React.PureComponent<RecepyItemProps, any
     }
 
     private handleClick = () => {
-        const { onClick, id } = this.props;
-        onClick(id);
+        const { onClick, id, label } = this.props;
+        onClick(id, label);
     }
 }

@@ -1,0 +1,43 @@
+.dialog {
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    visibility: hidden;
+}
+
+.dialog__container {
+    border: 0.2rem solid white;
+    display: grid;
+    grid-template-rows: auto auto;
+    grid-template-columns: auto auto;
+    grid-template-areas: "message message" "dismiss confirm";
+}
+
+.dialog__message {
+    grid-area: message;
+    color: white;
+    font-size: 2rem;
+    padding: 1rem;
+}
+
+.dialog__dismiss {
+    grid-area: dismiss;
+    display: flex;
+    justify-content: flex-start;
+    padding: 1rem;
+}
+
+.dialog__confirm {
+    grid-area: confirm;
+    display: flex;
+    justify-content: flex-end;
+    padding: 1rem;
+}
+
+.dialog-active {
+    visibility: visible;
+}

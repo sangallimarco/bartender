@@ -2,7 +2,7 @@ import * as React from 'react';
 import './App.css';
 // import { RoutePath } from './shared/route-path';
 import { Router, Route } from 'react-router';
-import { RecepyList } from './features/recepy/recepy-list';
+import { RecepyList } from './components/recepy/recepy-list';
 import createBrowserHistory from 'history/createBrowserHistory';
 
 const customHistory = createBrowserHistory()

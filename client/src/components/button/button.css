@@ -1,0 +1,22 @@
+.button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    border: 0.2rem solid white;
+    cursor: pointer;
+}
+
+.button-action {
+    background-color: blueviolet;
+    color: white;
+}
+
+.button-default {
+    background-color: white;
+    color: blueviolet;
+}
+
+.button:hover {
+    filter: brightness(85%);
+}
