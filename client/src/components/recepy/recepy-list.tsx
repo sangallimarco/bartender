@@ -4,6 +4,7 @@ import './recepy.css';
 import { RoutePath, ProcessingPayload, RecepiesPayload, RecepyOption, MakePayload } from '../../shared';
 import RecepyItem from './recepy-item';
 import Dialog from '../dialog/dialog';
+import Processing from '../processing/processing';
 
 interface RecepyListProps {
     processing: boolean,
@@ -53,6 +54,7 @@ export class RecepyList extends React.Component<{}, RecepyListProps> {
                 {this.renderItems(recepies)}
                 {JSON.stringify(processing)}
                 <Dialog active={dialogVisible} onConfirm={this.handleConfirm} onDismiss={this.handleDismiss} message={message} />
+                <Processing active={processing} />
             </div>
         );
     }

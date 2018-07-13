@@ -3,7 +3,6 @@ import path from 'path';
 import expressWs from 'express-ws';
 import ws from 'ws';
 import { webSocketRouter, webSocketMiddleware, WebSocketUtils } from './services';
-import { WebsocketPayload } from "./services/websocket-types";
 import { RecepyService } from "./services/recepy-parser";
 import { RoutePath, ProcessingPayload, RecepiesPayload, MakePayload } from './shared';
 
@@ -34,7 +33,6 @@ webSocketRouter.on<MakePayload>(RoutePath.MAKE, (ws: ws, uri: string, data: Make
             processing: false
         });
     });
-
 });
 
 app.use('/ws', webSocketMiddleware);
