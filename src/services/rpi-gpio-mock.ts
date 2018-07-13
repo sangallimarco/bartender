@@ -1,13 +1,13 @@
 
 class GPIOMock {
-    setup(pin: number, dir: string) {
+    public setup(pin: number, dir: string) {
         return new Promise((resolve, reject) => {
             console.log('setup', pin, dir);
             resolve();
         });
     }
 
-    write(pin: number, value: boolean) {
+    public write(pin: number, value: boolean) {
         return new Promise((resolve, reject) => {
             console.log('write', pin, value);
             resolve();

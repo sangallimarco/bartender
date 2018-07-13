@@ -43,7 +43,7 @@ class WebSocketService {
 
         setInterval(() => {
             this.processQueue();
-        }, 100);
+        }, 10);
     }
 
     public on<T>(uri: string, callback: WebSocketCallback<T>): WebSocketListener {

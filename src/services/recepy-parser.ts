@@ -16,21 +16,21 @@ export class RecepyService {
         PumpsUtils.init();
     }
 
-    setFamily(id: RecepyFamilyId): void {
+    public setFamily(id: RecepyFamilyId): void {
         const found = RECEPIES.find((family: RecepyFamily) => family.id === id);
         if (found) {
             this.recepyFamily = found;
         }
     }
 
-    setRecepy(id: string): void {
+    public setRecepy(id: string): void {
         const found = this.recepyFamily.recepies.find((recepy: Recepy) => recepy.id === id);
         if (found) {
             this.recepy = found;
         }
     }
 
-    getRecepies(): RecepyOption[] {
+    public getRecepies(): RecepyOption[] {
         if (this.recepyFamily) {
             const { recepies } = this.recepyFamily;
             return recepies.map((recepy: Recepy) => {
@@ -42,11 +42,11 @@ export class RecepyService {
         }
     }
 
-    setPumps(): Promise<void> {
+    public setPumps(): Promise<void> {
         if (!this.executing && this.recepy) {
             this.executing = true;
             const { parts } = this.recepy;
-            const promises: Promise<void>[] = parts.map((ingredientPump: RecepyPumpConfig) => {
+            const promises: Array<Promise<void>> = parts.map((ingredientPump: RecepyPumpConfig) => {
                 return PumpsUtils.activateWithTimer(ingredientPump.pump, ingredientPump.quantity * 1000);
             });
             // wait for all timers to resolve

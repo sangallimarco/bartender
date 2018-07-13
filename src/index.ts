@@ -12,24 +12,24 @@ const ROOT_PATH = __dirname;
 const recepyMaker = new RecepyService();
 
 // routes
-webSocketRouter.on<{}>(RoutePath.RECEPIES, (ws: ws, uri: string, data: {}) => {
+webSocketRouter.on<{}>(RoutePath.RECEPIES, (wsInstance: ws, uri: string, data: {}) => {
     const recepies = recepyMaker.getRecepies();
-    WebSocketUtils.sendMessage<RecepiesPayload>(ws, RoutePath.RECEPIES, {
+    WebSocketUtils.sendMessage<RecepiesPayload>(wsInstance, RoutePath.RECEPIES, {
         recepies
     });
 });
 
 // testing post processing
-webSocketRouter.on<MakePayload>(RoutePath.MAKE, (ws: ws, uri: string, data: MakePayload) => {
+webSocketRouter.on<MakePayload>(RoutePath.MAKE, (wsInstance: ws, uri: string, data: MakePayload) => {
     const { id } = data;
     recepyMaker.setRecepy(id);
 
-    WebSocketUtils.sendMessage<ProcessingPayload>(ws, RoutePath.MAKE, {
+    WebSocketUtils.sendMessage<ProcessingPayload>(wsInstance, RoutePath.MAKE, {
         processing: true
     });
 
     recepyMaker.setPumps().then(() => {
-        WebSocketUtils.sendMessage<ProcessingPayload>(ws, RoutePath.MAKE, {
+        WebSocketUtils.sendMessage<ProcessingPayload>(wsInstance, RoutePath.MAKE, {
             processing: false
         });
     });

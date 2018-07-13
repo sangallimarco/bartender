@@ -10,8 +10,8 @@ export namespace WebSocketUtils {
         return JSON.stringify(message);
     }
 
-    export function sendMessage<T>(ws: ws, uri: string, data: T): void {
+    export function sendMessage<T>(wsInstance: ws, uri: string, data: T): void {
         const message = buildMessage<T>(uri, data);
-        ws.send(message);
+        wsInstance.send(message);
     }
 }
