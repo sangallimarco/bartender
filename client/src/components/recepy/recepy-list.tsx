@@ -1,7 +1,7 @@
 import { webSocketService, WebSocketListener } from '../../core/websocket';
 import * as React from 'react';
 import './recepy.css';
-import { RoutePath } from '../../shared/route-path';
+import { RoutePath } from '../../shared';
 import RecepyItem from './recepy-item';
 import Dialog from '../dialog/dialog';
 
