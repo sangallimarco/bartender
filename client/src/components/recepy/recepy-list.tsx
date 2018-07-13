@@ -1,7 +1,7 @@
 import { webSocketService, WebSocketListener } from '../../core/websocket';
 import * as React from 'react';
 import './recepy.css';
-import { RoutePath } from '../../shared';
+import { RoutePath, ProcessingPayload, RecepiesPayload, RecepyOption, MakePayload } from '../../shared';
 import RecepyItem from './recepy-item';
 import Dialog from '../dialog/dialog';
 
@@ -12,19 +12,6 @@ interface RecepyListProps {
     id: string;
     dialogVisible: boolean;
 };
-
-interface RecepyOption {
-    id: string;
-    label: string;
-}
-
-interface ProcessingData {
-    processing: boolean;
-}
-
-interface RecepiesData {
-    recepies: RecepyOption[];
-}
 
 export class RecepyList extends React.Component<{}, RecepyListProps> {
 
@@ -40,19 +27,19 @@ export class RecepyList extends React.Component<{}, RecepyListProps> {
 
     public componentDidMount() {
         this.listeners.push(
-            webSocketService.on<ProcessingData>(RoutePath.MAKE, (data) => {
+            webSocketService.on<ProcessingPayload>(RoutePath.MAKE, (data) => {
                 const { processing } = data;
                 this.setState({ processing });
             })
         );
         this.listeners.push(
-            webSocketService.on<RecepiesData>(RoutePath.RECEPIES, (data) => {
+            webSocketService.on<RecepiesPayload>(RoutePath.RECEPIES, (data) => {
                 const { recepies } = data;
                 this.setState({ recepies });
             })
         );
 
-        webSocketService.send(RoutePath.RECEPIES, {});
+        webSocketService.send<{}>(RoutePath.RECEPIES, {});
     }
 
     public componentWillUnmount() {
@@ -72,7 +59,7 @@ export class RecepyList extends React.Component<{}, RecepyListProps> {
 
     private handleConfirm = () => {
         const { id } = this.state;
-        webSocketService.send(RoutePath.MAKE, { name: id });
+        webSocketService.send<MakePayload>(RoutePath.MAKE, { id });
         this.setState({ dialogVisible: false });
     }
 
