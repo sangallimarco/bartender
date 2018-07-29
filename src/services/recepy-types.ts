@@ -1,10 +1,5 @@
 import { Pump } from "./pump-types";
 
-export enum RecepyFamilyId {
-    DEFAULT = 'DEFAULT',
-    INTERNATIONAL = 'INTERNATIONAL'
-}
-
 export enum RecepyIngredient {
     COKE = 'COKE',
     RUM = 'RUM',
@@ -19,19 +14,14 @@ export interface RecepyPumpConfig {
 }
 
 export interface Recepy {
-    id: string;
+    _id: string;
+    recepyFamily: string;
     label: string;
     parts: RecepyPumpConfig[]
 }
 
 export interface RecepyFamily {
-    id: RecepyFamilyId;
+    _id: string;
     label: string;
     ingredients: RecepyIngredient[]
-    recepies: Recepy[]
-}
-
-export interface RecepyOption {
-    id: string;
-    label: string;
 }

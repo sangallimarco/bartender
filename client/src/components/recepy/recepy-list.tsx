@@ -1,10 +1,11 @@
-import { webSocketService, WebSocketListener } from '../../core/websocket';
 import * as React from 'react';
+import { webSocketService} from '../../core/websocket';
 import './recepy.css';
 import { RoutePath, ProcessingPayload, RecepiesPayload, RecepyOption, MakePayload } from '../../shared';
 import RecepyItem from './recepy-item';
 import Dialog from '../dialog/dialog';
 import Processing from '../processing/processing';
+import { BaseComponent } from '../../core/base-component';
 
 interface RecepyListProps {
     processing: boolean,
@@ -14,7 +15,7 @@ interface RecepyListProps {
     dialogVisible: boolean;
 };
 
-export class RecepyList extends React.Component<{}, RecepyListProps> {
+export class RecepyList extends BaseComponent<{}, RecepyListProps> {
 
     public state: RecepyListProps = {
         dialogVisible: false,
@@ -23,8 +24,6 @@ export class RecepyList extends React.Component<{}, RecepyListProps> {
         processing: false,
         recepies: []
     }
-
-    private listeners: WebSocketListener[] = [];
 
     public componentDidMount() {
         this.listeners.push(
@@ -41,10 +40,6 @@ export class RecepyList extends React.Component<{}, RecepyListProps> {
         );
 
         webSocketService.send<{}>(RoutePath.RECEPIES, {});
-    }
-
-    public componentWillUnmount() {
-        this.listeners.forEach((i) => i());
     }
 
     public render() {

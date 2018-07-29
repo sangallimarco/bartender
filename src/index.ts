@@ -4,7 +4,8 @@ import expressWs from 'express-ws';
 import ws from 'ws';
 import { webSocketRouter, webSocketMiddleware, WebSocketUtils } from './services';
 import { RecepyService } from "./services/recepy-parser";
-import { RoutePath, ProcessingPayload, RecepiesPayload, MakePayload } from './shared';
+import { RoutePath, ProcessingPayload, RecepiesPayload, MakePayload, RecepyOption } from './shared';
+import { RecepyIngredient } from "./services/recepy-types";
 
 const { app } = expressWs(express());
 const PORT = 8888;
@@ -13,10 +14,13 @@ const recepyMaker = new RecepyService();
 
 // routes
 webSocketRouter.on<{}>(RoutePath.RECEPIES, (wsInstance: ws, uri: string, data: {}) => {
-    const recepies = recepyMaker.getRecepies();
-    WebSocketUtils.sendMessage<RecepiesPayload>(wsInstance, RoutePath.RECEPIES, {
-        recepies
+    recepyMaker.getRecepies()
+    .then((recepies: RecepyOption[])=>{
+        WebSocketUtils.sendMessage<RecepiesPayload>(wsInstance, RoutePath.RECEPIES, {
+            recepies
+        });
     });
+   
 });
 
 // testing post processing
@@ -38,6 +42,12 @@ webSocketRouter.on<MakePayload>(RoutePath.MAKE, (wsInstance: ws, uri: string, da
 app.use('/ws', webSocketMiddleware);
 app.use('/app', express.static(path.join(__dirname, '../client/build')));
 app.use('/assets', express.static(path.join(ROOT_PATH, 'assets')));
+
+recepyMaker.upsertFamily({
+    _id:'default', 
+    label: 'default', 
+    ingredients: [RecepyIngredient.GIN, RecepyIngredient.TONIC, RecepyIngredient.RUM, RecepyIngredient.COKE]
+});
 
 app.listen(PORT, () => {
     console.log(`Open browser page: http://localhost:${PORT}/app`);
