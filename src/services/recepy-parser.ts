@@ -1,12 +1,11 @@
 import {
-    RECEPIES
-} from '../data/recepies';
-import {
     RecepyFamily, Recepy, RecepyPumpConfig
 } from './recepy-types';
 import { PumpsUtils } from './pump-utils';
 import Nedb from 'nedb';
 import { RecepyOption } from '../shared';
+
+const DEFAULT_FAMILY = 'default';
 
 export class RecepyService {
     private recepyFamily: RecepyFamily;
@@ -17,9 +16,9 @@ export class RecepyService {
     private recepyFamilies: Nedb;
 
     constructor() {
-        // this.setFamily(RecepyFamilyId.DEFAULT);
-        this.recepiesDb = new Nedb({ filename: 'recepies', autoload: true });
-        this.recepyFamilies = new Nedb({ filename: 'families', autoload: true });
+        this.recepiesDb = new Nedb({ filename: 'db/recepies', autoload: true });
+        this.recepyFamilies = new Nedb({ filename: 'db/families', autoload: true });
+        this.setFamily(DEFAULT_FAMILY);
         PumpsUtils.init();
     }
 
@@ -39,12 +38,11 @@ export class RecepyService {
     public upsertFamily(family: RecepyFamily): Promise<{}> {
         const { _id } = family;
         return new Promise((resolve, reject) => {
-            this.recepyFamilies.update({ _id }, family, { upsert: true }, (err, doc) => {
+            this.recepyFamilies.update({ '_id': _id }, family, { upsert: true }, (err, doc) => {
                 if (!err) {
                     resolve(doc);
                 }
                 reject(err);
-
             });
         });
     }

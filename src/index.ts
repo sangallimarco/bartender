@@ -15,12 +15,12 @@ const recepyMaker = new RecepyService();
 // routes
 webSocketRouter.on<{}>(RoutePath.RECEPIES, (wsInstance: ws, uri: string, data: {}) => {
     recepyMaker.getRecepies()
-    .then((recepies: RecepyOption[])=>{
-        WebSocketUtils.sendMessage<RecepiesPayload>(wsInstance, RoutePath.RECEPIES, {
-            recepies
+        .then((recepies: RecepyOption[]) => {
+            WebSocketUtils.sendMessage<RecepiesPayload>(wsInstance, RoutePath.RECEPIES, {
+                recepies
+            });
         });
-    });
-   
+
 });
 
 // testing post processing
@@ -43,10 +43,23 @@ app.use('/ws', webSocketMiddleware);
 app.use('/app', express.static(path.join(__dirname, '../client/build')));
 app.use('/assets', express.static(path.join(ROOT_PATH, 'assets')));
 
-recepyMaker.upsertFamily({
-    _id:'default', 
-    label: 'default', 
-    ingredients: [RecepyIngredient.GIN, RecepyIngredient.TONIC, RecepyIngredient.RUM, RecepyIngredient.COKE]
+recepyMaker.upsertRecepy({
+    _id: 'aperol',
+    recepyFamily: 'default',
+    label: 'Aperol',
+    parts: [
+        {
+            pump: 0,
+            quantity: 1
+        },
+        {
+            pump: 1,
+            quantity: 2
+        }, {
+            pump: 3,
+            quantity: 1
+        }
+    ]
 });
 
 app.listen(PORT, () => {
