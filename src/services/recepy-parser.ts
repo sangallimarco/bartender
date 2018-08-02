@@ -16,13 +16,26 @@ export class RecepyService {
     private recepyFamilies: Nedb;
 
     constructor() {
-        this.recepiesDb = new Nedb({ filename: 'db/recepies', autoload: true });
-        this.recepyFamilies = new Nedb({ filename: 'db/families', autoload: true });
-        this.setFamily(DEFAULT_FAMILY);
         PumpsUtils.init();
     }
 
-    public setFamily(id: string): Promise<{}> {
+    public initDatabases(): Promise<void> {
+        this.recepiesDb = new Nedb({ filename: 'db/recepies' });
+        this.recepyFamilies = new Nedb({ filename: 'db/families' });
+
+        const recepiesDbDone = new Promise((resolve, reject) => {
+            this.recepiesDb.loadDatabase(() => resolve());
+        });
+        const recepyFamiliesDone = new Promise((resolve, reject) => {
+            this.recepyFamilies.loadDatabase(() => resolve());
+        });
+
+        return Promise.all([recepiesDbDone, recepyFamiliesDone]).then(() => {
+            return this.setFamily(DEFAULT_FAMILY);
+        });
+    }
+
+    public setFamily(id: string): Promise<void> {
         return new Promise((resolve, reject) => {
             this.recepyFamilies.findOne<RecepyFamily>({ _id: id }, (err, doc) => {
                 if (!err) {
@@ -30,7 +43,6 @@ export class RecepyService {
                     resolve();
                 }
                 reject(err);
-
             });
         });
     }
@@ -73,7 +85,7 @@ export class RecepyService {
                 const { _id: recepyFamilyId } = this.recepyFamily;
                 this.recepiesDb.find({ recepyFamily: recepyFamilyId }, (err, docs) => {
                     if (!err) {
-                        this.recepies= [...docs];
+                        this.recepies = [...docs];
                         const recepies = docs.map((recepy: Recepy) => {
                             const { _id, label } = recepy;
                             return { _id, label };

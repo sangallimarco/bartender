@@ -43,24 +43,27 @@ app.use('/ws', webSocketMiddleware);
 app.use('/app', express.static(path.join(__dirname, '../client/build')));
 app.use('/assets', express.static(path.join(ROOT_PATH, 'assets')));
 
-recepyMaker.upsertRecepy({
-    _id: 'aperol',
-    recepyFamily: 'default',
-    label: 'Aperol',
-    parts: [
-        {
-            pump: 0,
-            quantity: 1
-        },
-        {
-            pump: 1,
-            quantity: 2
-        }, {
-            pump: 3,
-            quantity: 1
-        }
-    ]
-});
+recepyMaker.initDatabases()
+    .then(() => {
+        recepyMaker.upsertRecepy({
+            _id: 'aperol',
+            recepyFamily: 'default',
+            label: 'Aperol',
+            parts: [
+                {
+                    pump: 0,
+                    quantity: 1
+                },
+                {
+                    pump: 1,
+                    quantity: 2
+                }, {
+                    pump: 3,
+                    quantity: 1
+                }
+            ]
+        });
+    })
 
 app.listen(PORT, () => {
     console.log(`Open browser page: http://localhost:${PORT}/app`);
