@@ -2,7 +2,8 @@ import {
     RecepyFamily, Recepy, RecepyPumpConfig
 } from './recepy-types';
 import { PumpsUtils } from './pump-utils';
-import Nedb from 'nedb';
+// import Nedb from 'nedb';
+import PouchDB from 'pouchdb';
 import { RecepyOption } from '../shared';
 
 const DEFAULT_FAMILY = 'default';
@@ -12,51 +13,27 @@ export class RecepyService {
     private recepies: Recepy[];
     private recepy: Recepy;
     private executing: boolean = false;
-    private recepiesDb: Nedb;
-    private recepyFamilies: Nedb;
+    private recepiesDb: PouchDB.Database;
+    private recepyFamilies: PouchDB.Database;
 
     constructor() {
         PumpsUtils.init();
     }
 
-    public initDatabases(): Promise<void> {
-        this.recepiesDb = new Nedb({ filename: 'db/recepies' });
-        this.recepyFamilies = new Nedb({ filename: 'db/families' });
-
-        const recepiesDbDone = new Promise((resolve, reject) => {
-            this.recepiesDb.loadDatabase(() => resolve());
-        });
-        const recepyFamiliesDone = new Promise((resolve, reject) => {
-            this.recepyFamilies.loadDatabase(() => resolve());
-        });
-
-        return Promise.all([recepiesDbDone, recepyFamiliesDone]).then(() => {
-            return this.setFamily(DEFAULT_FAMILY);
-        });
+    public initDatabases() {
+        this.recepiesDb = new PouchDB('db/recepies');
+        this.recepyFamilies = new PouchDB('db/families');
     }
 
     public setFamily(id: string): Promise<void> {
-        return new Promise((resolve, reject) => {
-            this.recepyFamilies.findOne<RecepyFamily>({ _id: id }, (err, doc) => {
-                if (!err) {
-                    this.recepyFamily = doc;
-                    resolve();
-                }
-                reject(err);
+        return this.recepyFamilies.get<RecepyFamily>(id)
+            .then((doc: RecepyFamily) => {
+                this.recepyFamily = doc;
             });
-        });
     }
 
     public upsertFamily(family: RecepyFamily): Promise<{}> {
-        const { _id } = family;
-        return new Promise((resolve, reject) => {
-            this.recepyFamilies.update({ '_id': _id }, family, { upsert: true }, (err, doc) => {
-                if (!err) {
-                    resolve(doc);
-                }
-                reject(err);
-            });
-        });
+        return this.recepyFamilies.put(family);
     }
 
     public setRecepy(id: string): void {
@@ -67,38 +44,22 @@ export class RecepyService {
     }
 
     public async upsertRecepy(recepy: Recepy): Promise<{}> {
-        const { _id } = this.recepy;
-        return new Promise((resolve, reject) => {
-            this.recepiesDb.update({ _id }, recepy, { upsert: true }, (err, newDoc) => {
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve(newDoc);
-                }
-            });
-        })
+        return this.recepiesDb.put(recepy);
     }
 
     public getRecepies(): Promise<RecepyOption[]> {
-        return new Promise<RecepyOption[]>((resolve, reject) => {
             if (this.recepyFamily) {
                 const { _id: recepyFamilyId } = this.recepyFamily;
-                this.recepiesDb.find({ recepyFamily: recepyFamilyId }, (err, docs) => {
-                    if (!err) {
-                        this.recepies = [...docs];
-                        const recepies = docs.map((recepy: Recepy) => {
-                            const { _id, label } = recepy;
-                            return { _id, label };
-                        })
-                        resolve(recepies as RecepyOption[]);
-                    } else {
-                        reject(err);
-                    }
-                })
+                return this.recepiesDb.find({
+                    selector: { recepyFamilyId },
+                    fields: ['_id', 'label'],
+                    sort: ['label']
+                }).then((res: PouchDB.Find.FindResponse<RecepyOption>)=> {
+                    return res.docs;
+                });
             } else {
-                resolve([]);
+                Promise.resolve([]);
             }
-        });
     }
 
     public setPumps(): Promise<void> {
