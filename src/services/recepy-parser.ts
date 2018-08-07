@@ -3,6 +3,8 @@ import {
 } from './recepy-types';
 import { PumpsUtils } from './pump-utils';
 import PouchDB from 'pouchdb';
+import PouchDBFind from 'pouchdb-find';
+PouchDB.plugin(PouchDBFind);
 
 import { RecepyOption } from '../shared';
 
