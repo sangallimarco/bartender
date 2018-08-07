@@ -19,30 +19,30 @@ recepyMaker.initDatabases().then(() => {
             console.log(recepies);
         });
 
-    recepyMaker.upsertFamily({
-        _id: 'default',
-        label: 'default',
-        ingredients: [RecepyIngredient.APEROL, RecepyIngredient.TONIC, RecepyIngredient.GIN, RecepyIngredient.COKE]
-    });
+    // recepyMaker.upsertFamily({
+    //     _id: 'default',
+    //     label: 'default',
+    //     ingredients: [RecepyIngredient.APEROL, RecepyIngredient.TONIC, RecepyIngredient.GIN, RecepyIngredient.COKE]
+    // });
 
-    recepyMaker.upsertRecepy({
-        _id: 'aperol',
-        recepyFamily: 'default',
-        label: 'Aperol',
-        parts: [
-            {
-                pump: 0,
-                quantity: 1
-            },
-            {
-                pump: 1,
-                quantity: 2
-            }, {
-                pump: 3,
-                quantity: 1
-            }
-        ]
-    });
+    // recepyMaker.upsertRecepy({
+    //     _id: 'aperol',
+    //     recepyFamily: 'default',
+    //     label: 'Aperol',
+    //     parts: [
+    //         {
+    //             pump: 0,
+    //             quantity: 1
+    //         },
+    //         {
+    //             pump: 1,
+    //             quantity: 2
+    //         }, {
+    //             pump: 3,
+    //             quantity: 1
+    //         }
+    //     ]
+    // });
 
 });
 

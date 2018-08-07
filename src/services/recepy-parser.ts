@@ -21,8 +21,8 @@ export class RecepyService {
     }
 
     public initDatabases(): Promise<void> {
-        this.recepiesDb = new PouchDB('db/recepies');
-        this.recepyFamilies = new PouchDB('db/families');
+        this.recepiesDb = new PouchDB('db.recepies');
+        this.recepyFamilies = new PouchDB('db.families');
         return this.setFamily('default');
     }
 
