@@ -2,8 +2,8 @@ import {
     RecepyFamily, Recepy, RecepyPumpConfig
 } from './recepy-types';
 import { PumpsUtils } from './pump-utils';
-// import Nedb from 'nedb';
 import PouchDB from 'pouchdb';
+
 import { RecepyOption } from '../shared';
 
 const DEFAULT_FAMILY = 'default';
@@ -20,20 +20,28 @@ export class RecepyService {
         PumpsUtils.init();
     }
 
-    public initDatabases() {
+    public initDatabases(): Promise<void> {
         this.recepiesDb = new PouchDB('db/recepies');
         this.recepyFamilies = new PouchDB('db/families');
+        return this.setFamily('default');
     }
 
     public setFamily(id: string): Promise<void> {
         return this.recepyFamilies.get<RecepyFamily>(id)
             .then((doc: RecepyFamily) => {
                 this.recepyFamily = doc;
+                return;
+            })
+            .catch(e => {
+                console.log(e);
             });
     }
 
     public upsertFamily(family: RecepyFamily): Promise<{}> {
-        return this.recepyFamilies.put(family);
+        return this.recepyFamilies.put(family).then(r => {
+            console.log(r);
+            return r;
+        });
     }
 
     public setRecepy(id: string): void {
@@ -48,18 +56,24 @@ export class RecepyService {
     }
 
     public getRecepies(): Promise<RecepyOption[]> {
-            if (this.recepyFamily) {
-                const { _id: recepyFamilyId } = this.recepyFamily;
-                return this.recepiesDb.find({
-                    selector: { recepyFamilyId },
-                    fields: ['_id', 'label'],
-                    sort: ['label']
-                }).then((res: PouchDB.Find.FindResponse<RecepyOption>)=> {
-                    return res.docs;
-                });
-            } else {
-                Promise.resolve([]);
-            }
+        if (this.recepyFamily) {
+            const { _id: recepyFamilyId } = this.recepyFamily;
+            /**
+             *  selector: { recepyFamilyId },
+                fields: ['_id', 'label'],
+                sort: ['label']
+             */
+            return this.recepiesDb.find({
+                selector: { recepyFamilyId },
+            }).then((res: PouchDB.Find.FindResponse<RecepyOption>) => {
+                return res.docs;
+            }).catch(e => {
+                console.log(e);
+                return e;
+            });
+        } else {
+            return Promise.resolve([]);
+        }
     }
 
     public setPumps(): Promise<void> {
