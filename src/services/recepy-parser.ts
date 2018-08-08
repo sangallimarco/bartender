@@ -24,8 +24,8 @@ export class RecepyService {
     }
 
     public initDatabases(): Promise<void> {
-        this.recepiesDB = new PouchDB('db.recepies');
-        this.recepyFamiliesDB = new PouchDB('db.families');
+        this.recepiesDB = new PouchDB('dbs/recepies');
+        this.recepyFamiliesDB = new PouchDB('dbs/families');
 
         return this.recepiesDB.createIndex({
             index: {
