@@ -26,9 +26,9 @@ recepyMaker.initDatabases().then(() => {
     // });
 
     // recepyMaker.upsertRecepy({
-    //     _id: 'aperol',
+    //     _id: 'gin',
     //     recepyFamily: 'default',
-    //     label: 'Aperol',
+    //     label: 'Gin',
     //     parts: [
     //         {
     //             pump: 0,
@@ -36,14 +36,13 @@ recepyMaker.initDatabases().then(() => {
     //         },
     //         {
     //             pump: 1,
-    //             quantity: 2
+    //             quantity: 0
     //         }, {
     //             pump: 3,
-    //             quantity: 1
+    //             quantity: 0
     //         }
     //     ]
     // });
-
 });
 
 // routes

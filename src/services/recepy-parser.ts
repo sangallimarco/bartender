@@ -7,6 +7,7 @@ import PouchDBFind from 'pouchdb-find';
 PouchDB.plugin(PouchDBFind);
 
 import { RecepyOption } from '../shared';
+import { sortBy } from 'lodash';
 
 const DEFAULT_FAMILY = 'default';
 
@@ -15,21 +16,28 @@ export class RecepyService {
     private recepies: Recepy[];
     private recepy: Recepy;
     private executing: boolean = false;
-    private recepiesDb: PouchDB.Database;
-    private recepyFamilies: PouchDB.Database;
+    private recepiesDB: PouchDB.Database;
+    private recepyFamiliesDB: PouchDB.Database;
 
     constructor() {
         PumpsUtils.init();
     }
 
     public initDatabases(): Promise<void> {
-        this.recepiesDb = new PouchDB('db.recepies');
-        this.recepyFamilies = new PouchDB('db.families');
-        return this.setFamily('default');
+        this.recepiesDB = new PouchDB('db.recepies');
+        this.recepyFamiliesDB = new PouchDB('db.families');
+
+        return this.recepiesDB.createIndex({
+            index: {
+                fields: ['recepyFamily']
+            }
+        }).then(() => {
+            return this.setFamily('default');
+        });
     }
 
     public setFamily(id: string): Promise<void> {
-        return this.recepyFamilies.get<RecepyFamily>(id)
+        return this.recepyFamiliesDB.get<RecepyFamily>(id)
             .then((doc: RecepyFamily) => {
                 this.recepyFamily = doc;
                 return;
@@ -40,7 +48,7 @@ export class RecepyService {
     }
 
     public upsertFamily(family: RecepyFamily): Promise<{}> {
-        return this.recepyFamilies.put(family).then(r => {
+        return this.recepyFamiliesDB.put(family).then(r => {
             console.log(r);
             return r;
         });
@@ -54,21 +62,17 @@ export class RecepyService {
     }
 
     public async upsertRecepy(recepy: Recepy): Promise<{}> {
-        return this.recepiesDb.put(recepy);
+        return this.recepiesDB.put(recepy);
     }
 
     public getRecepies(): Promise<RecepyOption[]> {
         if (this.recepyFamily) {
-            const { _id: recepyFamilyId } = this.recepyFamily;
-            /**
-             *  selector: { recepyFamilyId },
-                fields: ['_id', 'label'],
-                sort: ['label']
-             */
-            return this.recepiesDb.find({
-                selector: { recepyFamilyId },
+            const { _id: recepyFamily } = this.recepyFamily;
+            return this.recepiesDB.find({
+                selector: { recepyFamily },
+                fields: ['label', '_id']
             }).then((res: PouchDB.Find.FindResponse<RecepyOption>) => {
-                return res.docs;
+                return sortBy(res.docs, ['label']);
             }).catch(e => {
                 console.log(e);
                 return e;
