@@ -5,7 +5,7 @@ import ws from 'ws';
 import { webSocketRouter, webSocketMiddleware, WebSocketUtils } from './services';
 import { RecepyService } from "./services/recepy-parser";
 import { RoutePath, ProcessingPayload, RecepiesPayload, MakePayload, RecepyOption } from './shared';
-import { RecepyIngredient } from "./services/recepy-types";
+// import { RecepyIngredient } from "./services/recepy-types";
 
 const { app } = expressWs(express());
 const PORT = 8888;
