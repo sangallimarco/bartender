@@ -48,7 +48,8 @@ export class RecepyService {
 
     public async upsertFamily(family: RecepyFamily) {
         const { id } = family;
-        const found = await this.db.get(Collection.FAMILIES).find({ id });
+        const found = await this.db.get(Collection.FAMILIES)
+            .find({ id });
         if (!found.value()) {
             await this.db.get(Collection.FAMILIES)
                 .push(family)
@@ -61,7 +62,9 @@ export class RecepyService {
     }
 
     public async setRecepy(id: string) {
-        const recepy = await this.db.get(Collection.RECEPIES).find({ id }).value();
+        const recepy = await this.db.get(Collection.RECEPIES)
+            .find({ id })
+            .value();
         if (recepy) {
             this.recepy = recepy;
         }
@@ -69,7 +72,8 @@ export class RecepyService {
 
     public async upsertRecepy(recepy: Recepy) {
         const { id } = recepy;
-        const found = await this.db.get(Collection.RECEPIES).find({ id });
+        const found = await this.db.get(Collection.RECEPIES)
+            .find({ id });
         if (!found.value()) {
             await this.db.get(Collection.RECEPIES)
                 .push(recepy)
