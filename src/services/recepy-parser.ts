@@ -7,75 +7,85 @@ import PouchDBFind from 'pouchdb-find';
 PouchDB.plugin(PouchDBFind);
 import { RecepyOption } from '../shared';
 import { sortBy } from 'lodash';
+import Lowdb from 'lowdb';
+import FileAsync from 'lowdb/adapters/FileAsync';
 
 const DEFAULT_FAMILY = 'default';
+
+enum Collection {
+    RECEPIES = 'RECEPIES',
+    FAMILIES = 'FAMILIES'
+}
+
+interface DBSchema {
+    [Collection.RECEPIES]: Recepy[];
+    [Collection.FAMILIES]: RecepyFamily[]
+}
 
 export class RecepyService {
     private recepyFamily: RecepyFamily;
     private recepies: Recepy[];
     private recepy: Recepy;
     private executing: boolean = false;
-    private recepiesDB: PouchDB.Database;
-    private recepyFamiliesDB: PouchDB.Database;
+    private db: Lowdb.LowdbAsync<DBSchema>;
 
     constructor() {
         PumpsUtils.init();
     }
 
-    public initDatabases(): Promise<void> {
-        this.recepiesDB = new PouchDB('dbs/recepies');
-        this.recepyFamiliesDB = new PouchDB('dbs/families');
-
-        return this.recepiesDB.createIndex({
-            index: {
-                fields: ['recepyFamily']
+    public async initDatabases(): Promise<void> {
+        const adapter = new FileAsync<DBSchema>('dbs/recepies', {
+            defaultValue: {
+                [Collection.RECEPIES]: [],
+                [Collection.FAMILIES]: []
             }
-        }).then(() => {
-            return this.setFamily('default');
         });
+        this.db = await Lowdb(adapter);
+        await this.setFamily('default');
     }
 
-    public setFamily(id: string): Promise<void> {
-        return this.recepyFamiliesDB.get<RecepyFamily>(id)
-            .then((doc: RecepyFamily) => {
-                this.recepyFamily = doc;
-                return;
-            })
-            .catch(e => {
-                console.log(e);
-            });
+    public async setFamily(id: string): Promise<void> {
+        const recepyFamily = await this.db.get(Collection.FAMILIES)
+            .find({ id })
+            .value();
+        this.recepyFamily = recepyFamily;
     }
 
-    public upsertFamily(family: RecepyFamily): Promise<{}> {
-        return this.recepyFamiliesDB.put(family).then(r => {
-            console.log(r);
-            return r;
-        });
-    }
-
-    public setRecepy(id: string): void {
-        const found = this.recepies.find((recepy: Recepy) => recepy._id === id);
-        if (found) {
-            this.recepy = found;
+    public async upsertFamily(family: RecepyFamily) {
+        const { id } = family;
+        const found = await this.db.get(Collection.FAMILIES).find({ id });
+        if (!found.value()) {
+            await this.db.get(Collection.FAMILIES).push(family).write();
+        } else {
+            await found.assign(family).write();
         }
     }
 
-    public async upsertRecepy(recepy: Recepy): Promise<{}> {
-        return this.recepiesDB.put(recepy);
+    public async setRecepy(id: string) {
+        // const found = this.recepies.find((recepy: Recepy) => recepy._id === id);
+        // if (found) {
+        //     this.recepy = found;
+        // }
     }
 
-    public getRecepies(): Promise<RecepyOption[]> {
+    public async upsertRecepy(recepy: Recepy) {
+        const { id } = recepy;
+        const found = await this.db.get(Collection.RECEPIES).find({ id });
+        if (!found.value()) {
+            await this.db.get(Collection.RECEPIES).push(recepy).write();
+        } else {
+            await found.assign(recepy).write();
+        }
+    }
+
+    public async getRecepies(): Promise<RecepyOption[]> {
         if (this.recepyFamily) {
-            const { _id: recepyFamily } = this.recepyFamily;
-            return this.recepiesDB.find({
-                selector: { recepyFamily },
-                fields: ['label', '_id']
-            }).then((res: PouchDB.Find.FindResponse<RecepyOption>) => {
-                return sortBy(res.docs, ['label']);
-            }).catch(e => {
-                console.log(e);
-                return e;
-            });
+            const { id: recepyFamily } = this.recepyFamily;
+            const recepies = await this.db.get(Collection.RECEPIES).filter({ recepyFamily }).sortBy('label').value();
+            return recepies.map((recepy: Recepy) => {
+                const { id, label } = recepy;
+                return { id, label };
+            })
         } else {
             return Promise.resolve([]);
         }

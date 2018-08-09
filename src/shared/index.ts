@@ -17,6 +17,6 @@ export interface MakePayload {
 }
 
 export interface RecepyOption {
-    _id: string;
+    id: string;
     label: string;
 }

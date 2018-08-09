@@ -14,14 +14,14 @@ export interface RecepyPumpConfig {
 }
 
 export interface Recepy {
-    _id: string;
+    id: string;
     recepyFamily: string;
     label: string;
     parts: RecepyPumpConfig[]
 }
 
 export interface RecepyFamily {
-    _id: string;
+    id: string;
     label: string;
     ingredients: RecepyIngredient[]
 }
