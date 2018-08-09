@@ -55,9 +55,13 @@ export class RecepyService {
         const { id } = family;
         const found = await this.db.get(Collection.FAMILIES).find({ id });
         if (!found.value()) {
-            await this.db.get(Collection.FAMILIES).push(family).write();
+            await this.db.get(Collection.FAMILIES)
+                .push(family)
+                .write();
         } else {
-            await found.assign(family).write();
+            await found
+                .assign(family)
+                .write();
         }
     }
 
@@ -72,16 +76,23 @@ export class RecepyService {
         const { id } = recepy;
         const found = await this.db.get(Collection.RECEPIES).find({ id });
         if (!found.value()) {
-            await this.db.get(Collection.RECEPIES).push(recepy).write();
+            await this.db.get(Collection.RECEPIES)
+                .push(recepy)
+                .write();
         } else {
-            await found.assign(recepy).write();
+            await found
+                .assign(recepy)
+                .write();
         }
     }
 
     public async getRecepies(): Promise<RecepyOption[]> {
         if (this.recepyFamily) {
             const { id: recepyFamily } = this.recepyFamily;
-            const recepies = await this.db.get(Collection.RECEPIES).filter({ recepyFamily }).sortBy('label').value();
+            const recepies = await this.db.get(Collection.RECEPIES)
+                .filter({ recepyFamily })
+                .sortBy('label')
+                .value();
             return recepies.map((recepy: Recepy) => {
                 const { id, label } = recepy;
                 return { id, label };
