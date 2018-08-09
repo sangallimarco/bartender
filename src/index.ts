@@ -15,10 +15,10 @@ const recepyMaker = new RecepyService();
 async function initDB() {
     await recepyMaker.initDatabases();
 
-    recepyMaker.getRecepies()
-        .then((recepies: RecepyOption[]) => {
-            console.log(recepies);
-        });
+    // recepyMaker.getRecepies()
+    //     .then((recepies: RecepyOption[]) => {
+    //         console.log(recepies);
+    //     });
 
     recepyMaker.upsertFamily({
         id: 'default',
@@ -50,28 +50,25 @@ async function initDB() {
 initDB();
 
 // routes
-webSocketRouter.on<{}>(RoutePath.RECEPIES, (wsInstance: ws, uri: string, data: {}) => {
-    recepyMaker.getRecepies()
-        .then((recepies: RecepyOption[]) => {
-            WebSocketUtils.sendMessage<RecepiesPayload>(wsInstance, RoutePath.RECEPIES, {
-                recepies
-            });
-        });
+webSocketRouter.on<{}>(RoutePath.RECEPIES, async (wsInstance: ws, uri: string, data: {}) => {
+    const recepies = await recepyMaker.getRecepies()
+    WebSocketUtils.sendMessage<RecepiesPayload>(wsInstance, RoutePath.RECEPIES, {
+        recepies
+    });
 });
 
 // testing post processing
-webSocketRouter.on<MakePayload>(RoutePath.MAKE, (wsInstance: ws, uri: string, data: MakePayload) => {
+webSocketRouter.on<MakePayload>(RoutePath.MAKE, async (wsInstance: ws, uri: string, data: MakePayload) => {
     const { id } = data;
-    recepyMaker.setRecepy(id);
 
+    await recepyMaker.setRecepy(id);
     WebSocketUtils.sendMessage<ProcessingPayload>(wsInstance, RoutePath.MAKE, {
         processing: true
     });
 
-    recepyMaker.setPumps().then(() => {
-        WebSocketUtils.sendMessage<ProcessingPayload>(wsInstance, RoutePath.MAKE, {
-            processing: false
-        });
+    await recepyMaker.setPumps();
+    WebSocketUtils.sendMessage<ProcessingPayload>(wsInstance, RoutePath.MAKE, {
+        processing: false
     });
 });
 
