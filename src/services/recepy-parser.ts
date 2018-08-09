@@ -36,7 +36,7 @@ export class RecepyService {
             }
         });
         this.db = await Lowdb(adapter);
-        await this.setFamily('default');
+        await this.setFamily(DEFAULT_FAMILY);
     }
 
     public async setFamily(id: string): Promise<void> {
