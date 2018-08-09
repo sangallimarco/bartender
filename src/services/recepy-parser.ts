@@ -63,10 +63,10 @@ export class RecepyService {
     }
 
     public async setRecepy(id: string) {
-        // const found = this.recepies.find((recepy: Recepy) => recepy._id === id);
-        // if (found) {
-        //     this.recepy = found;
-        // }
+        const recepy = await this.db.get(Collection.RECEPIES).find({ id }).value();
+        if (recepy) {
+            this.recepy = recepy;
+        }
     }
 
     public async upsertRecepy(recepy: Recepy) {
