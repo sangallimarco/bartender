@@ -12,39 +12,42 @@ const PORT = 8888;
 const ROOT_PATH = __dirname;
 const recepyMaker = new RecepyService();
 
-//
-recepyMaker.initDatabases()
-    .then(() => {
-        recepyMaker.getRecepies()
-            .then((recepies: RecepyOption[]) => {
-                console.log(recepies);
-            });
+async function initDB() {
+    await recepyMaker.initDatabases();
 
-        // recepyMaker.upsertFamily({
-        //     id: 'default',
-        //     label: 'default',
-        //     ingredients: [RecepyIngredient.APEROL, RecepyIngredient.TONIC, RecepyIngredient.GIN, RecepyIngredient.COKE]
-        // });
+    recepyMaker.getRecepies()
+        .then((recepies: RecepyOption[]) => {
+            console.log(recepies);
+        });
 
-        // recepyMaker.upsertRecepy({
-        //     id: 'gin',
-        //     recepyFamily: 'default',
-        //     label: 'Gin',
-        //     parts: [
-        //         {
-        //             pump: 0,
-        //             quantity: 1
-        //         },
-        //         {
-        //             pump: 1,
-        //             quantity: 0
-        //         }, {
-        //             pump: 3,
-        //             quantity: 0
-        //         }
-        //     ]
-        // });
+    recepyMaker.upsertFamily({
+        id: 'default',
+        label: 'Default Config',
+        ingredients: [RecepyIngredient.APEROL, RecepyIngredient.TONIC, RecepyIngredient.GIN, RecepyIngredient.COKE]
     });
+
+    recepyMaker.upsertRecepy({
+        id: 'gin',
+        recepyFamily: 'default',
+        label: 'Gin',
+        parts: [
+            {
+                pump: 0,
+                quantity: 1
+            },
+            {
+                pump: 1,
+                quantity: 0
+            }, {
+                pump: 3,
+                quantity: 0
+            }
+        ]
+    });
+}
+
+// @TODO refactor this, test only
+initDB();
 
 // routes
 webSocketRouter.on<{}>(RoutePath.RECEPIES, (wsInstance: ws, uri: string, data: {}) => {

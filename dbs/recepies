@@ -23,7 +23,7 @@
   "FAMILIES": [
     {
       "id": "default",
-      "label": "default",
+      "label": "Default Config",
       "ingredients": [
         "APEROL",
         "TONIC",
