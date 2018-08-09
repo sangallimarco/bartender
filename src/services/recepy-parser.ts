@@ -3,7 +3,6 @@ import {
 } from './recepy-types';
 import { PumpsUtils } from './pump-utils';
 import { RecepyOption } from '../shared';
-import { sortBy } from 'lodash';
 import Lowdb from 'lowdb';
 import FileAsync from 'lowdb/adapters/FileAsync';
 
@@ -21,7 +20,6 @@ interface DBSchema {
 
 export class RecepyService {
     private recepyFamily: RecepyFamily;
-    private recepies: Recepy[];
     private recepy: Recepy;
     private executing: boolean = false;
     private db: Lowdb.LowdbAsync<DBSchema>;
