@@ -1,4 +1,4 @@
-import { Pump, PumpPin } from './pump-types';
+import { Pump, PumpPin } from '../shared';
 const { env: { NODE_ENV } } = process;
 
 // see rpi-gpio.js

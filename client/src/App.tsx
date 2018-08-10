@@ -1,11 +1,10 @@
 import * as React from 'react';
 import './App.css';
 // import { RoutePath } from './shared/route-path';
-import { Router, Route } from 'react-router';
+import { Router, Route, Switch } from 'react-router';
 import { RecepyList } from './components/recepy/recepy-list';
-import createBrowserHistory from 'history/createBrowserHistory';
-
-const customHistory = createBrowserHistory()
+import { browserHistory } from './core/browser-history';
+import { RecepyEdit } from './components/recepy/recepy-edit';
 
 interface AppState {
   data: {},
@@ -22,8 +21,11 @@ class App extends React.Component<{}, AppState> {
   public render() {
     return (
       <div className="App">
-        <Router history={customHistory}>
-          <Route path="/" component={RecepyList} />
+        <Router history={browserHistory}>
+          <Switch>
+            <Route path="/edit/:id" component={RecepyEdit} />
+            <Route path="/" component={RecepyList} exact={true} />
+          </Switch>
         </Router>
       </div>
     );

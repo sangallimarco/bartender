@@ -1,8 +1,5 @@
-import {
-    RecepyFamily, Recepy, RecepyPumpConfig
-} from './recepy-types';
 import { PumpsUtils } from './pump-utils';
-import { RecepyOption } from '../shared';
+import { RecepyOption, RecepyFamily, Recepy, RecepyPumpConfig } from '../shared';
 import Lowdb from 'lowdb';
 import FileAsync from 'lowdb/adapters/FileAsync';
 
@@ -99,6 +96,14 @@ export class RecepyService {
         } else {
             return Promise.resolve([]);
         }
+    }
+
+    public async getRecepy(id: string): Promise<Recepy> {
+        const recepy = await this.db.get(Collection.RECEPIES)
+            .find({ id })
+            .value();
+
+        return recepy;
     }
 
     public setPumps(): Promise<void> {

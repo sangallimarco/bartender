@@ -1,24 +1,27 @@
 import * as React from 'react';
-import { webSocketService} from '../../core/websocket';
+import { webSocketService } from '../../core/websocket';
 import './recepy.css';
 import { RoutePath, ProcessingPayload, RecepiesPayload, RecepyOption, MakePayload } from '../../shared';
 import RecepyItem from './recepy-item';
 import Dialog from '../dialog/dialog';
 import Processing from '../processing/processing';
 import { BaseComponent } from '../../core/base-component';
+import { browserHistory } from '../../core/browser-history';
 
-interface RecepyListProps {
+interface RecepyListStateProps {
     processing: boolean,
     recepies: RecepyOption[]
     message: string;
     id: string;
     dialogVisible: boolean;
+    edit: boolean;
 };
 
-export class RecepyList extends BaseComponent<{}, RecepyListProps> {
+export class RecepyList extends BaseComponent<{}, RecepyListStateProps> {
 
-    public state: RecepyListProps = {
+    public state: RecepyListStateProps = {
         dialogVisible: false,
+        edit: false,
         id: '',
         message: '',
         processing: false,
@@ -40,6 +43,12 @@ export class RecepyList extends BaseComponent<{}, RecepyListProps> {
         );
 
         webSocketService.send<{}>(RoutePath.RECEPIES, {});
+
+        document.addEventListener('keydown', this.handleKeyDown);
+    }
+
+    public componentWillUnmount() {
+        document.removeEventListener('keydown', this.handleKeyDown);
     }
 
     public render() {
@@ -54,6 +63,13 @@ export class RecepyList extends BaseComponent<{}, RecepyListProps> {
         );
     }
 
+    public handleKeyDown = (e: KeyboardEvent) => {
+        const { key } = e;
+        if (key === 'e') {
+            this.setState({ edit: true });
+        }
+    }
+
     private handleConfirm = () => {
         const { id } = this.state;
         webSocketService.send<MakePayload>(RoutePath.MAKE, { id });
@@ -64,15 +80,20 @@ export class RecepyList extends BaseComponent<{}, RecepyListProps> {
         this.setState({ dialogVisible: false });
     }
 
-    private HandleSelected = (id: string, label: string) => {
-        const message = `Confirm ${label}?`;
-        this.setState({ id, dialogVisible: true, message });
+    private handleSelected = (id: string, label: string) => {
+        const { edit } = this.state;
+        if (edit) {
+            browserHistory.push(`/edit/${id}`);
+        } else {
+            const message = `Confirm ${label}?`;
+            this.setState({ id, dialogVisible: true, message });
+        }
     }
 
     private renderItems(items: RecepyOption[]) {
         return items.map((i: RecepyOption) => {
             const { label, id } = i;
-            return <RecepyItem key={id} label={label} id={id} onClick={this.HandleSelected} />;
+            return <RecepyItem key={id} label={label} id={id} onClick={this.handleSelected} />;
         })
     }
 }
