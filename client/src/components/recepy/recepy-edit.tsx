@@ -16,14 +16,18 @@ interface RecepyEditState {
 }
 
 export class RecepyEdit extends BaseComponent<RecepyEditProps, RecepyEditState> {
-    public state: {
+    public state = {
         recepy: {
-            id: '';
-            recepyFamily: 'default';
-            label: '';
-            parts: [{pump: 0, quantity: 0}]
+            id: '',
+            label: '',
+            parts: [],
+            recepyFamily: 'default'
         }
     };
+
+    // public constructor() {
+        
+    // }
 
     public componentDidMount() {
         const { match: { params: { id } } } = this.props;
@@ -45,9 +49,10 @@ export class RecepyEdit extends BaseComponent<RecepyEditProps, RecepyEditState> 
     }
 
     public render() {
+        const {recepy: {label}} = this.state;
         return <div>
             <form>
-                <Input name="label" onChange={this.handleChange}/>
+                <Input name="label" value={label} onChange={this.handleChange}/>
                 <Button onClick={this.handleSubmit} type={ButtonType.ACTION}>SAVE</Button>
             </form>
         </div>;

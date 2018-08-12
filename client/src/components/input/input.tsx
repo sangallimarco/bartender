@@ -35,12 +35,13 @@ export class Input extends React.Component<InputProps, InputState> {
     }
 
     public render() {
-        const { disabled, autoFocus, placeholder } = this.props;
+        const { disabled, autoFocus, placeholder, name } = this.props;
         const { value } = this.state;
         const className = CSSUtils.parse('input', 'input-component');
         return (
             <input
                 type="text"
+                name={name}
                 className={className}
                 disabled={disabled}
                 onChange={this.handleChange}

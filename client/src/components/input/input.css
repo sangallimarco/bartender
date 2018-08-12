@@ -1,4 +1,6 @@
 .input {
+    display: flex;
     border: 0.2rem solid white;
-    color: white;
+    color: black;
+    font-size: 2rem;
 }
