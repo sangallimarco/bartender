@@ -98,6 +98,13 @@ export class RecepyService {
         }
     }
 
+    public async getFamilies(): Promise<RecepyFamily[]> {
+        const families = await this.db.get(Collection.FAMILIES)
+            .sortBy('label')
+            .value();
+        return families;
+    }
+
     public async getRecepy(id: string): Promise<Recepy> {
         const recepy = await this.db.get(Collection.RECEPIES)
             .find({ id })

@@ -1,0 +1,6 @@
+.recepy-edit {
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-auto-rows: auto;
+    grid-gap: 1rem;
+}

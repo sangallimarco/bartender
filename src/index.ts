@@ -4,7 +4,7 @@ import expressWs from 'express-ws';
 import ws from 'ws';
 import { webSocketRouter, webSocketMiddleware, WebSocketUtils } from './services';
 import { RecepyService } from "./services/recepy-parser";
-import { RoutePath, ProcessingPayload, RecepiesPayload, MakePayload, RecepyOption, RecepyIngredient, RecepyPayload, GetPayload } from './shared';
+import { RoutePath, ProcessingPayload, RecepiesPayload, MakePayload, RecepyIngredient, RecepyPayload, GetPayload, RecepyFamiliesPayload } from './shared';
 
 const { app } = expressWs(express());
 const PORT = 8888;
@@ -13,11 +13,6 @@ const recepyMaker = new RecepyService();
 
 async function initDB() {
     await recepyMaker.initDatabases();
-
-    // recepyMaker.getRecepies()
-    //     .then((recepies: RecepyOption[]) => {
-    //         console.log(recepies);
-    //     });
 
     recepyMaker.upsertFamily({
         id: 'default',
@@ -61,6 +56,13 @@ webSocketRouter.on<GetPayload>(RoutePath.GET, async (wsInstance: ws, uri: string
     const recepy = await recepyMaker.getRecepy(id);
     WebSocketUtils.sendMessage<RecepyPayload>(wsInstance, RoutePath.GET, {
         recepy
+    });
+});
+
+webSocketRouter.on<{}>(RoutePath.GET_FAMILIES, async (wsInstance: ws, uri: string, data) => {
+    const families = await recepyMaker.getFamilies();
+    WebSocketUtils.sendMessage<RecepyFamiliesPayload>(wsInstance, RoutePath.GET_FAMILIES, {
+        families
     });
 });
 

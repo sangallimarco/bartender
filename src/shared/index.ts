@@ -3,7 +3,8 @@ export enum RoutePath {
     MAKE = '/make',
     RECEPIES = '/recepies',
     EDIT = '/edit',
-    GET = '/get'
+    GET = '/get',
+    GET_FAMILIES = '/families'
 }
 
 export interface ProcessingPayload {
@@ -12,6 +13,10 @@ export interface ProcessingPayload {
 
 export interface RecepyPayload {
     recepy: Recepy;
+}
+
+export interface RecepyFamiliesPayload {
+    families: RecepyFamily[];
 }
 
 export interface RecepiesPayload {
