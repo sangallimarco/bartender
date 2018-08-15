@@ -3,7 +3,18 @@
     {
       "id": "gin",
       "recepyFamily": "default",
-      "label": "Gin",
+      "label": "Test",
+      "parts": [
+        0,
+        232,
+        1,
+        1
+      ]
+    },
+    {
+      "id": "testid",
+      "recepyFamily": "default",
+      "label": "Test",
       "parts": [
         0,
         232,
