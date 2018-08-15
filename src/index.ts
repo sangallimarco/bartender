@@ -47,6 +47,13 @@ webSocketRouter.on<GetPayload>(RoutePath.GET, async (wsInstance: ws, uri: string
     });
 });
 
+webSocketRouter.on<RecepyPayload>(RoutePath.EDIT, async (wsInstance: ws, uri: string, data) => {
+    const { recepy } = data;
+    await recepyMaker.upsertRecepy(recepy);
+    WebSocketUtils.sendMessage<{}>(wsInstance, RoutePath.EDIT, {
+    });
+});
+
 webSocketRouter.on<{}>(RoutePath.GET_FAMILIES, async (wsInstance: ws, uri: string, data) => {
     const families = await recepyMaker.getFamilies();
     WebSocketUtils.sendMessage<RecepyFamiliesPayload>(wsInstance, RoutePath.GET_FAMILIES, {

@@ -95,7 +95,7 @@ export class RecepyEdit extends BaseComponent<RecepyEditProps, RecepyEditState> 
         const indx = +name;
         const quantity = +value;
         const {parts} = prevRecepy;
-        parts.splice(indx, 0, quantity);
+        parts.splice(indx, 1, quantity);
         const recepy: Recepy = { ...prevRecepy, parts };
         this.setState({ recepy })
     }
