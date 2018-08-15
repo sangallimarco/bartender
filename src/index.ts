@@ -24,19 +24,7 @@ async function initDB() {
         id: 'gin',
         recepyFamily: 'default',
         label: 'Gin',
-        parts: [
-            {
-                pump: 0,
-                quantity: 1
-            },
-            {
-                pump: 1,
-                quantity: 0
-            }, {
-                pump: 3,
-                quantity: 0
-            }
-        ]
+        parts: [0,0,1,1]
     });
 }
 

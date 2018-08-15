@@ -1,12 +1,13 @@
 import * as React from 'react';
 import { BaseComponent } from '../../core/base-component';
 import { RouteComponentProps } from '../../../node_modules/@types/react-router';
-import { RoutePath, Recepy, GetPayload, RecepyPayload, RecepyFamiliesPayload, RecepyFamily } from '../../shared';
+import { RoutePath, Recepy, GetPayload, RecepyPayload, RecepyFamiliesPayload, RecepyFamily, Pump } from '../../shared';
 import { webSocketService } from '../../core/websocket';
 import Button, { ButtonType } from '../button/button';
 import { Input } from '../input/input';
 // import { RoutePath } from '../../shared';
 import './recepy-edit.css';
+import { generateRangeFromEnumKeys } from '../../core/enum-utils';
 
 interface RecepyEditProps extends RouteComponentProps<any> {
     id: string;
@@ -14,30 +15,29 @@ interface RecepyEditProps extends RouteComponentProps<any> {
 
 interface RecepyEditState {
     recepy: Recepy;
-    families: RecepyFamily[]
+    families: RecepyFamily[],
+    loaded: boolean
 }
 
 export class RecepyEdit extends BaseComponent<RecepyEditProps, RecepyEditState> {
     public state = {
         families: [],
+        loaded: false,
         recepy: {
             id: '',
             label: '',
-            parts: [],
+            parts: [0],
             recepyFamily: 'default'
         },
     };
-
-    // public constructor() {
-
-    // }
 
     public componentDidMount() {
         const { match: { params: { id } } } = this.props;
         this.listeners.push(
             webSocketService.on<RecepyPayload>(RoutePath.GET, (data) => {
                 const { recepy } = data;
-                this.setState({ recepy });
+                this.setState({ recepy, loaded: true });
+
             })
         );
         this.listeners.push(
@@ -59,13 +59,29 @@ export class RecepyEdit extends BaseComponent<RecepyEditProps, RecepyEditState> 
     }
 
     public render() {
-        const { recepy: { label }, families } = this.state;
-        return <div className="recepy-edit">
+        const { recepy: { label, parts }, families, loaded } = this.state;
+        return loaded && <div className="recepy-edit">
             <Input name="label" value={label} onChange={this.handleChange} />
             <Input name="label" value={label} onChange={this.handleChange} />
+            {this.renderPumps(parts)}
             <Button onClick={this.handleSubmit} type={ButtonType.ACTION}>SAVE</Button>
             <div>{JSON.stringify(families)}</div>
         </div>;
+    }
+
+    private renderPumps(parts: number[]) {
+        return generateRangeFromEnumKeys(Pump).map((i: number, indx: number) => {
+            const name = `${i}`;
+            const value = parts[i] || 0;
+            return <Input key={name} name={name} value={value.toString()} onChange={this.handlePumpChange} />
+        });
+    }
+
+    private handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { recepy: prevRecepy } = this.state;
+        const { target: { value, name } } = e;
+        const recepy: Recepy = { ...prevRecepy, [name]: value };
+        this.setState({ recepy })
     }
 
     private handleSubmit = () => {
@@ -73,10 +89,14 @@ export class RecepyEdit extends BaseComponent<RecepyEditProps, RecepyEditState> 
         webSocketService.send<RecepyPayload>(RoutePath.EDIT, { recepy });
     }
 
-    private handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    private handlePumpChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { recepy: prevRecepy } = this.state;
         const { target: { value, name } } = e;
-        const recepy: Recepy = { ...prevRecepy, [name]: value };
+        const indx = +name;
+        const quantity = +value;
+        const {parts} = prevRecepy;
+        parts.splice(indx, 0, quantity);
+        const recepy: Recepy = { ...prevRecepy, parts };
         this.setState({ recepy })
     }
 }

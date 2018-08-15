@@ -1,5 +1,5 @@
 import { PumpsUtils } from './pump-utils';
-import { RecepyOption, RecepyFamily, Recepy, RecepyPumpConfig } from '../shared';
+import { RecepyOption, RecepyFamily, Recepy } from '../shared';
 import Lowdb from 'lowdb';
 import FileAsync from 'lowdb/adapters/FileAsync';
 
@@ -117,8 +117,8 @@ export class RecepyService {
         if (!this.executing && this.recepy) {
             this.executing = true;
             const { parts } = this.recepy;
-            const promises: Array<Promise<void>> = parts.map((ingredientPump: RecepyPumpConfig) => {
-                return PumpsUtils.activateWithTimer(ingredientPump.pump, ingredientPump.quantity * 1000);
+            const promises: Array<Promise<void>> = parts.map((quantity: number, indx: number) => {
+                return PumpsUtils.activateWithTimer(indx, quantity * 1000);
             });
             // wait for all timers to resolve
             return Promise.all(promises).then(

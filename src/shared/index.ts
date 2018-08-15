@@ -41,7 +41,7 @@ export interface Recepy {
     id: string;
     recepyFamily: string;
     label: string;
-    parts: RecepyPumpConfig[]
+    parts: number[]
 }
 
 export interface RecepyFamily {
@@ -68,9 +68,4 @@ export enum Pump {
     C = PumpPin[2], // GPIO-18
     D = PumpPin[3], // GPIO-27
     E = PumpPin[4] // GPIO-22
-}
-
-export interface RecepyPumpConfig {
-    pump: Pump;
-    quantity: number;
 }
