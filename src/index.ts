@@ -24,19 +24,7 @@ async function initDB() {
         id: 'gin',
         recepyFamily: 'default',
         label: 'Gin',
-        parts: [
-            {
-                pump: 0,
-                quantity: 1
-            },
-            {
-                pump: 1,
-                quantity: 0
-            }, {
-                pump: 3,
-                quantity: 0
-            }
-        ]
+        parts: [0,0,1,1]
     });
 }
 
@@ -56,6 +44,13 @@ webSocketRouter.on<GetPayload>(RoutePath.GET, async (wsInstance: ws, uri: string
     const recepy = await recepyMaker.getRecepy(id);
     WebSocketUtils.sendMessage<RecepyPayload>(wsInstance, RoutePath.GET, {
         recepy
+    });
+});
+
+webSocketRouter.on<RecepyPayload>(RoutePath.EDIT, async (wsInstance: ws, uri: string, data) => {
+    const { recepy } = data;
+    await recepyMaker.upsertRecepy(recepy);
+    WebSocketUtils.sendMessage<{}>(wsInstance, RoutePath.EDIT, {
     });
 });
 

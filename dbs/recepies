@@ -3,20 +3,23 @@
     {
       "id": "gin",
       "recepyFamily": "default",
-      "label": "Gin",
+      "label": "Test",
       "parts": [
-        {
-          "pump": 0,
-          "quantity": 1
-        },
-        {
-          "pump": 1,
-          "quantity": 0
-        },
-        {
-          "pump": 3,
-          "quantity": 0
-        }
+        0,
+        232,
+        1,
+        1
+      ]
+    },
+    {
+      "id": "testid",
+      "recepyFamily": "default",
+      "label": "Test",
+      "parts": [
+        0,
+        232,
+        1,
+        1
       ]
     }
   ],
