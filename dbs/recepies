@@ -3,12 +3,13 @@
     {
       "id": "gin",
       "recepyFamily": "default",
-      "label": "Test",
+      "label": "Gin3",
       "parts": [
-        0,
-        232,
-        1,
-        1
+        2,
+        2,
+        3,
+        2,
+        2
       ]
     },
     {
@@ -31,6 +32,7 @@
         "APEROL",
         "TONIC",
         "GIN",
+        "COKE",
         "COKE"
       ]
     }

@@ -17,14 +17,20 @@ async function initDB() {
     recepyMaker.upsertFamily({
         id: 'default',
         label: 'Default Config',
-        ingredients: [RecepyIngredient.APEROL, RecepyIngredient.TONIC, RecepyIngredient.GIN, RecepyIngredient.COKE]
+        ingredients: [
+            RecepyIngredient.APEROL,
+            RecepyIngredient.TONIC,
+            RecepyIngredient.GIN,
+            RecepyIngredient.COKE,
+            RecepyIngredient.COKE
+        ]
     });
 
     recepyMaker.upsertRecepy({
         id: 'gin',
         recepyFamily: 'default',
         label: 'Gin',
-        parts: [0,0,1,1]
+        parts: [1, 1, 1, 1, 1]
     });
 }
 

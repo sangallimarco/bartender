@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { webSocketService } from '../../core/websocket';
+import { webSocketService, WebSocketListener } from '../../core/websocket';
 import './recepy.css';
 import { RoutePath, ProcessingPayload, RecepiesPayload, RecepyOption, MakePayload } from '../../shared';
 import RecepyItem from './recepy-item';
@@ -41,14 +41,15 @@ export class RecepyList extends BaseComponent<{}, RecepyListStateProps> {
                 this.setState({ recepies });
             })
         );
-
         webSocketService.send<{}>(RoutePath.RECEPIES, {});
 
+        // enable edit mode
         document.addEventListener('keydown', this.handleKeyDown);
     }
 
     public componentWillUnmount() {
         document.removeEventListener('keydown', this.handleKeyDown);
+        this.listeners.map((i: WebSocketListener) => i());
     }
 
     public render() {
