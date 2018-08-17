@@ -2,14 +2,14 @@
   "RECEPIES": [
     {
       "id": "gin",
-      "recepyFamily": "default",
-      "label": "Gin3",
+      "recepyFamily": "cocktails",
+      "label": "Gin",
       "parts": [
-        2,
-        2,
-        3,
-        2,
-        2
+        1,
+        1,
+        1,
+        1,
+        1
       ]
     },
     {
@@ -17,10 +17,11 @@
       "recepyFamily": "default",
       "label": "Test",
       "parts": [
-        0,
-        232,
         1,
-        1
+        4,
+        12,
+        12,
+        3
       ]
     }
   ],
@@ -34,6 +35,17 @@
         "GIN",
         "COKE",
         "COKE"
+      ]
+    },
+    {
+      "id": "cocktails",
+      "label": "Cocktails",
+      "ingredients": [
+        "ORANGE JUICE",
+        "SODA",
+        "RUM",
+        "VODKA",
+        "VERMOUT"
       ]
     }
   ]
