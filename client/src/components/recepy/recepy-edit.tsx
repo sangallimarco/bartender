@@ -60,11 +60,8 @@ export class RecepyEdit extends BaseComponent<RecepyEditProps, RecepyEditState> 
     public render() {
         const { recepy, families } = this.state;
         if (recepy && families) {
-            const { id, label, parts, recepyFamily } = recepy as Recepy;
+            const { label, parts, recepyFamily } = recepy as Recepy;
             return <div className="recepy-edit">
-                <InputContainer label="#">
-                    <Input name="id" value={id} onChange={this.handleChange} />
-                </InputContainer>
                 <InputContainer label="Label">
                     <Input name="label" value={label} onChange={this.handleChange} />
                 </InputContainer>
