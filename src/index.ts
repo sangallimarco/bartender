@@ -14,24 +14,24 @@ const recepyMaker = new RecepyService();
 async function initDB() {
     await recepyMaker.initDatabases();
 
-    recepyMaker.upsertFamily({
-        id: 'default',
-        label: 'Default Config',
-        ingredients: [
-            RecepyIngredient.APEROL,
-            RecepyIngredient.TONIC,
-            RecepyIngredient.GIN,
-            RecepyIngredient.COKE,
-            RecepyIngredient.COKE
-        ]
-    });
+    // recepyMaker.upsertFamily({
+    //     id: 'default',
+    //     label: 'Default Config',
+    //     ingredients: [
+    //         RecepyIngredient.APEROL,
+    //         RecepyIngredient.TONIC,
+    //         RecepyIngredient.GIN,
+    //         RecepyIngredient.COKE,
+    //         RecepyIngredient.COKE
+    //     ]
+    // });
 
-    recepyMaker.upsertRecepy({
-        id: 'gin',
-        recepyFamily: 'default',
-        label: 'Gin',
-        parts: [1, 1, 1, 1, 1]
-    });
+    // recepyMaker.upsertRecepy({
+    //     id: 'gin',
+    //     recepyFamily: 'default',
+    //     label: 'Gin',
+    //     parts: [1, 1, 1, 1, 1]
+    // });
 }
 
 // @TODO refactor this, test only

@@ -1,38 +1,38 @@
 {
   "RECEPIES": [
     {
-      "id": "gin",
-      "recepyFamily": "default",
-      "label": "Gin",
-      "parts": [
-        1,
-        1,
-        1,
-        1,
-        1
-      ]
-    },
-    {
-      "id": "testid",
-      "recepyFamily": "default",
-      "label": "Test",
-      "parts": [
-        1,
-        4,
-        12,
-        12,
-        3
-      ]
-    },
-    {
       "id": "75njbo9wgjkxmtiiv",
-      "label": "new one!",
+      "label": "Yeah!",
       "recepyFamily": "default",
       "parts": [
         12,
         1,
         13,
         11,
+        1
+      ]
+    },
+    {
+      "id": "75njbo9wgjkxmutv5",
+      "label": "Aperol Spritz",
+      "recepyFamily": "default",
+      "parts": [
+        1,
+        0,
+        1,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "75njbo9zwjkxmwne7",
+      "label": "Fantasy",
+      "recepyFamily": "default",
+      "parts": [
+        1,
+        1,
+        1,
+        1,
         1
       ]
     }
