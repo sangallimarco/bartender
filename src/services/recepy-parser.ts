@@ -2,6 +2,8 @@ import { PumpsUtils } from './pump-utils';
 import { RecepyOption, RecepyFamily, Recepy } from '../shared';
 import Lowdb from 'lowdb';
 import FileAsync from 'lowdb/adapters/FileAsync';
+import { cloneDeep } from 'lodash';
+import uniqid from 'uniqid';
 
 const DEFAULT_FAMILY = 'default';
 
@@ -13,6 +15,13 @@ enum Collection {
 interface DBSchema {
     [Collection.RECEPIES]: Recepy[];
     [Collection.FAMILIES]: RecepyFamily[]
+}
+
+const DEFAULT_RECEPY: Recepy = {
+    id: '',
+    label: '',
+    recepyFamily: DEFAULT_FAMILY,
+    parts: []
 }
 
 export class RecepyService {
@@ -80,6 +89,15 @@ export class RecepyService {
                 .assign(recepy)
                 .write();
         }
+    }
+
+    public async createRecepy(): Promise<Recepy> {
+        const id = uniqid();
+        const parts: number[] = PumpsUtils.generateDefaultParts();
+        const cloned: Recepy = cloneDeep(DEFAULT_RECEPY);
+        const recepy: Recepy = { ...cloned, id, parts };
+        await this.upsertRecepy(recepy);
+        return recepy;
     }
 
     public async getRecepies(): Promise<RecepyOption[]> {

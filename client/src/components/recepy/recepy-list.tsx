@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { webSocketService, WebSocketListener } from '../../core/websocket';
 import './recepy.css';
-import { RoutePath, ProcessingPayload, RecepiesPayload, RecepyOption, MakePayload } from '../../shared';
+import { RoutePath, ProcessingPayload, RecepyPayload, RecepiesPayload, RecepyOption, MakePayload } from '../../shared';
 import RecepyItem from './recepy-item';
 import Dialog from '../dialog/dialog';
 import Processing from '../processing/processing';
@@ -41,6 +41,12 @@ export class RecepyList extends BaseComponent<{}, RecepyListStateProps> {
                 this.setState({ recepies });
             })
         );
+        this.listeners.push(
+            webSocketService.on<RecepyPayload>(RoutePath.NEW, (data) => {
+                const { recepy: { id } } = data;
+                browserHistory.push(`/edit/${id}`);
+            })
+        );
         webSocketService.send<{}>(RoutePath.RECEPIES, {});
 
         // enable edit mode
@@ -66,8 +72,13 @@ export class RecepyList extends BaseComponent<{}, RecepyListStateProps> {
 
     public handleKeyDown = (e: KeyboardEvent) => {
         const { key } = e;
-        if (key === 'e') {
-            this.setState({ edit: true });
+        switch (key) {
+            case 'e':
+                this.setState({ edit: true });
+                break;
+            case 'n':
+                webSocketService.send<{}>(RoutePath.NEW, {});
+                break;
         }
     }
 

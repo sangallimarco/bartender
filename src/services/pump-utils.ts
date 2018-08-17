@@ -52,4 +52,8 @@ export namespace PumpsUtils {
             });
         });
     }
+
+    export function generateDefaultParts(): number[] {
+        return PumpPin.map((pin: number) => 1);
+    }
 }

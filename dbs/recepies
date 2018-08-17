@@ -2,7 +2,7 @@
   "RECEPIES": [
     {
       "id": "gin",
-      "recepyFamily": "cocktails",
+      "recepyFamily": "default",
       "label": "Gin",
       "parts": [
         1,
@@ -22,6 +22,18 @@
         12,
         12,
         3
+      ]
+    },
+    {
+      "id": "75njbo9wgjkxmtiiv",
+      "label": "new one!",
+      "recepyFamily": "default",
+      "parts": [
+        12,
+        1,
+        13,
+        11,
+        1
       ]
     }
   ],

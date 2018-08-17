@@ -4,6 +4,7 @@
     "express-ws": "^4.0.0",
     "lowdb": "^1.0.0",
     "rpi-gpio": "^1.0.0",
+    "uniqid": "^5.0.3",
     "ws": "^5.2.2"
   },
   "scripts": {
@@ -31,6 +32,7 @@
     "@types/lodash": "^4.14.116",
     "@types/lowdb": "^1.0.5",
     "@types/node": "^10.5.1",
+    "@types/uniqid": "^4.1.2",
     "concurrently": "^3.6.0",
     "ts-node": "^7.0.0",
     "tslint": "^5.10.0",

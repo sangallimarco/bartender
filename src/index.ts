@@ -4,7 +4,7 @@ import expressWs from 'express-ws';
 import ws from 'ws';
 import { webSocketRouter, webSocketMiddleware, WebSocketUtils } from './services';
 import { RecepyService } from "./services/recepy-parser";
-import { RoutePath, ProcessingPayload, RecepiesPayload, MakePayload, RecepyIngredient, RecepyPayload, GetPayload, RecepyFamiliesPayload } from './shared';
+import { RoutePath, ProcessingPayload, RecepiesPayload, MakePayload, RecepyIngredient, RecepyPayload, GetPayload, RecepyFamiliesPayload, RecepyNewPayload } from './shared';
 
 const { app } = expressWs(express());
 const PORT = 8888;
@@ -49,6 +49,13 @@ webSocketRouter.on<GetPayload>(RoutePath.GET, async (wsInstance: ws, uri: string
     const { id } = data;
     const recepy = await recepyMaker.getRecepy(id);
     WebSocketUtils.sendMessage<RecepyPayload>(wsInstance, RoutePath.GET, {
+        recepy
+    });
+});
+
+webSocketRouter.on<{}>(RoutePath.NEW, async (wsInstance: ws, uri: string, data) => {
+    const recepy = await recepyMaker.createRecepy();
+    WebSocketUtils.sendMessage<RecepyPayload>(wsInstance, RoutePath.NEW, {
         recepy
     });
 });
