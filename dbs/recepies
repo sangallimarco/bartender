@@ -29,6 +29,18 @@
       "label": "Fantasy",
       "recepyFamily": "default",
       "parts": [
+        2,
+        1,
+        12,
+        1,
+        12
+      ]
+    },
+    {
+      "id": "75njbo9zwjky6x2tu",
+      "label": "OK",
+      "recepyFamily": "default",
+      "parts": [
         1,
         1,
         1,
