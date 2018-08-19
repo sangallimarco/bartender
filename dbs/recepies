@@ -1,0 +1,64 @@
+{
+  "RECEPIES": [
+    {
+      "id": "75njbo9wgjkxmtiiv",
+      "label": "Yeah!",
+      "recepyFamily": "default",
+      "parts": [
+        12,
+        1,
+        13,
+        11,
+        1
+      ]
+    },
+    {
+      "id": "75njbo9wgjkxmutv5",
+      "label": "Aperol Spritz",
+      "recepyFamily": "default",
+      "parts": [
+        1,
+        0,
+        1,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "75njbo9zwjkxmwne7",
+      "label": "Fantasy",
+      "recepyFamily": "default",
+      "parts": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    }
+  ],
+  "FAMILIES": [
+    {
+      "id": "default",
+      "label": "Default Config",
+      "ingredients": [
+        "APEROL",
+        "TONIC",
+        "GIN",
+        "COKE",
+        "COKE"
+      ]
+    },
+    {
+      "id": "cocktails",
+      "label": "Cocktails",
+      "ingredients": [
+        "ORANGE JUICE",
+        "SODA",
+        "RUM",
+        "VODKA",
+        "VERMOUT"
+      ]
+    }
+  ]
+}

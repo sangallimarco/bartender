@@ -33,9 +33,6 @@
     "/ws": {
       "target": "http://localhost:8888",
       "ws": true
-    },
-    "/": {
-      "target": "http://localhost:8888"
     }
   }
 }

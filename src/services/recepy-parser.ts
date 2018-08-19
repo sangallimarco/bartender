@@ -1,53 +1,142 @@
-import {
-    RECEPIES
-} from '../data/recepies';
-import {
-    RecepyFamily, Recepy, RecepyFamilyId, RecepyPumpConfig, RecepyOption
-} from './recepy-types';
 import { PumpsUtils } from './pump-utils';
+import { RecepyOption, RecepyFamily, Recepy } from '../shared';
+import Lowdb from 'lowdb';
+import FileAsync from 'lowdb/adapters/FileAsync';
+import { cloneDeep } from 'lodash';
+import uniqid from 'uniqid';
+
+const DEFAULT_FAMILY = 'default';
+
+enum Collection {
+    RECEPIES = 'RECEPIES',
+    FAMILIES = 'FAMILIES'
+}
+
+interface DBSchema {
+    [Collection.RECEPIES]: Recepy[];
+    [Collection.FAMILIES]: RecepyFamily[]
+}
+
+const DEFAULT_RECEPY: Recepy = {
+    id: '',
+    label: '',
+    recepyFamily: DEFAULT_FAMILY,
+    parts: []
+}
 
 export class RecepyService {
     private recepyFamily: RecepyFamily;
     private recepy: Recepy;
     private executing: boolean = false;
+    private db: Lowdb.LowdbAsync<DBSchema>;
 
     constructor() {
-        this.setFamily(RecepyFamilyId.DEFAULT);
         PumpsUtils.init();
     }
 
-    public setFamily(id: RecepyFamilyId): void {
-        const found = RECEPIES.find((family: RecepyFamily) => family.id === id);
-        if (found) {
-            this.recepyFamily = found;
+    public async initDatabases(): Promise<void> {
+        const adapter = new FileAsync<DBSchema>('dbs/recepies', {
+            defaultValue: {
+                [Collection.RECEPIES]: [],
+                [Collection.FAMILIES]: []
+            }
+        });
+        this.db = await Lowdb(adapter);
+        await this.setFamily(DEFAULT_FAMILY);
+    }
+
+    public async setFamily(id: string): Promise<void> {
+        const recepyFamily = await this.db.get(Collection.FAMILIES)
+            .find({ id })
+            .value();
+        this.recepyFamily = recepyFamily;
+    }
+
+    public async upsertFamily(family: RecepyFamily) {
+        const { id } = family;
+        const found = await this.db.get(Collection.FAMILIES)
+            .find({ id });
+        if (!found.value()) {
+            await this.db.get(Collection.FAMILIES)
+                .push(family)
+                .write();
+        } else {
+            await found
+                .assign(family)
+                .write();
         }
     }
 
-    public setRecepy(id: string): void {
-        const found = this.recepyFamily.recepies.find((recepy: Recepy) => recepy.id === id);
-        if (found) {
-            this.recepy = found;
+    public async setRecepy(id: string) {
+        const recepy = await this.db.get(Collection.RECEPIES)
+            .find({ id })
+            .value();
+        if (recepy) {
+            this.recepy = recepy;
         }
     }
 
-    public getRecepies(): RecepyOption[] {
+    public async upsertRecepy(recepy: Recepy) {
+        const { id } = recepy;
+        const found = await this.db.get(Collection.RECEPIES)
+            .find({ id });
+        if (!found.value()) {
+            await this.db.get(Collection.RECEPIES)
+                .push(recepy)
+                .write();
+        } else {
+            await found
+                .assign(recepy)
+                .write();
+        }
+    }
+
+    public async createRecepy(): Promise<Recepy> {
+        const id = uniqid();
+        const parts: number[] = PumpsUtils.generateDefaultParts();
+        const cloned: Recepy = cloneDeep(DEFAULT_RECEPY);
+        const recepy: Recepy = { ...cloned, id, parts };
+        await this.upsertRecepy(recepy);
+        return recepy;
+    }
+
+    public async getRecepies(): Promise<RecepyOption[]> {
         if (this.recepyFamily) {
-            const { recepies } = this.recepyFamily;
+            const { id: recepyFamily } = this.recepyFamily;
+            const recepies = await this.db.get(Collection.RECEPIES)
+                .filter({ recepyFamily })
+                .sortBy('label')
+                .value();
             return recepies.map((recepy: Recepy) => {
                 const { id, label } = recepy;
                 return { id, label };
-            });
+            })
         } else {
-            return [];
+            return Promise.resolve([]);
         }
+    }
+
+    public async getFamilies(): Promise<RecepyFamily[]> {
+        const families = await this.db.get(Collection.FAMILIES)
+            .sortBy('label')
+            .value();
+        return families;
+    }
+
+    public async getRecepy(id: string): Promise<Recepy> {
+        const recepy = await this.db.get(Collection.RECEPIES)
+            .find({ id })
+            .value();
+
+        return recepy;
     }
 
     public setPumps(): Promise<void> {
         if (!this.executing && this.recepy) {
             this.executing = true;
             const { parts } = this.recepy;
-            const promises: Array<Promise<void>> = parts.map((ingredientPump: RecepyPumpConfig) => {
-                return PumpsUtils.activateWithTimer(ingredientPump.pump, ingredientPump.quantity * 1000);
+            const promises: Array<Promise<void>> = parts.map((quantity: number, indx: number) => {
+                return PumpsUtils.activateWithTimer(indx, quantity * 1000);
             });
             // wait for all timers to resolve
             return Promise.all(promises).then(

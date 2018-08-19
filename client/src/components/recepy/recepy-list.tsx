@@ -1,30 +1,32 @@
-import { webSocketService, WebSocketListener } from '../../core/websocket';
 import * as React from 'react';
+import { webSocketService, WebSocketListener } from '../../core/websocket';
 import './recepy.css';
-import { RoutePath, ProcessingPayload, RecepiesPayload, RecepyOption, MakePayload } from '../../shared';
+import { RoutePath, ProcessingPayload, RecepyPayload, RecepiesPayload, RecepyOption, MakePayload } from '../../shared';
 import RecepyItem from './recepy-item';
 import Dialog from '../dialog/dialog';
 import Processing from '../processing/processing';
+import { BaseComponent } from '../../core/base-component';
+import { browserHistory } from '../../core/browser-history';
 
-interface RecepyListProps {
+interface RecepyListStateProps {
     processing: boolean,
     recepies: RecepyOption[]
     message: string;
     id: string;
     dialogVisible: boolean;
+    edit: boolean;
 };
 
-export class RecepyList extends React.Component<{}, RecepyListProps> {
+export class RecepyList extends BaseComponent<{}, RecepyListStateProps> {
 
-    public state: RecepyListProps = {
+    public state: RecepyListStateProps = {
         dialogVisible: false,
+        edit: false,
         id: '',
         message: '',
         processing: false,
         recepies: []
     }
-
-    private listeners: WebSocketListener[] = [];
 
     public componentDidMount() {
         this.listeners.push(
@@ -39,12 +41,21 @@ export class RecepyList extends React.Component<{}, RecepyListProps> {
                 this.setState({ recepies });
             })
         );
-
+        this.listeners.push(
+            webSocketService.on<RecepyPayload>(RoutePath.NEW, (data) => {
+                const { recepy: { id } } = data;
+                browserHistory.push(`/edit/${id}`);
+            })
+        );
         webSocketService.send<{}>(RoutePath.RECEPIES, {});
+
+        // enable edit mode
+        document.addEventListener('keydown', this.handleKeyDown);
     }
 
     public componentWillUnmount() {
-        this.listeners.forEach((i) => i());
+        document.removeEventListener('keydown', this.handleKeyDown);
+        this.listeners.map((i: WebSocketListener) => i());
     }
 
     public render() {
@@ -59,6 +70,18 @@ export class RecepyList extends React.Component<{}, RecepyListProps> {
         );
     }
 
+    public handleKeyDown = (e: KeyboardEvent) => {
+        const { key } = e;
+        switch (key) {
+            case 'e':
+                this.setState({ edit: true });
+                break;
+            case 'n':
+                webSocketService.send<{}>(RoutePath.NEW, {});
+                break;
+        }
+    }
+
     private handleConfirm = () => {
         const { id } = this.state;
         webSocketService.send<MakePayload>(RoutePath.MAKE, { id });
@@ -69,15 +92,20 @@ export class RecepyList extends React.Component<{}, RecepyListProps> {
         this.setState({ dialogVisible: false });
     }
 
-    private HandleSelected = (id: string, label: string) => {
-        const message = `Confirm ${label}?`;
-        this.setState({ id, dialogVisible: true, message });
+    private handleSelected = (id: string, label: string) => {
+        const { edit } = this.state;
+        if (edit) {
+            browserHistory.push(`/edit/${id}`);
+        } else {
+            const message = `Confirm ${label}?`;
+            this.setState({ id, dialogVisible: true, message });
+        }
     }
 
     private renderItems(items: RecepyOption[]) {
         return items.map((i: RecepyOption) => {
             const { label, id } = i;
-            return <RecepyItem key={id} label={label} id={id} onClick={this.HandleSelected} />;
+            return <RecepyItem key={id} label={label} id={id} onClick={this.handleSelected} />;
         })
     }
 }

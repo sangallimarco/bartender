@@ -9,7 +9,8 @@
         "name": "Launch Program",
         "program": "${workspaceFolder}/dist/index.js",
         "env": {
-            "NODE_ENV": "emulate"
+            "NODE_ENV": "emulate",
+            "DEBUG": "pouchdb:*"
         }
     }]
 }

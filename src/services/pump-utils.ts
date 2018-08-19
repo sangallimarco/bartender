@@ -1,4 +1,4 @@
-import { Pump, PumpPin } from './pump-types';
+import { Pump, PumpPin } from '../shared';
 const { env: { NODE_ENV } } = process;
 
 // see rpi-gpio.js
@@ -51,5 +51,9 @@ export namespace PumpsUtils {
                 }, timeout);
             });
         });
+    }
+
+    export function generateDefaultParts(): number[] {
+        return PumpPin.map((pin: number) => 1);
     }
 }
