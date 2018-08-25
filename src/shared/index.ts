@@ -1,11 +1,11 @@
-export enum RoutePath {
-    TEST = '/test',
-    MAKE = '/make',
-    RECEPIES = '/recepies',
-    NEW = '/new',
-    EDIT = '/edit',
-    GET = '/get',
-    GET_FAMILIES = '/families'
+export enum Action {
+    TEST = 'TEST',
+    MAKE = 'MAKE',
+    RECEPIES = 'RECEPIES',
+    NEW = 'NEW',
+    EDIT = 'EDIT',
+    GET = 'GET',
+    GET_FAMILIES = 'GET_FAMILIES'
 }
 
 export interface ProcessingPayload {

@@ -1,12 +1,12 @@
-export enum RoutePath {
-    TEST = '/test',
-    MAKE = '/make',
-    RECEPIES = '/recepies',
-    NEW = '/new',
-    EDIT = '/edit',
-    GET = '/get',
-    GET_FAMILIES = '/families'
-}
+export const TEST = 'TEST';
+export const MAKE = 'MAKE';
+export const RECEPIES = 'RECEPIES';
+export const NEW = 'NEW';
+export const EDIT = 'EDIT';
+export const GET = 'GET';
+export const GET_FAMILIES = 'GET_FAMILIES';
+
+export const ACTIONS: string[] = [TEST, MAKE, RECEPIES, NEW, EDIT, GET, GET_FAMILIES];
 
 export interface ProcessingPayload {
     processing: boolean;

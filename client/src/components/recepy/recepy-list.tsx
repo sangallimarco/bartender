@@ -1,12 +1,15 @@
 import * as React from 'react';
 import { webSocketService, WebSocketListener } from '../../core/websocket';
 import './recepy.css';
-import { RoutePath, ProcessingPayload, RecepyPayload, RecepiesPayload, RecepyOption, MakePayload } from '../../shared';
+import { RECEPIES, ProcessingPayload, RecepyPayload, RecepiesPayload, RecepyOption, MakePayload } from '../../shared';
 import RecepyItem from './recepy-item';
 import Dialog from '../dialog/dialog';
 import Processing from '../processing/processing';
 import { BaseComponent } from '../../core/base-component';
 import { browserHistory } from '../../core/browser-history';
+import { IRootState, RootActions, RootAction } from '../../stores';
+import { Dispatch, bindActionCreators, } from 'redux';
+import { connect } from 'react-redux';
 
 interface RecepyListStateProps {
     processing: boolean,
@@ -17,7 +20,7 @@ interface RecepyListStateProps {
     edit: boolean;
 };
 
-export class RecepyList extends BaseComponent<{}, RecepyListStateProps> {
+class RecepyListBase extends BaseComponent<{}, RecepyListStateProps> {
 
     public state: RecepyListStateProps = {
         dialogVisible: false,
@@ -30,24 +33,24 @@ export class RecepyList extends BaseComponent<{}, RecepyListStateProps> {
 
     public componentDidMount() {
         this.listeners.push(
-            webSocketService.on<ProcessingPayload>(RoutePath.MAKE, (data) => {
+            webSocketService.on<ProcessingPayload>(Action.MAKE, (data) => {
                 const { processing } = data;
                 this.setState({ processing });
             })
         );
         this.listeners.push(
-            webSocketService.on<RecepiesPayload>(RoutePath.RECEPIES, (data) => {
+            webSocketService.on<RecepiesPayload>(Action.RECEPIES, (data) => {
                 const { recepies } = data;
                 this.setState({ recepies });
             })
         );
         this.listeners.push(
-            webSocketService.on<RecepyPayload>(RoutePath.NEW, (data) => {
+            webSocketService.on<RecepyPayload>(Action.NEW, (data) => {
                 const { recepy: { id } } = data;
                 browserHistory.push(`/edit/${id}`);
             })
         );
-        webSocketService.send<{}>(RoutePath.RECEPIES, {});
+        webSocketService.send<{}>(Action.RECEPIES, {});
 
         // enable edit mode
         document.addEventListener('keydown', this.handleKeyDown);
@@ -77,14 +80,14 @@ export class RecepyList extends BaseComponent<{}, RecepyListStateProps> {
                 this.setState({ edit: true });
                 break;
             case 'n':
-                webSocketService.send<{}>(RoutePath.NEW, {});
+                webSocketService.send<{}>(Action.NEW, {});
                 break;
         }
     }
 
     private handleConfirm = () => {
         const { id } = this.state;
-        webSocketService.send<MakePayload>(RoutePath.MAKE, { id });
+        webSocketService.send<MakePayload>(Action.MAKE, { id });
         this.setState({ dialogVisible: false });
     }
 
@@ -109,3 +112,13 @@ export class RecepyList extends BaseComponent<{}, RecepyListStateProps> {
         })
     }
 }
+
+const mapStateToProps = (state: IRootState) => ({
+    recepies: state.root.recepies,
+});
+
+const mapDispatchToProps = (dispatch: Dispatch<RootAction>) => bindActionCreators({
+    getAll: RootActions.RECEPIES,
+}, dispatch);
+
+export const RecepyList = connect(mapStateToProps, mapDispatchToProps)(RecepyListBase);

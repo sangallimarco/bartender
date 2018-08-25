@@ -1,5 +1,7 @@
 import ReconnectingWebSocket from 'reconnecting-websocket';
 import { v4 } from 'uuid';
+import { Store } from 'redux';
+// import { getType } from 'typesafe-actions';
 
 type WebSocketCallback<T> = (data: T) => void;
 
@@ -16,7 +18,7 @@ export interface WebSocketEvent {
 
 export interface WebSocketRoute {
     uuid: string;
-    uri: string;
+    action: string;
     callback: WebSocketCallback<any>;
 }
 
@@ -46,9 +48,9 @@ class WebSocketService {
         }, 10);
     }
 
-    public on<T>(uri: string, callback: WebSocketCallback<T>): WebSocketListener {
+    public on<T>(action: string, callback: WebSocketCallback<T>): WebSocketListener {
         const uuid = v4();
-        const route: WebSocketRoute = { uuid, uri, callback };
+        const route: WebSocketRoute = { uuid, action, callback };
         this.routes.push(route);
 
         return () => {
@@ -60,6 +62,15 @@ class WebSocketService {
         const payload: WebsocketPayload<T> = { uri, data };
         const msg: string = JSON.stringify(payload);
         this.messages.push(msg);
+    }
+
+    // to be refactored
+    public bindActions<T>(actions: T, store: Store) {
+        Object.keys(actions).forEach((action: string) => {
+            this.on<any>(action, (data: any) => {
+                store.dispatch(actions[action](data));
+            });
+        });
     }
 
     private processQueue() {
@@ -75,8 +86,8 @@ class WebSocketService {
         const { data: payload } = event;
         try {
             const payloadObject = JSON.parse(payload);
-            const { uri, data } = payloadObject;
-            const route = this.routes.find(x => x.uri === uri);
+            const { action, data } = payloadObject;
+            const route = this.routes.find(x => x.action === action);
             if (route) {
                 route.callback(data);
             }
