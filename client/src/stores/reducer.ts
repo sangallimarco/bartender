@@ -5,13 +5,13 @@ import { webSocketService } from '../core/websocket';
 import { getType } from 'typesafe-actions';
 
 export interface RootReducerState {
-    recepies: Recepy[];
     family: string;
+    recepies: Recepy[];
 }
 
 const initialState: RootReducerState = {
-    recepies: [],
-    family: 'default'
+    family: 'default',
+    recepies: []
 }
 
 export const reducer: Reducer<RootReducerState> = (
@@ -22,7 +22,7 @@ export const reducer: Reducer<RootReducerState> = (
     const { payload, type } = action;
     switch (type) {
         case getType(RootActions.RECEPIES):
-            const recepies = payload as Recepy[]; ///?????
+            const recepies = payload as Recepy[];
             return { ...state, recepies };
         case getType(RootActions.EDIT):
             webSocketService.send(EDIT, payload);

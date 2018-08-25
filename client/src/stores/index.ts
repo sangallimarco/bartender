@@ -6,13 +6,11 @@ import { webSocketService } from '../core/websocket';
 import { RootAction, RootActions } from './actions';
 export { RootAction, RootActions } from './actions';
 
-// interface IStoreEnhancerState { }
-
-export interface IRootState {
+export interface RootState {
     root: RootReducerState;
 }
 
-const rootReducer = combineReducers<IRootState, RootAction>({
+const rootReducer = combineReducers<RootState, RootAction>({
     root: reducer // namespace
 });
 
@@ -20,7 +18,7 @@ const cwindow = window as any;
 // this intercepts actions and send those to websocket
 export const emit = (type: string, payload: any) => {
     webSocketService.send(type, payload);
-});
+};
 
 const middlewares = [
     ReduxThunk.withExtraArgument({ emit }),

@@ -1,74 +1,36 @@
 import * as React from 'react';
-import { webSocketService, WebSocketListener } from '../../core/websocket';
 import './recepy.css';
-import { RECEPIES, ProcessingPayload, RecepyPayload, RecepiesPayload, RecepyOption, MakePayload } from '../../shared';
 import RecepyItem from './recepy-item';
 import Dialog from '../dialog/dialog';
 import Processing from '../processing/processing';
-import { BaseComponent } from '../../core/base-component';
-import { browserHistory } from '../../core/browser-history';
-import { IRootState, RootActions, RootAction } from '../../stores';
+// import { browserHistory } from '../../core/browser-history';
+import { RootState, RootActions, RootAction } from '../../stores';
 import { Dispatch, bindActionCreators, } from 'redux';
 import { connect } from 'react-redux';
+import { Recepy } from '../../shared';
 
-interface RecepyListStateProps {
-    processing: boolean,
-    recepies: RecepyOption[]
-    message: string;
-    id: string;
-    dialogVisible: boolean;
-    edit: boolean;
-};
+interface RecepyListBaseProps {
+    recepies: Recepy[];
+    getAll: () => any;
+}
 
-class RecepyListBase extends BaseComponent<{}, RecepyListStateProps> {
-
-    public state: RecepyListStateProps = {
-        dialogVisible: false,
-        edit: false,
-        id: '',
-        message: '',
-        processing: false,
-        recepies: []
-    }
+class RecepyListBase extends React.Component<RecepyListBaseProps, {}> {
 
     public componentDidMount() {
-        this.listeners.push(
-            webSocketService.on<ProcessingPayload>(Action.MAKE, (data) => {
-                const { processing } = data;
-                this.setState({ processing });
-            })
-        );
-        this.listeners.push(
-            webSocketService.on<RecepiesPayload>(Action.RECEPIES, (data) => {
-                const { recepies } = data;
-                this.setState({ recepies });
-            })
-        );
-        this.listeners.push(
-            webSocketService.on<RecepyPayload>(Action.NEW, (data) => {
-                const { recepy: { id } } = data;
-                browserHistory.push(`/edit/${id}`);
-            })
-        );
-        webSocketService.send<{}>(Action.RECEPIES, {});
+        const { getAll } = this.props;
+        getAll();
 
         // enable edit mode
         document.addEventListener('keydown', this.handleKeyDown);
     }
 
-    public componentWillUnmount() {
-        document.removeEventListener('keydown', this.handleKeyDown);
-        this.listeners.map((i: WebSocketListener) => i());
-    }
-
     public render() {
-        const { processing, recepies, message, dialogVisible } = this.state;
+        const { recepies } = this.props;
         return (
             <div className="recepy-list">
                 {this.renderItems(recepies)}
-                {JSON.stringify(processing)}
-                <Dialog active={dialogVisible} onConfirm={this.handleConfirm} onDismiss={this.handleDismiss} message={message} />
-                <Processing active={processing} />
+                <Dialog active={false} onConfirm={this.handleConfirm} onDismiss={this.handleDismiss} message={'okook'} />
+                <Processing active={false} />
             </div>
         );
     }
@@ -79,15 +41,15 @@ class RecepyListBase extends BaseComponent<{}, RecepyListStateProps> {
             case 'e':
                 this.setState({ edit: true });
                 break;
-            case 'n':
-                webSocketService.send<{}>(Action.NEW, {});
-                break;
+            // case 'n':
+            //     webSocketService.send<{}>(NEW, {});
+            //     break;
         }
     }
 
     private handleConfirm = () => {
-        const { id } = this.state;
-        webSocketService.send<MakePayload>(Action.MAKE, { id });
+        // const { id } = this.state;
+        // webSocketService.send<MakePayload>(MAKE, { id });
         this.setState({ dialogVisible: false });
     }
 
@@ -96,24 +58,24 @@ class RecepyListBase extends BaseComponent<{}, RecepyListStateProps> {
     }
 
     private handleSelected = (id: string, label: string) => {
-        const { edit } = this.state;
-        if (edit) {
-            browserHistory.push(`/edit/${id}`);
-        } else {
-            const message = `Confirm ${label}?`;
-            this.setState({ id, dialogVisible: true, message });
-        }
+        // const { edit } = this.state;
+        // if (edit) {
+        //     browserHistory.push(`/edit/${id}`);
+        // } else {
+        //     const message = `Confirm ${label}?`;
+        //     this.setState({ id, dialogVisible: true, message });
+        // }
     }
 
-    private renderItems(items: RecepyOption[]) {
-        return items.map((i: RecepyOption) => {
+    private renderItems(items: Recepy[]) {
+        return items.map((i: Recepy) => {
             const { label, id } = i;
             return <RecepyItem key={id} label={label} id={id} onClick={this.handleSelected} />;
         })
     }
 }
 
-const mapStateToProps = (state: IRootState) => ({
+const mapStateToProps = (state: RootState) => ({
     recepies: state.root.recepies,
 });
 

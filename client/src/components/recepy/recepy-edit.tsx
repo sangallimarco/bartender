@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { BaseComponent } from '../../core/base-component';
 import { RouteComponentProps } from '../../../node_modules/@types/react-router';
-import { RoutePath, Recepy, GetPayload, RecepyPayload, RecepyFamiliesPayload, RecepyFamily, Pump } from '../../shared';
+import { GET, GET_FAMILIES, EDIT, Recepy, GetPayload, RecepyPayload, RecepyFamiliesPayload, RecepyFamily, Pump } from '../../shared';
 import { webSocketService, WebSocketListener } from '../../core/websocket';
 import Button, { ButtonType } from '../button/button';
 import { Input } from '../input/input';
@@ -31,26 +31,26 @@ export class RecepyEdit extends BaseComponent<RecepyEditProps, RecepyEditState> 
     public componentDidMount() {
         const { match: { params: { id } } } = this.props;
         this.listeners.push(
-            webSocketService.on<RecepyPayload>(RoutePath.GET, (data) => {
+            webSocketService.on<RecepyPayload>(GET, (data) => {
                 const { recepy } = data;
                 this.setState({ recepy });
 
             })
         );
         this.listeners.push(
-            webSocketService.on<RecepyFamiliesPayload>(RoutePath.GET_FAMILIES, (data) => {
+            webSocketService.on<RecepyFamiliesPayload>(GET_FAMILIES, (data) => {
                 const { families } = data;
                 this.setState({ families });
             })
         );
         this.listeners.push(
-            webSocketService.on<{}>(RoutePath.EDIT, (data) => {
+            webSocketService.on<{}>(EDIT, (data) => {
                 browserHistory.push('/');
             })
         );
 
-        webSocketService.send<GetPayload>(RoutePath.GET, { id });
-        webSocketService.send<{}>(RoutePath.GET_FAMILIES, {});
+        webSocketService.send<GetPayload>(GET, { id });
+        webSocketService.send<{}>(GET_FAMILIES, {});
     }
 
     public componentWillUnmount() {
@@ -105,7 +105,7 @@ export class RecepyEdit extends BaseComponent<RecepyEditProps, RecepyEditState> 
     private handleSubmit = () => {
         const { recepy } = this.state;
         if (recepy) {
-            webSocketService.send<RecepyPayload>(RoutePath.EDIT, { recepy });
+            webSocketService.send<RecepyPayload>(EDIT, { recepy });
         }
     }
 

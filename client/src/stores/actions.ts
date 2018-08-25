@@ -7,7 +7,7 @@ export const RootActions = {
         return (data: Recepy) => resolve(data);
     }),
     RECEPIES: createAction(RECEPIES, resolve => {
-        return (data: Recepy[]) => resolve(data);
+        return () => resolve({});
     })
 };
 
