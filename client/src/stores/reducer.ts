@@ -20,18 +20,17 @@ export const reducer: Reducer<RootReducerState> = (
     state = initialState,
     action: RootAction
 ): RootReducerState => {
-
     const { payload, type } = action;
+
     switch (type) {
         case getType(RootActions.CMD_RECEPIES):
-            webSocketService.send<{}>(CMD_RECEPIES, payload);
+            webSocketService.send(CMD_RECEPIES, {});
             return state;
         case getType(RootActions.RECEPIES):
             const { recepies } = payload as RecepiesPayload;
             return { ...state, recepies };
         case getType(RootActions.CMD_MAKE):
-            const { id } = payload as MakePayload;
-            webSocketService.send<MakePayload>(CMD_MAKE, { id });
+            webSocketService.send(CMD_MAKE, payload as MakePayload);
             return state;
         case getType(RootActions.MAKE):
             const { processing } = payload as ProcessingPayload;

@@ -3,18 +3,34 @@ import './recepy.css';
 import RecepyItem from './recepy-item';
 import Dialog from '../dialog/dialog';
 import Processing from '../processing/processing';
-// import { browserHistory } from '../../core/browser-history';
+import { browserHistory } from '../../core/browser-history';
 import { RootState, RootActions, RootAction } from '../../stores';
 import { Dispatch, bindActionCreators, } from 'redux';
 import { connect } from 'react-redux';
-import { Recepy } from '../../shared';
+import { Recepy, MakePayload } from '../../shared';
 
 interface RecepyListBaseProps {
     recepies: Recepy[];
+    processing: boolean;
     getAll: () => any;
+    make: (payload: MakePayload) => any;
 }
 
-class RecepyListBase extends React.Component<RecepyListBaseProps, {}> {
+interface RecepyListBaseState {
+    edit: boolean;
+    dialogVisible: boolean;
+    message: string;
+    recepy: Recepy | null;
+}
+
+class RecepyListBase extends React.Component<RecepyListBaseProps, RecepyListBaseState> {
+
+    public state = {
+        dialogVisible: false,
+        edit: false,
+        message: '',
+        recepy: null
+    };
 
     public componentDidMount() {
         const { getAll } = this.props;
@@ -25,12 +41,13 @@ class RecepyListBase extends React.Component<RecepyListBaseProps, {}> {
     }
 
     public render() {
-        const { recepies } = this.props;
+        const { recepies, processing } = this.props;
+        const { dialogVisible, message } = this.state;
         return (
             <div className="recepy-list">
                 {this.renderItems(recepies)}
-                <Dialog active={false} onConfirm={this.handleConfirm} onDismiss={this.handleDismiss} message={'okook'} />
-                <Processing active={false} />
+                <Dialog active={dialogVisible} onConfirm={this.handleConfirm} onDismiss={this.handleDismiss} message={message} />
+                <Processing active={processing} />
             </div>
         );
     }
@@ -48,39 +65,49 @@ class RecepyListBase extends React.Component<RecepyListBaseProps, {}> {
     }
 
     private handleConfirm = () => {
-        // const { id } = this.state;
-        // webSocketService.send<MakePayload>(MAKE, { id });
-        this.setState({ dialogVisible: false });
+        const { make } = this.props;
+        const { recepy } = this.state;
+        if (recepy) {
+            const { id } = recepy as Recepy;
+            make({ id });
+            this.setState({ dialogVisible: false });
+        }
     }
 
     private handleDismiss = () => {
         this.setState({ dialogVisible: false });
     }
 
-    private handleSelected = (id: string, label: string) => {
-        // const { edit } = this.state;
-        // if (edit) {
-        //     browserHistory.push(`/edit/${id}`);
-        // } else {
-        //     const message = `Confirm ${label}?`;
-        //     this.setState({ id, dialogVisible: true, message });
-        // }
+    private handleSelected = (recepy: Recepy) => {
+        const { edit } = this.state;
+        const { id, label } = recepy;
+        this.setState({ recepy });
+        if (edit) {
+            browserHistory.push(`/edit/${id}`); // refactor this without ID
+        } else {
+            const message = `Confirm ${label}?`;
+            this.setState({ dialogVisible: true, message });
+        }
     }
 
     private renderItems(items: Recepy[]) {
-        return items.map((i: Recepy) => {
-            const { label, id } = i;
-            return <RecepyItem key={id} label={label} id={id} onClick={this.handleSelected} />;
+        return items.map((recepy: Recepy) => {
+            const { id } = recepy;
+            return <RecepyItem key={id} recepy={recepy} onClick={this.handleSelected} />;
         })
     }
 }
 
-const mapStateToProps = (state: RootState) => ({
-    recepies: state.root.recepies,
-});
+const mapStateToProps = (state: RootState) => {
+    const {
+        root: { processing, recepies }
+    } = state;
+    return { processing, recepies };
+};
 
 const mapDispatchToProps = (dispatch: Dispatch<RootAction>) => bindActionCreators({
     getAll: RootActions.CMD_RECEPIES,
+    make: RootActions.CMD_MAKE
 }, dispatch);
 
 export const RecepyList = connect(mapStateToProps, mapDispatchToProps)(RecepyListBase);
