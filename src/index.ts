@@ -4,7 +4,7 @@ import expressWs from 'express-ws';
 import ws from 'ws';
 import { webSocketRouter, webSocketMiddleware, WebSocketUtils } from './services';
 import { RecepyService } from "./services/recepy-parser";
-import { CMD_RECEPIES, RECEPIES, EDIT, GET, GET_FAMILIES, MAKE, NEW, ProcessingPayload, RecepiesPayload, MakePayload, RecepyIngredient, RecepyPayload, GetPayload, RecepyFamiliesPayload, RecepyNewPayload } from './shared';
+import { CMD_RECEPIES, RECEPIES, EDIT, GET, GET_FAMILIES, CMD_MAKE, MAKE, NEW, ProcessingPayload, RecepiesPayload, MakePayload, RecepyIngredient, RecepyPayload, GetPayload, RecepyFamiliesPayload, RecepyNewPayload } from './shared';
 
 const { app } = expressWs(express());
 const PORT = 8888;
@@ -75,7 +75,7 @@ webSocketRouter.on<{}>(GET_FAMILIES, async (wsInstance: ws, uri: string, data) =
 });
 
 // testing post processing
-webSocketRouter.on<MakePayload>(MAKE, async (wsInstance: ws, uri: string, data) => {
+webSocketRouter.on<MakePayload>(CMD_MAKE, async (wsInstance: ws, uri: string, data) => {
     const { id } = data;
 
     await recepyMaker.setRecepy(id);

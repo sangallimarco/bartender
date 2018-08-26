@@ -1,4 +1,5 @@
 export const TEST = 'TEST';
+export const CMD_MAKE = 'CMD_MAKE';
 export const MAKE = 'MAKE';
 export const CMD_RECEPIES = 'CMD_RECEPIES';
 export const RECEPIES = 'RECEPIES';
@@ -6,8 +7,6 @@ export const NEW = 'NEW';
 export const EDIT = 'EDIT';
 export const GET = 'GET';
 export const GET_FAMILIES = 'GET_FAMILIES';
-
-export const ACTIONS: string[] = [TEST, MAKE, RECEPIES, NEW, EDIT, GET, GET_FAMILIES];
 
 export interface ProcessingPayload {
     processing: boolean;
