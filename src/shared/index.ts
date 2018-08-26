@@ -26,7 +26,7 @@ export interface RecepyFamiliesPayload {
 }
 
 export interface RecepiesPayload {
-    recepies: RecepyOption[];
+    recepies: Recepy[];
 }
 
 export interface MakePayload {
@@ -36,12 +36,6 @@ export interface MakePayload {
 export interface GetPayload {
     id: string;
 }
-
-export interface RecepyOption {
-    id: string;
-    label: string;
-}
-
 
 export interface Recepy {
     id: string;

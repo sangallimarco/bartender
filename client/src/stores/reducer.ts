@@ -1,12 +1,12 @@
 import { Reducer } from 'redux';
-import { RecepyOption, RecepiesPayload, EDIT, CMD_RECEPIES } from '../shared';
+import { Recepy, RecepiesPayload, EDIT, CMD_RECEPIES } from '../shared';
 import { RootAction, RootActions } from './actions';
 import { webSocketService } from '../core/websocket';
 import { getType } from 'typesafe-actions';
 
 export interface RootReducerState {
     family: string;
-    recepies: RecepyOption[];
+    recepies: Recepy[];
 }
 
 const initialState: RootReducerState = {
