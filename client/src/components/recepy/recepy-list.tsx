@@ -80,7 +80,7 @@ const mapStateToProps = (state: RootState) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<RootAction>) => bindActionCreators({
-    getAll: RootActions.RECEPIES,
+    getAll: RootActions.CMD_RECEPIES,
 }, dispatch);
 
 export const RecepyList = connect(mapStateToProps, mapDispatchToProps)(RecepyListBase);

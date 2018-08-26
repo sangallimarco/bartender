@@ -1,5 +1,6 @@
 export const TEST = 'TEST';
 export const MAKE = 'MAKE';
+export const CMD_RECEPIES = 'CMD_RECEPIES';
 export const RECEPIES = 'RECEPIES';
 export const NEW = 'NEW';
 export const EDIT = 'EDIT';

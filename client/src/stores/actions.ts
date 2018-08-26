@@ -1,13 +1,16 @@
 import { createAction } from 'typesafe-actions';
-import { EDIT, RECEPIES, Recepy } from '../shared';
+import { EDIT, RECEPIES, CMD_RECEPIES, RecepyPayload, RecepiesPayload } from '../shared';
 import { ActionType } from 'typesafe-actions';
 
 export const RootActions = {
-    EDIT: createAction(EDIT, resolve => {
-        return (data: Recepy) => resolve(data);
+    [EDIT]: createAction(EDIT, resolve => {
+        return (data: RecepyPayload) => resolve(data);
     }),
-    RECEPIES: createAction(RECEPIES, resolve => {
+    [CMD_RECEPIES]: createAction(CMD_RECEPIES, resolve => {
         return () => resolve({});
+    }),
+    [RECEPIES]: createAction(RECEPIES, resolve => {
+        return (data: RecepiesPayload) => resolve(data);
     })
 };
 

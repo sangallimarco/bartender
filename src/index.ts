@@ -4,7 +4,7 @@ import expressWs from 'express-ws';
 import ws from 'ws';
 import { webSocketRouter, webSocketMiddleware, WebSocketUtils } from './services';
 import { RecepyService } from "./services/recepy-parser";
-import { RECEPIES, EDIT, GET, GET_FAMILIES, MAKE, NEW, ProcessingPayload, RecepiesPayload, MakePayload, RecepyIngredient, RecepyPayload, GetPayload, RecepyFamiliesPayload, RecepyNewPayload } from './shared';
+import { CMD_RECEPIES, RECEPIES, EDIT, GET, GET_FAMILIES, MAKE, NEW, ProcessingPayload, RecepiesPayload, MakePayload, RecepyIngredient, RecepyPayload, GetPayload, RecepyFamiliesPayload, RecepyNewPayload } from './shared';
 
 const { app } = expressWs(express());
 const PORT = 8888;
@@ -38,7 +38,7 @@ async function initDB() {
 initDB();
 
 // routes
-webSocketRouter.on<{}>(RECEPIES, async (wsInstance: ws, uri: string, data: {}) => {
+webSocketRouter.on<{}>(CMD_RECEPIES, async (wsInstance: ws, uri: string, data: {}) => {
     const recepies = await recepyMaker.getRecepies()
     WebSocketUtils.sendMessage<RecepiesPayload>(wsInstance, RECEPIES, {
         recepies

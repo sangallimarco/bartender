@@ -8,9 +8,9 @@ export class WebSocketRouter {
         this.routes = [];
     }
 
-    public on<T>(uri: string, callback: WebsocketCallback<T>) {
+    public on<T>(action: string, callback: WebsocketCallback<T>) {
         const listener: WebsocketListener<T> = {
-            uri,
+            action,
             callback
         };
         this.routes.push(listener);
@@ -25,12 +25,12 @@ export class WebSocketRouter {
             return;
         }
         const {
-            uri,
+            action,
             data
         } = payloadObject;
-        const route = this.routes.find((x: WebsocketListenerUri) => x.uri === uri);
+        const route = this.routes.find((x: WebsocketListenerUri) => x.action === action);
         if (route) {
-            route.callback(ws, uri, data);
+            route.callback(ws, action, data);
         }
     }
 }

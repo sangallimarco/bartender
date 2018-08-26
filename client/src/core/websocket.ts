@@ -6,7 +6,7 @@ import { Store } from 'redux';
 type WebSocketCallback<T> = (data: T) => void;
 
 export interface WebsocketPayload<T> {
-    uri: string;
+    action: string;
     data: T;
 }
 
@@ -28,12 +28,12 @@ class WebSocketService {
     private messages: string[] = [];
     private ready: boolean = false;
 
-    constructor(uri?: string) {
+    constructor(action?: string) {
         const { location: { host } } = window;
-        uri = uri || `ws://${host}/ws`;
+        action = action || `ws://${host}/ws`;
 
         this.routes = [];
-        this.ws = new ReconnectingWebSocket(uri);
+        this.ws = new ReconnectingWebSocket(action);
         this.ws.addEventListener('open', () => {
             this.ready = true;
         });
@@ -58,8 +58,8 @@ class WebSocketService {
         }
     }
 
-    public send<T>(uri: string, data: T): void {
-        const payload: WebsocketPayload<T> = { uri, data };
+    public send<T>(action: string, data: T): void {
+        const payload: WebsocketPayload<T> = { action, data };
         const msg: string = JSON.stringify(payload);
         this.messages.push(msg);
     }
@@ -67,8 +67,10 @@ class WebSocketService {
     // to be refactored
     public bindActions<T>(actions: T, store: Store) {
         Object.keys(actions).forEach((action: string) => {
+            const selectedAction = actions[action];
+            // const type = getType(selectedAction);
             this.on<any>(action, (data: any) => {
-                store.dispatch(actions[action](data));
+                store.dispatch(selectedAction(data));
             });
         });
     }

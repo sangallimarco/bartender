@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 import { RootReducerState, reducer } from './reducer';
 import { createStore, compose } from 'redux';
-import ReduxThunk from 'redux-thunk';
+// import ReduxThunk from 'redux-thunk';
 import { webSocketService } from '../core/websocket';
 import { RootAction, RootActions } from './actions';
 export { RootAction, RootActions } from './actions';
@@ -15,13 +15,14 @@ const rootReducer = combineReducers<RootState, RootAction>({
 });
 
 const cwindow = window as any;
-// this intercepts actions and send those to websocket
+
+// inject function emit as extra argument in trunk
 export const emit = (type: string, payload: any) => {
     webSocketService.send(type, payload);
 };
 
 const middlewares = [
-    ReduxThunk.withExtraArgument({ emit }),
+    // ReduxThunk.withExtraArgument({ emit }),
     cwindow.__REDUX_DEVTOOLS_EXTENSION__ && cwindow.__REDUX_DEVTOOLS_EXTENSION__()
 ];
 
