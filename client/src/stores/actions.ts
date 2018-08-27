@@ -1,5 +1,5 @@
 import { createAction } from 'typesafe-actions';
-import { EDIT, RECEPIES, CMD_RECEPIES, CMD_FAMILIES, FAMILIES, CMD_MAKE, CMD_EDIT, MAKE, RecepyPayload, RecepiesPayload, ProcessingPayload, RecepyFamiliesPayload, Recepy, SET_RECEPY, SET_PART, AttributePayload, SET_ATTRIBUTE } from '../shared';
+import { EDIT, RECEPIES, CMD_RECEPIES, CMD_FAMILIES, FAMILIES, CMD_MAKE, CMD_EDIT, MAKE, RecepyPayload, RecepiesPayload, ProcessingPayload, RecepyFamiliesPayload, Recepy, SET_RECEPY, SET_PART, AttributePayload, SET_ATTRIBUTE, CMD_NEW, NEW } from '../shared';
 import { ActionType } from 'typesafe-actions';
 
 export const RootActions = {
@@ -29,6 +29,13 @@ export const RootActions = {
     }),
     [EDIT]: createAction(EDIT, resolve => {
         return () => resolve({});
+    }),
+
+    [CMD_NEW]: createAction(CMD_NEW, resolve => {
+        return () => resolve({});
+    }),
+    [NEW]: createAction(NEW, resolve => {
+        return (data: RecepyPayload) => resolve(data);
     }),
 
     [SET_RECEPY]: createAction(SET_RECEPY, resolve => {

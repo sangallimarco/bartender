@@ -4,7 +4,7 @@ import expressWs from 'express-ws';
 import ws from 'ws';
 import { webSocketRouter, webSocketMiddleware, WebSocketUtils } from './services';
 import { RecepyService } from "./services/recepy-parser";
-import { CMD_RECEPIES, RECEPIES, CMD_EDIT, EDIT, GET, CMD_FAMILIES, FAMILIES, CMD_MAKE, MAKE, NEW, ProcessingPayload, RecepiesPayload, MakePayload, RecepyIngredient, RecepyPayload, GetPayload, RecepyFamiliesPayload, RecepyNewPayload } from './shared';
+import { CMD_RECEPIES, RECEPIES, CMD_EDIT, GET, CMD_FAMILIES, FAMILIES, CMD_MAKE, MAKE, CMD_NEW, NEW, ProcessingPayload, RecepiesPayload, MakePayload, RecepyPayload, GetPayload, RecepyFamiliesPayload, SET_RECEPY } from './shared';
 
 const { app } = expressWs(express());
 const PORT = 8888;
@@ -48,12 +48,12 @@ webSocketRouter.on<{}>(CMD_RECEPIES, async (wsInstance: ws, uri: string, data: {
 webSocketRouter.on<GetPayload>(GET, async (wsInstance: ws, uri: string, data) => {
     const { id } = data;
     const recepy = await recepyMaker.getRecepy(id);
-    WebSocketUtils.sendMessage<RecepyPayload>(wsInstance, GET, {
+    WebSocketUtils.sendMessage<RecepyPayload>(wsInstance, SET_RECEPY, {
         recepy
     });
 });
 
-webSocketRouter.on<{}>(NEW, async (wsInstance: ws, uri: string, data) => {
+webSocketRouter.on<{}>(CMD_NEW, async (wsInstance: ws, uri: string, data) => {
     const recepy = await recepyMaker.createRecepy();
     WebSocketUtils.sendMessage<RecepyPayload>(wsInstance, NEW, {
         recepy

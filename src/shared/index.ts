@@ -3,6 +3,7 @@ export const CMD_MAKE = 'CMD_MAKE';
 export const MAKE = 'MAKE';
 export const CMD_RECEPIES = 'CMD_RECEPIES';
 export const RECEPIES = 'RECEPIES';
+export const CMD_NEW = 'CMD_NEW';
 export const NEW = 'NEW';
 export const CMD_EDIT = 'CMD_EDIT';
 export const EDIT = 'EDIT';

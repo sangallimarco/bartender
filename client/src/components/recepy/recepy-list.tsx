@@ -14,6 +14,7 @@ interface RecepyListBaseProps {
     recepy: Recepy;
     processing: boolean;
     make: () => void;
+    create: () => void;
     setRecepy: (recepy: Recepy) => void;
 }
 
@@ -50,13 +51,15 @@ class RecepyListBase extends React.Component<RecepyListBaseProps, RecepyListBase
 
     public handleKeyDown = (e: KeyboardEvent) => {
         const { key } = e;
+        const { create } = this.props;
         switch (key) {
             case 'e':
                 this.setState({ edit: true });
                 break;
-            // case 'n':
-            //     webSocketService.send<{}>(NEW, {});
-            //     break;
+            case 'n':
+                create();
+                browserHistory.push(`/edit`);
+                break;
         }
     }
 
@@ -100,6 +103,7 @@ const mapStateToProps = (state: RootState) => {
 
 const mapDispatchToProps = (dispatch: Dispatch<RootAction>) => bindActionCreators({
     make: RootActions.CMD_MAKE,
+    create: RootActions.CMD_NEW,
     setRecepy: RootActions.SET_RECEPY
 }, dispatch);
 

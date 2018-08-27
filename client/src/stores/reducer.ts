@@ -1,5 +1,5 @@
 import { Reducer } from 'redux';
-import { Recepy, RecepyFamily, RecepiesPayload, MakePayload, ProcessingPayload, RecepyFamiliesPayload, CMD_RECEPIES, CMD_MAKE, RecepyPayload, CMD_FAMILIES, AttributePayload, CMD_EDIT } from '../shared';
+import { Recepy, RecepyFamily, RecepiesPayload, MakePayload, ProcessingPayload, RecepyFamiliesPayload, CMD_RECEPIES, CMD_MAKE, RecepyPayload, CMD_FAMILIES, AttributePayload, CMD_EDIT, CMD_NEW } from '../shared';
 import { RootAction, RootActions } from './actions';
 import { webSocketService } from '../core/websocket';
 import { getType } from 'typesafe-actions';
@@ -57,6 +57,13 @@ export const reducer: Reducer<RootReducerState> = (
             webSocketService.send(CMD_EDIT, payload as RecepyPayload);
             return state;
 
+        case getType(RootActions.CMD_NEW):
+            webSocketService.send(CMD_NEW, {});
+            return state;
+        case getType(RootActions.NEW):
+            const { recepy: newRecepy } = payload as RecepyPayload;
+            return { ...state, recepy: newRecepy };
+
         case getType(RootActions.SET_RECEPY):
             return { ...state, recepy: payload as Recepy };
 
@@ -73,8 +80,8 @@ export const reducer: Reducer<RootReducerState> = (
 
         case getType(RootActions.SET_ATTRIBUTE):
             const { id: attributeKey, value: attributeValue } = payload as AttributePayload;
-            const newRecepy = { ...state.recepy, [attributeKey]: attributeValue } as Recepy;
-            return { ...state, recepy: newRecepy };
+            const modifiedRecepy = { ...state.recepy, [attributeKey]: attributeValue } as Recepy;
+            return { ...state, recepy: modifiedRecepy };
 
         default:
             return state;
