@@ -2,12 +2,12 @@ import * as React from 'react';
 import { BaseComponent } from '../../core/base-component';
 import { RouteComponentProps } from '../../../node_modules/@types/react-router';
 import { RootState, RootActions, RootAction } from '../../stores';
-import { Recepy, RecepyPayload, RecepyFamily, Pump } from '../../shared';
+import { Recepy, RecepyPayload, RecepyFamily, Pump, AttributePayload } from '../../shared';
 import Button, { ButtonType } from '../button/button';
 import { Input } from '../input/input';
 import './recepy-edit.css';
 import { generateRangeFromEnumKeys } from '../../core/enum-utils';
-// import { browserHistory } from '../../core/browser-history';
+import { browserHistory } from '../../core/browser-history';
 import { Dispatch, bindActionCreators, } from 'redux';
 import { connect } from 'react-redux';
 import { Select } from '../select/select';
@@ -18,8 +18,9 @@ interface RecepyEditBaseProps extends RouteComponentProps<any> {
     id: string;
     recepy: Recepy | null;
     families: RecepyFamily[] | undefined;
-    update: (recepy: Recepy) => void;
     submit: (recepy: RecepyPayload) => void;
+    setPart: (payload: AttributePayload) => void;
+    setAttribute: (payload: AttributePayload) => void;
 }
 
 export class RecepyEditBase extends BaseComponent<RecepyEditBaseProps, {}> {
@@ -60,10 +61,10 @@ export class RecepyEditBase extends BaseComponent<RecepyEditBaseProps, {}> {
     }
 
     private handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { recepy, update } = this.props;
+        const { recepy, setAttribute } = this.props;
         const { target: { value, name } } = e;
         if (recepy) {
-            update({ ...recepy, [name]: value })
+            setAttribute({ id: name, value })
         }
     }
 
@@ -71,26 +72,21 @@ export class RecepyEditBase extends BaseComponent<RecepyEditBaseProps, {}> {
         const { recepy, submit } = this.props;
         if (recepy) {
             submit({ recepy });
+            browserHistory.push('/');
         }
     }
 
     private handlePumpChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { recepy, update } = this.props;
-        if (recepy) {
-            const { target: { value, name } } = e;
-            const indx = +name;
-            const quantity = +value;
-            const { parts } = recepy;
-            parts.splice(indx, 1, quantity);
-            update({ ...recepy, parts });
-        }
+        const { setPart } = this.props;
+        const { target: { value, name } } = e;
+        setPart({ id: name, value });
     }
 
     private handleSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        const { recepy, update } = this.props;
+        const { recepy, setAttribute } = this.props;
         if (recepy) {
             const { target: { value, name } } = e;
-            update({ ...recepy, [name]: value });
+            setAttribute({ id: name, value })
         }
     }
 }
@@ -104,7 +100,8 @@ const mapStateToProps = (state: RootState) => {
 
 const mapDispatchToProps = (dispatch: Dispatch<RootAction>) => bindActionCreators({
     submit: RootActions.CMD_EDIT,
-    update: RootActions.SET_RECEPY
+    setPart: RootActions.SET_PART,
+    setAttribute: RootActions.SET_ATTRIBUTE
 }, dispatch);
 
 export const RecepyEdit = connect(mapStateToProps, mapDispatchToProps)(RecepyEditBase);

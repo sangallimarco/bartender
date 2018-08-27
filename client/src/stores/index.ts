@@ -35,3 +35,6 @@ export const store = createStore(
 
 // auto bind actions
 webSocketService.bindActions(RootActions, store);
+
+store.dispatch(RootActions.CMD_FAMILIES());
+store.dispatch(RootActions.CMD_RECEPIES());

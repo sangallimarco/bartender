@@ -34,9 +34,9 @@ class RecepyListBase extends React.Component<RecepyListBaseProps, RecepyListBase
     };
 
     public componentDidMount() {
-        const { getAll, getFamilies } = this.props;
-        getAll();
-        getFamilies();
+        // const { getAll, getFamilies } = this.props;
+        // getAll();
+        // getFamilies();
 
         // enable edit mode
         document.addEventListener('keydown', this.handleKeyDown);

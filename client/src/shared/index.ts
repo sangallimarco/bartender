@@ -10,6 +10,8 @@ export const GET = 'GET';
 export const CMD_FAMILIES = 'CMD_FAMILIES';
 export const FAMILIES = 'FAMILIES';
 export const SET_RECEPY = 'SET_RECEPY';
+export const SET_PART = 'SET_PART';
+export const SET_ATTRIBUTE = 'SET_ATTRIBUTE';
 
 export interface ProcessingPayload {
     processing: boolean;
@@ -37,6 +39,11 @@ export interface MakePayload {
 
 export interface GetPayload {
     id: string;
+}
+
+export interface AttributePayload {
+    id: string;
+    value: string;
 }
 
 export interface Recepy {
