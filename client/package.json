@@ -14,6 +14,7 @@
     "redux": "^4.0.0",
     "redux-thunk": "^2.3.0",
     "styled-components": "^3.3.3",
+    "tslint": "^5.11.0",
     "typesafe-actions": "^2.0.4",
     "uuid": "^3.3.2"
   },
@@ -32,7 +33,7 @@
     "@types/react-redux": "^6.0.6",
     "@types/react-router-dom": "^4.2.7",
     "@types/uuid": "^3.4.3",
-    "typescript": "^2.9.2"
+    "typescript": "^3.0.1"
   },
   "proxy": {
     "/ws": {

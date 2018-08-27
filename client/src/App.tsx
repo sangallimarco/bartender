@@ -31,7 +31,7 @@ class App extends React.Component<AppProps, AppState> {
         <div className="App">
           <Router history={browserHistory}>
             <Switch>
-              <Route path="/edit/:id" component={RecepyEdit} />
+              <Route path="/edit" component={RecepyEdit} />
               <Route path="/" component={RecepyList} exact={true} />
             </Switch>
           </Router>

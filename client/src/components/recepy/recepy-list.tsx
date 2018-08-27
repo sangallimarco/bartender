@@ -11,16 +11,17 @@ import { Recepy, MakePayload } from '../../shared';
 
 interface RecepyListBaseProps {
     recepies: Recepy[];
+    recepy: Recepy;
     processing: boolean;
     getAll: () => any;
-    make: (payload: MakePayload) => any;
+    make: (payload: MakePayload) => void;
+    setRecepy: (recepy: Recepy) => void;
 }
 
 interface RecepyListBaseState {
     edit: boolean;
     dialogVisible: boolean;
     message: string;
-    recepy: Recepy | null;
 }
 
 class RecepyListBase extends React.Component<RecepyListBaseProps, RecepyListBaseState> {
@@ -28,8 +29,7 @@ class RecepyListBase extends React.Component<RecepyListBaseProps, RecepyListBase
     public state = {
         dialogVisible: false,
         edit: false,
-        message: '',
-        recepy: null
+        message: ''
     };
 
     public componentDidMount() {
@@ -66,7 +66,7 @@ class RecepyListBase extends React.Component<RecepyListBaseProps, RecepyListBase
 
     private handleConfirm = () => {
         const { make } = this.props;
-        const { recepy } = this.state;
+        const { recepy } = this.props;
         if (recepy) {
             const { id } = recepy as Recepy;
             make({ id });
@@ -79,11 +79,12 @@ class RecepyListBase extends React.Component<RecepyListBaseProps, RecepyListBase
     }
 
     private handleSelected = (recepy: Recepy) => {
+        const { setRecepy } = this.props;
         const { edit } = this.state;
-        const { id, label } = recepy;
-        this.setState({ recepy });
+        const { label } = recepy;
+        setRecepy(recepy);
         if (edit) {
-            browserHistory.push(`/edit/${id}`); // refactor this without ID
+            browserHistory.push(`/edit`);
         } else {
             const message = `Confirm ${label}?`;
             this.setState({ dialogVisible: true, message });
@@ -107,7 +108,8 @@ const mapStateToProps = (state: RootState) => {
 
 const mapDispatchToProps = (dispatch: Dispatch<RootAction>) => bindActionCreators({
     getAll: RootActions.CMD_RECEPIES,
-    make: RootActions.CMD_MAKE
+    make: RootActions.CMD_MAKE,
+    setRecepy: RootActions.SET_RECEPY
 }, dispatch);
 
 export const RecepyList = connect(mapStateToProps, mapDispatchToProps)(RecepyListBase);

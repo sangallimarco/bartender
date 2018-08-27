@@ -4,9 +4,12 @@ export const MAKE = 'MAKE';
 export const CMD_RECEPIES = 'CMD_RECEPIES';
 export const RECEPIES = 'RECEPIES';
 export const NEW = 'NEW';
+export const CMD_EDIT = 'CMD_EDIT';
 export const EDIT = 'EDIT';
 export const GET = 'GET';
-export const GET_FAMILIES = 'GET_FAMILIES';
+export const CMD_FAMILIES = 'CMD_FAMILIES';
+export const FAMILIES = 'FAMILIES';
+export const SET_RECEPY = 'SET_RECEPY';
 
 export interface ProcessingPayload {
     processing: boolean;

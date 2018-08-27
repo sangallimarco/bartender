@@ -1,64 +1,31 @@
 import * as React from 'react';
 import { BaseComponent } from '../../core/base-component';
 import { RouteComponentProps } from '../../../node_modules/@types/react-router';
-import { GET, GET_FAMILIES, EDIT, Recepy, GetPayload, RecepyPayload, RecepyFamiliesPayload, RecepyFamily, Pump } from '../../shared';
-import { webSocketService, WebSocketListener } from '../../core/websocket';
+import { RootState, RootActions, RootAction } from '../../stores';
+import { Recepy, RecepyPayload, RecepyFamily, Pump } from '../../shared';
 import Button, { ButtonType } from '../button/button';
 import { Input } from '../input/input';
 import './recepy-edit.css';
 import { generateRangeFromEnumKeys } from '../../core/enum-utils';
-import { browserHistory } from '../../core/browser-history';
+// import { browserHistory } from '../../core/browser-history';
+import { Dispatch, bindActionCreators, } from 'redux';
+import { connect } from 'react-redux';
 import { Select } from '../select/select';
 import InputContainer from '../input-container/input-container';
-import { cloneDeep } from 'lodash';
 import { getCurrentFamilyIngredients } from './recepy-utils';
 
-interface RecepyEditProps extends RouteComponentProps<any> {
+interface RecepyEditBaseProps extends RouteComponentProps<any> {
     id: string;
-}
-
-interface RecepyEditState {
-    recepy: Recepy | undefined;
+    recepy: Recepy | null;
     families: RecepyFamily[] | undefined;
+    update: (recepy: Recepy) => void;
+    submit: (recepy: RecepyPayload) => void;
 }
 
-export class RecepyEdit extends BaseComponent<RecepyEditProps, RecepyEditState> {
-    public state = {
-        families: undefined,
-        recepy: undefined
-    };
-
-    public componentDidMount() {
-        const { match: { params: { id } } } = this.props;
-        this.listeners.push(
-            webSocketService.on<RecepyPayload>(GET, (data) => {
-                const { recepy } = data;
-                this.setState({ recepy });
-
-            })
-        );
-        this.listeners.push(
-            webSocketService.on<RecepyFamiliesPayload>(GET_FAMILIES, (data) => {
-                const { families } = data;
-                this.setState({ families });
-            })
-        );
-        this.listeners.push(
-            webSocketService.on<{}>(EDIT, (data) => {
-                browserHistory.push('/');
-            })
-        );
-
-        webSocketService.send<GetPayload>(GET, { id });
-        webSocketService.send<{}>(GET_FAMILIES, {});
-    }
-
-    public componentWillUnmount() {
-        this.listeners.map((i: WebSocketListener) => i());
-    }
+export class RecepyEditBase extends BaseComponent<RecepyEditBaseProps, {}> {
 
     public render() {
-        const { recepy, families } = this.state;
+        const { recepy, families } = this.props;
         if (recepy && families) {
             const { label, parts, recepyFamily } = recepy as Recepy;
             return <div className="recepy-edit">
@@ -76,7 +43,7 @@ export class RecepyEdit extends BaseComponent<RecepyEditProps, RecepyEditState> 
     }
 
     private renderPumps(parts: number[]) {
-        const { families, recepy } = this.state;
+        const { families, recepy } = this.props;
         if (families && recepy) {
             const ingredients = getCurrentFamilyIngredients(families, recepy);
             const range = generateRangeFromEnumKeys(Pump);
@@ -93,43 +60,51 @@ export class RecepyEdit extends BaseComponent<RecepyEditProps, RecepyEditState> 
     }
 
     private handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { recepy: prevRecepy } = this.state;
+        const { recepy, update } = this.props;
         const { target: { value, name } } = e;
-        if (prevRecepy) {
-            const newRecepy = cloneDeep<Recepy>(prevRecepy);
-            const recepy: Recepy = { ...newRecepy, [name]: value };
-            this.setState({ recepy })
+        if (recepy) {
+            update({ ...recepy, [name]: value })
         }
     }
 
     private handleSubmit = () => {
-        const { recepy } = this.state;
+        const { recepy, submit } = this.props;
         if (recepy) {
-            webSocketService.send<RecepyPayload>(EDIT, { recepy });
+            submit({ recepy });
         }
     }
 
     private handlePumpChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { recepy: prevRecepy } = this.state;
-        if (prevRecepy) {
+        const { recepy, update } = this.props;
+        if (recepy) {
             const { target: { value, name } } = e;
             const indx = +name;
             const quantity = +value;
-            const { parts } = prevRecepy as Recepy;
+            const { parts } = recepy;
             parts.splice(indx, 1, quantity);
-            const newRecepy = cloneDeep<Recepy>(prevRecepy);
-            const recepy: Recepy = { ...newRecepy, parts };
-            this.setState({ recepy });
+            update({ ...recepy, parts });
         }
     }
 
     private handleSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        const { recepy: prevRecepy } = this.state;
-        if (prevRecepy) {
+        const { recepy, update } = this.props;
+        if (recepy) {
             const { target: { value, name } } = e;
-            const newRecepy = cloneDeep<Recepy>(prevRecepy);
-            const recepy: Recepy = { ...newRecepy, [name]: value };
-            this.setState({ recepy });
+            update({ ...recepy, [name]: value });
         }
     }
 }
+
+const mapStateToProps = (state: RootState) => {
+    const {
+        root: { recepy, families }
+    } = state;
+    return { recepy, families };
+};
+
+const mapDispatchToProps = (dispatch: Dispatch<RootAction>) => bindActionCreators({
+    submit: RootActions.CMD_EDIT,
+    update: RootActions.SET_RECEPY
+}, dispatch);
+
+export const RecepyEdit = connect(mapStateToProps, mapDispatchToProps)(RecepyEditBase);

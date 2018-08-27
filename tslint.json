@@ -1,5 +1,5 @@
 {
-    "extends": ["tslint:latest", "tslint-config-prettier"],
+    "extends": ["tslint:latest"],
     "linterOptions": {
         "exclude": [
             "node_modules/**/*.ts"
@@ -10,8 +10,12 @@
         "ordered-imports": false,
         "no-namespace": false,
         "no-require-imports": false,
-        "object-literal-sort-keys": false,
         "no-var-requires": false,
-        "no-console": false
+        "no-console": false,
+        "member-ordering": false,
+        "object-literal-sort-keys": false
+    },
+    "jsRules": {
+        "object-literal-sort-keys": false
     }
 }
