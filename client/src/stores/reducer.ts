@@ -42,7 +42,12 @@ export const reducer: Reducer<RootReducerState> = (
             return { ...state, families };
 
         case getType(RootActions.CMD_MAKE):
-            webSocketService.send(CMD_MAKE, payload as MakePayload);
+            const { recepy } = state;
+            if (recepy) {
+                const { id: recepyId } = recepy as Recepy;
+                const message: MakePayload = { id: recepyId };
+                webSocketService.send(CMD_MAKE, message);
+            }
             return state;
         case getType(RootActions.MAKE):
             const { processing } = payload as ProcessingPayload;

@@ -7,15 +7,13 @@ import { browserHistory } from '../../core/browser-history';
 import { RootState, RootActions, RootAction } from '../../stores';
 import { Dispatch, bindActionCreators, } from 'redux';
 import { connect } from 'react-redux';
-import { Recepy, MakePayload } from '../../shared';
+import { Recepy } from '../../shared';
 
 interface RecepyListBaseProps {
     recepies: Recepy[];
     recepy: Recepy;
     processing: boolean;
-    getAll: () => void;
-    getFamilies: () => void;
-    make: (payload: MakePayload) => void;
+    make: () => void;
     setRecepy: (recepy: Recepy) => void;
 }
 
@@ -34,10 +32,6 @@ class RecepyListBase extends React.Component<RecepyListBaseProps, RecepyListBase
     };
 
     public componentDidMount() {
-        // const { getAll, getFamilies } = this.props;
-        // getAll();
-        // getFamilies();
-
         // enable edit mode
         document.addEventListener('keydown', this.handleKeyDown);
     }
@@ -68,12 +62,8 @@ class RecepyListBase extends React.Component<RecepyListBaseProps, RecepyListBase
 
     private handleConfirm = () => {
         const { make } = this.props;
-        const { recepy } = this.props;
-        if (recepy) {
-            const { id } = recepy as Recepy;
-            make({ id });
-            this.setState({ dialogVisible: false });
-        }
+        make();
+        this.setState({ dialogVisible: false });
     }
 
     private handleDismiss = () => {
@@ -109,8 +99,6 @@ const mapStateToProps = (state: RootState) => {
 };
 
 const mapDispatchToProps = (dispatch: Dispatch<RootAction>) => bindActionCreators({
-    getAll: RootActions.CMD_RECEPIES,
-    getFamilies: RootActions.CMD_FAMILIES,
     make: RootActions.CMD_MAKE,
     setRecepy: RootActions.SET_RECEPY
 }, dispatch);
