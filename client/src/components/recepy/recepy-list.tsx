@@ -37,7 +37,7 @@ class RecepyListBase extends React.Component<RecepyListBaseProps, RecepyListBase
         document.addEventListener('keydown', this.handleKeyDown);
     }
 
-    public componentDidUnmount() {
+    public componentWillUnmount() {
         // enable edit mode
         document.removeEventListener('keydown', this.handleKeyDown);
     }
