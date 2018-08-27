@@ -14,13 +14,13 @@ const rootReducer = combineReducers<RootState, RootAction>({
     root: reducer // namespace
 });
 
-const cwindow = window as any;
 
 // inject function emit as extra argument in trunk
 export const emit = (type: string, payload: any) => {
     webSocketService.send(type, payload);
 };
 
+const cwindow = window as any;
 const middlewares = [
     // ReduxThunk.withExtraArgument({ emit }),
     cwindow.__REDUX_DEVTOOLS_EXTENSION__ && cwindow.__REDUX_DEVTOOLS_EXTENSION__()
