@@ -41,8 +41,8 @@ export const reducer: Reducer<RootReducerState> = (
 
         case getType(RootActions.CMD_MAKE):
             const { recepy } = state;
-            if (recepy) {
-                const { id: recepyId } = recepy as Recepy;
+            if (recepy !== null) {
+                const { id: recepyId } = recepy;
                 const message: MakePayload = { id: recepyId };
                 webSocketService.send(CMD_MAKE, message);
             }
