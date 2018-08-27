@@ -1,5 +1,5 @@
 import { Reducer } from 'redux';
-import { Recepy, RecepyFamily, RecepiesPayload, MakePayload, ProcessingPayload, RecepyFamiliesPayload, CMD_RECEPIES, CMD_MAKE, RecepyPayload, CMD_FAMILIES, AttributePayload, CMD_EDIT, CMD_NEW } from '../shared';
+import { Recepy, RecepyFamily, MakePayload, CMD_RECEPIES, CMD_MAKE, CMD_FAMILIES, CMD_EDIT, CMD_NEW } from '../shared';
 import { RootAction, RootActions } from './actions';
 import { webSocketService } from '../core/websocket';
 import { getType } from 'typesafe-actions';
@@ -24,21 +24,19 @@ export const reducer: Reducer<RootReducerState> = (
     state = initialState,
     action: RootAction
 ): RootReducerState => {
-    const { payload, type } = action;
-
-    switch (type) {
+    switch (action.type) {
         case getType(RootActions.CMD_RECEPIES):
             webSocketService.send(CMD_RECEPIES, {});
             return state;
         case getType(RootActions.RECEPIES):
-            const { recepies } = payload as RecepiesPayload;
+            const { recepies } = action.payload;
             return { ...state, recepies };
 
         case getType(RootActions.CMD_FAMILIES):
             webSocketService.send(CMD_FAMILIES, {});
             return state;
         case getType(RootActions.FAMILIES):
-            const { families } = payload as RecepyFamiliesPayload;
+            const { families } = action.payload;
             return { ...state, families };
 
         case getType(RootActions.CMD_MAKE):
@@ -50,25 +48,25 @@ export const reducer: Reducer<RootReducerState> = (
             }
             return state;
         case getType(RootActions.MAKE):
-            const { processing } = payload as ProcessingPayload;
+            const { processing } = action.payload;
             return { ...state, processing };
 
         case getType(RootActions.CMD_EDIT):
-            webSocketService.send(CMD_EDIT, payload as RecepyPayload);
+            webSocketService.send(CMD_EDIT, action.payload);
             return state;
 
         case getType(RootActions.CMD_NEW):
             webSocketService.send(CMD_NEW, {});
             return state;
         case getType(RootActions.NEW):
-            const { recepy: newRecepy } = payload as RecepyPayload;
+            const { recepy: newRecepy } = action.payload;
             return { ...state, recepy: newRecepy };
 
         case getType(RootActions.SET_RECEPY):
-            return { ...state, recepy: payload as Recepy };
+            return { ...state, recepy: action.payload };
 
         case getType(RootActions.SET_PART):
-            const { id, value } = payload as AttributePayload;
+            const { id, value } = action.payload;
             if (state.recepy) {
                 const indx = +id;
                 const quantity = +value;
@@ -79,7 +77,7 @@ export const reducer: Reducer<RootReducerState> = (
             return state;
 
         case getType(RootActions.SET_ATTRIBUTE):
-            const { id: attributeKey, value: attributeValue } = payload as AttributePayload;
+            const { id: attributeKey, value: attributeValue } = action.payload;
             const modifiedRecepy = { ...state.recepy, [attributeKey]: attributeValue } as Recepy;
             return { ...state, recepy: modifiedRecepy };
 
