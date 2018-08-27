@@ -19,7 +19,8 @@ export const RootActions = {
 
     [CMD_FAMILIES]: createAction(CMD_FAMILIES, resolve => {
         return () => resolve({});
-    }), [FAMILIES]: createAction(RECEPIES, resolve => {
+    }),
+    [FAMILIES]: createAction(FAMILIES, resolve => {
         return (data: RecepyFamiliesPayload) => resolve(data);
     }),
 

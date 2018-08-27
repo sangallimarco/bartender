@@ -13,7 +13,8 @@ interface RecepyListBaseProps {
     recepies: Recepy[];
     recepy: Recepy;
     processing: boolean;
-    getAll: () => any;
+    getAll: () => void;
+    getFamilies: () => void;
     make: (payload: MakePayload) => void;
     setRecepy: (recepy: Recepy) => void;
 }
@@ -33,8 +34,9 @@ class RecepyListBase extends React.Component<RecepyListBaseProps, RecepyListBase
     };
 
     public componentDidMount() {
-        const { getAll } = this.props;
+        const { getAll, getFamilies } = this.props;
         getAll();
+        getFamilies();
 
         // enable edit mode
         document.addEventListener('keydown', this.handleKeyDown);
@@ -108,6 +110,7 @@ const mapStateToProps = (state: RootState) => {
 
 const mapDispatchToProps = (dispatch: Dispatch<RootAction>) => bindActionCreators({
     getAll: RootActions.CMD_RECEPIES,
+    getFamilies: RootActions.CMD_FAMILIES,
     make: RootActions.CMD_MAKE,
     setRecepy: RootActions.SET_RECEPY
 }, dispatch);
