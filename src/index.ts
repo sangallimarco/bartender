@@ -63,8 +63,6 @@ webSocketRouter.on<{}>(NEW, async (wsInstance: ws, uri: string, data) => {
 webSocketRouter.on<RecepyPayload>(CMD_EDIT, async (wsInstance: ws, uri: string, data) => {
     const { recepy } = data;
     await recepyMaker.upsertRecepy(recepy);
-    // WebSocketUtils.sendMessage<{}>(wsInstance, EDIT, {
-    // });
     const recepies = await recepyMaker.getRecepies()
     WebSocketUtils.sendMessage<RecepiesPayload>(wsInstance, RECEPIES, {
         recepies
