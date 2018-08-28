@@ -3,14 +3,14 @@ import { RequestHandler, NextFunction, Request, Response } from "express";
 import ws from 'ws';
 
 export interface WebsocketPayload<T> {
-    uri: string,
+    action: string,
     data: T
 }
 
-export type WebsocketCallback<T> = (ws: EventEmitter, uri: string, data: T) => void;
+export type WebsocketCallback<T> = (ws: EventEmitter, action: string, data: T) => void;
 
 export interface WebsocketListenerUri {
-    uri: string;
+    action: string;
 }
 
 export interface WebsocketListener<T> extends WebsocketListenerUri {

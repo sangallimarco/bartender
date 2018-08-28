@@ -1,16 +1,16 @@
 import * as React from 'react';
 import './recepy-item.css';
+import { Recepy } from '../../shared';
 
 export interface RecepyItemProps {
-    label: string;
-    id: string;
-    onClick: (id: string, label: string) => void;
+    recepy: Recepy;
+    onClick: (recepy: Recepy) => void;
 }
 
 export default class RecepyItem extends React.PureComponent<RecepyItemProps, any> {
 
     public render() {
-        const { label } = this.props;
+        const { recepy: { label } } = this.props;
         return (
             <div className="recepy__item" onClick={this.handleClick}>
                 {label}
@@ -19,7 +19,7 @@ export default class RecepyItem extends React.PureComponent<RecepyItemProps, any
     }
 
     private handleClick = () => {
-        const { onClick, id, label } = this.props;
-        onClick(id, label);
+        const { recepy, onClick } = this.props;
+        onClick(recepy);
     }
 }

@@ -6,7 +6,7 @@
       "recepyFamily": "default",
       "parts": [
         12,
-        1,
+        13,
         13,
         11,
         1
@@ -17,28 +17,184 @@
       "label": "Aperol Spritz",
       "recepyFamily": "default",
       "parts": [
+        12,
+        3,
         1,
-        0,
-        1,
-        0,
-        0
+        3,
+        3
       ]
     },
     {
       "id": "75njbo9zwjkxmwne7",
-      "label": "Fantasy",
+      "label": "Fantasy333",
       "recepyFamily": "default",
       "parts": [
-        2,
-        1,
+        22,
         12,
-        1,
-        12
+        122,
+        123,
+        212
       ]
     },
     {
       "id": "75njbo9zwjky6x2tu",
       "label": "OK",
+      "recepyFamily": "default",
+      "parts": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "id": "75njboiu3jlcgow6z",
+      "label": "dasdasdasd",
+      "recepyFamily": "default",
+      "parts": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "id": "75njboiu3jlcgp1ai",
+      "label": "asdasdasd",
+      "recepyFamily": "default",
+      "parts": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "id": "75njboiu3jlcgp4d7",
+      "label": "3333",
+      "recepyFamily": "cocktails",
+      "parts": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "id": "75njboiu3jlcgp7k9",
+      "label": "test",
+      "recepyFamily": "cocktails",
+      "parts": [
+        12,
+        11,
+        13,
+        12,
+        11
+      ]
+    },
+    {
+      "id": "75njbojc8jlchee57",
+      "label": "maaarcoooo",
+      "recepyFamily": "cocktails",
+      "parts": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "id": "75njbojc8jlchee59",
+      "label": "marco",
+      "recepyFamily": "default",
+      "parts": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "id": "75njbojc8jlchee5a",
+      "label": "ok recepy new",
+      "recepyFamily": "default",
+      "parts": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "id": "75njboj8sjlchdqys",
+      "label": "nnnn asndasndaas",
+      "recepyFamily": "default",
+      "parts": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "id": "75njbojc8jlcmteom",
+      "label": "new one",
+      "recepyFamily": "default",
+      "parts": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "id": "75njbojc8jlcmtmzl",
+      "label": "yeahhh",
+      "recepyFamily": "default",
+      "parts": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "id": "75njbojc8jlcne8ha",
+      "label": "adasdasd",
+      "recepyFamily": "default",
+      "parts": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "id": "75njbojc8jlcqq353",
+      "label": "new mate!",
+      "recepyFamily": "default",
+      "parts": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "id": "75njbojc8jlcqss7z",
+      "label": "",
       "recepyFamily": "default",
       "parts": [
         1,

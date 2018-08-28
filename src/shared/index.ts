@@ -1,12 +1,18 @@
-export enum RoutePath {
-    TEST = '/test',
-    MAKE = '/make',
-    RECEPIES = '/recepies',
-    NEW = '/new',
-    EDIT = '/edit',
-    GET = '/get',
-    GET_FAMILIES = '/families'
-}
+export const TEST = 'TEST';
+export const CMD_MAKE = 'CMD_MAKE';
+export const MAKE = 'MAKE';
+export const CMD_RECEPIES = 'CMD_RECEPIES';
+export const RECEPIES = 'RECEPIES';
+export const CMD_NEW = 'CMD_NEW';
+export const NEW = 'NEW';
+export const CMD_EDIT = 'CMD_EDIT';
+export const EDIT = 'EDIT';
+export const GET = 'GET';
+export const CMD_FAMILIES = 'CMD_FAMILIES';
+export const FAMILIES = 'FAMILIES';
+export const SET_RECEPY = 'SET_RECEPY';
+export const SET_PART = 'SET_PART';
+export const SET_ATTRIBUTE = 'SET_ATTRIBUTE';
 
 export interface ProcessingPayload {
     processing: boolean;
@@ -25,7 +31,7 @@ export interface RecepyFamiliesPayload {
 }
 
 export interface RecepiesPayload {
-    recepies: RecepyOption[];
+    recepies: Recepy[];
 }
 
 export interface MakePayload {
@@ -36,11 +42,10 @@ export interface GetPayload {
     id: string;
 }
 
-export interface RecepyOption {
+export interface AttributePayload {
     id: string;
-    label: string;
+    value: string;
 }
-
 
 export interface Recepy {
     id: string;

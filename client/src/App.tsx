@@ -5,6 +5,12 @@ import { Router, Route, Switch } from 'react-router';
 import { RecepyList } from './components/recepy/recepy-list';
 import { browserHistory } from './core/browser-history';
 import { RecepyEdit } from './components/recepy/recepy-edit';
+import { Store } from 'redux';
+import { Provider } from 'react-redux';
+
+interface AppProps {
+  store: Store;
+}
 
 interface AppState {
   data: {},
@@ -16,18 +22,21 @@ interface RecepyOption {
   label: string;
 }
 
-class App extends React.Component<{}, AppState> {
+class App extends React.Component<AppProps, AppState> {
 
   public render() {
+    const { store } = this.props;
     return (
-      <div className="App">
-        <Router history={browserHistory}>
-          <Switch>
-            <Route path="/edit/:id" component={RecepyEdit} />
-            <Route path="/" component={RecepyList} exact={true} />
-          </Switch>
-        </Router>
-      </div>
+      <Provider store={store}>
+        <div className="App">
+          <Router history={browserHistory}>
+            <Switch>
+              <Route path="/edit" component={RecepyEdit} />
+              <Route path="/" component={RecepyList} exact={true} />
+            </Switch>
+          </Router>
+        </div>
+      </Provider>
     );
   }
 }

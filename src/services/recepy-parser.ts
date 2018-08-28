@@ -1,5 +1,5 @@
 import { PumpsUtils } from './pump-utils';
-import { RecepyOption, RecepyFamily, Recepy } from '../shared';
+import { RecepyFamily, Recepy } from '../shared';
 import Lowdb from 'lowdb';
 import FileAsync from 'lowdb/adapters/FileAsync';
 import { cloneDeep } from 'lodash';
@@ -100,17 +100,14 @@ export class RecepyService {
         return recepy;
     }
 
-    public async getRecepies(): Promise<RecepyOption[]> {
+    public async getRecepies(): Promise<Recepy[]> {
         if (this.recepyFamily) {
             const { id: recepyFamily } = this.recepyFamily;
             const recepies = await this.db.get(Collection.RECEPIES)
                 .filter({ recepyFamily })
                 .sortBy('label')
                 .value();
-            return recepies.map((recepy: Recepy) => {
-                const { id, label } = recepy;
-                return { id, label };
-            })
+            return recepies;
         } else {
             return Promise.resolve([]);
         }
