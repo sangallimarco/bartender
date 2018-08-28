@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { BaseComponent } from '../../core/base-component';
 import { RouteComponentProps } from '../../../node_modules/@types/react-router';
 import { RootState, RootActions, RootAction } from '../../stores';
 import { Recepy, RecepyPayload, RecepyFamily, Pump, AttributePayload } from '../../shared';
@@ -23,7 +22,7 @@ interface RecepyEditBaseProps extends RouteComponentProps<any> {
     setAttribute: (payload: AttributePayload) => void;
 }
 
-export class RecepyEditBase extends BaseComponent<RecepyEditBaseProps, {}> {
+export class RecepyEditBase extends React.Component<RecepyEditBaseProps, {}> {
 
     public render() {
         const { recepy, families } = this.props;
