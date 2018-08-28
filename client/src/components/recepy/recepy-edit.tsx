@@ -16,10 +16,11 @@ import { getCurrentFamilyIngredients } from './recepy-utils';
 interface RecepyEditBaseProps extends RouteComponentProps<any> {
     id: string;
     recepy: Recepy | null;
-    families: RecepyFamily[] | undefined;
+    families: RecepyFamily[];
     submit: (recepy: RecepyPayload) => void;
     setPart: (payload: AttributePayload) => void;
     setAttribute: (payload: AttributePayload) => void;
+    remove: () => void;
 }
 
 export class RecepyEditBase extends React.Component<RecepyEditBaseProps, {}> {
@@ -36,6 +37,7 @@ export class RecepyEditBase extends React.Component<RecepyEditBaseProps, {}> {
                     <Select name="recepyFamily" value={recepyFamily} onChange={this.handleSelect} options={families} />
                 </InputContainer>
                 {this.renderPumps(parts)}
+                <Button onClick={this.handleRemove} type={ButtonType.DEFAULT}>DELETE</Button>
                 <Button onClick={this.handleSubmit} type={ButtonType.ACTION}>SAVE</Button>
             </div>;
         }
@@ -65,6 +67,12 @@ export class RecepyEditBase extends React.Component<RecepyEditBaseProps, {}> {
         if (recepy) {
             setAttribute({ id: name, value })
         }
+    }
+
+    private handleRemove = () => {
+        const { remove } = this.props;
+        remove();
+        browserHistory.push('/');
     }
 
     private handleSubmit = () => {
@@ -100,7 +108,8 @@ const mapStateToProps = (state: RootState) => {
 const mapDispatchToProps = (dispatch: Dispatch<RootAction>) => bindActionCreators({
     submit: RootActions.CMD_EDIT,
     setPart: RootActions.SET_PART,
-    setAttribute: RootActions.SET_ATTRIBUTE
+    setAttribute: RootActions.SET_ATTRIBUTE,
+    remove: RootActions.CMD_DELETE,
 }, dispatch);
 
 export const RecepyEdit = connect(mapStateToProps, mapDispatchToProps)(RecepyEditBase);

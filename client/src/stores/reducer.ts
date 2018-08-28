@@ -1,5 +1,5 @@
 import { Reducer } from 'redux';
-import { Recepy, RecepyFamily, MakePayload, CMD_RECEPIES, CMD_MAKE, CMD_FAMILIES, CMD_EDIT, CMD_NEW } from '../shared';
+import { Recepy, RecepyFamily, MakePayload, CMD_RECEPIES, CMD_MAKE, CMD_FAMILIES, CMD_EDIT, CMD_NEW, CMD_DELETE } from '../shared';
 import { RootAction, RootActions } from './actions';
 import { webSocketService } from '../core/websocket';
 import { getType } from 'typesafe-actions';
@@ -61,6 +61,11 @@ export const reducer: Reducer<RootReducerState> = (
         case getType(RootActions.NEW):
             const { recepy: newRecepy } = action.payload;
             return { ...state, recepy: newRecepy };
+
+        case getType(RootActions.CMD_DELETE):
+            const { recepy: deleteRecepy } = state;
+            webSocketService.send(CMD_DELETE, { recepy: deleteRecepy });
+            return { ...state, recepy: null };
 
         case getType(RootActions.SET_RECEPY):
             return { ...state, recepy: action.payload };

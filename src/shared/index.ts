@@ -13,6 +13,7 @@ export const FAMILIES = 'FAMILIES';
 export const SET_RECEPY = 'SET_RECEPY';
 export const SET_PART = 'SET_PART';
 export const SET_ATTRIBUTE = 'SET_ATTRIBUTE';
+export const CMD_DELETE = 'CMD_DELETE';
 
 export interface ProcessingPayload {
     processing: boolean;

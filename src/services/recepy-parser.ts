@@ -88,7 +88,15 @@ export class RecepyService {
             await found
                 .assign(recepy)
                 .write();
+
         }
+    }
+
+    public async delRecepy(recepy: Recepy) {
+        const { id } = recepy;
+        await this.db.get(Collection.RECEPIES)
+            .remove({ id })
+            .write();
     }
 
     public async createRecepy(): Promise<Recepy> {
@@ -144,5 +152,6 @@ export class RecepyService {
             );
         }
     }
+
 }
 
