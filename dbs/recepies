@@ -5,23 +5,11 @@
       "label": "Aperol Spritz",
       "recepyFamily": "default",
       "parts": [
-        12,
-        3,
-        1,
-        3,
-        3
-      ]
-    },
-    {
-      "id": "75njbo9zwjkxmwne7",
-      "label": "Fantasy",
-      "recepyFamily": "default",
-      "parts": [
-        22,
         123,
-        122,
-        1233,
-        212
+        33,
+        13,
+        33,
+        3
       ]
     },
     {
@@ -82,6 +70,18 @@
         1,
         1,
         1
+      ]
+    },
+    {
+      "id": "75njbo9zwjkxmwne7",
+      "label": "Fantasy333",
+      "recepyFamily": "default",
+      "parts": [
+        22,
+        232343,
+        122,
+        1233,
+        212
       ]
     }
   ],

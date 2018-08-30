@@ -1,10 +1,14 @@
 import { createAction } from 'typesafe-actions';
 import { EDIT, RECEPIES, CMD_RECEPIES, CMD_FAMILIES, FAMILIES, CMD_MAKE, CMD_EDIT, MAKE, RecepyPayload, RecepiesPayload, ProcessingPayload, RecepyFamiliesPayload, Recepy, SET_RECEPY, SET_PART, AttributePayload, SET_ATTRIBUTE, CMD_NEW, NEW, CMD_DELETE } from '../shared';
 import { ActionType } from 'typesafe-actions';
+import { webSocketService } from '../core/websocket';
 
 export const RootActions = {
     [CMD_RECEPIES]: createAction(CMD_RECEPIES, resolve => {
-        return () => resolve({});
+        return () => {
+            webSocketService.send(CMD_RECEPIES, {});
+            return resolve({})
+        };
     }),
     [RECEPIES]: createAction(RECEPIES, resolve => {
         return (data: RecepiesPayload) => resolve(data);

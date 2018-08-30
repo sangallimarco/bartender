@@ -4,18 +4,16 @@ import RecepyItem from './recepy-item';
 import Dialog from '../dialog/dialog';
 import Processing from '../processing/processing';
 import { browserHistory } from '../../core/browser-history';
-import { RootState, RootActions, RootAction } from '../../stores';
-import { Dispatch, bindActionCreators, } from 'redux';
+import { RootState, RootAction, RootActions } from '../../stores';
 import { connect } from 'react-redux';
 import { Recepy } from '../../shared';
+// import { Dispatch } from 'redux';
+import { ReduxDispatch } from '../../core/types';
 
-interface RecepyListBaseProps {
+interface ReduxProps {
     recepies: Recepy[];
-    recepy: Recepy;
+    recepy: Recepy | null;
     processing: boolean;
-    make: () => void;
-    create: () => void;
-    setRecepy: (recepy: Recepy) => void;
 }
 
 interface RecepyListBaseState {
@@ -24,7 +22,7 @@ interface RecepyListBaseState {
     message: string;
 }
 
-class RecepyListBase extends React.Component<RecepyListBaseProps, RecepyListBaseState> {
+class RecepyListBase extends React.Component<ReduxProps & ReduxDispatch<RootAction>, RecepyListBaseState> {
 
     public state = {
         dialogVisible: false,
@@ -56,21 +54,21 @@ class RecepyListBase extends React.Component<RecepyListBaseProps, RecepyListBase
 
     public handleKeyDown = (e: KeyboardEvent) => {
         const { key } = e;
-        const { create } = this.props;
+        const { dispatch } = this.props;
         switch (key) {
             case 'e':
                 this.setState({ edit: true });
                 break;
             case 'n':
-                create();
+                dispatch(RootActions.CMD_NEW());
                 browserHistory.push(`/edit`);
                 break;
         }
     }
 
     private handleConfirm = () => {
-        const { make } = this.props;
-        make();
+        const { dispatch } = this.props;
+        dispatch(RootActions.CMD_MAKE());
         this.setState({ dialogVisible: false });
     }
 
@@ -79,10 +77,10 @@ class RecepyListBase extends React.Component<RecepyListBaseProps, RecepyListBase
     }
 
     private handleSelected = (recepy: Recepy) => {
-        const { setRecepy } = this.props;
+        const { dispatch } = this.props;
         const { edit } = this.state;
         const { label } = recepy;
-        setRecepy(recepy);
+        dispatch(RootActions.SET_RECEPY(recepy));
         if (edit) {
             browserHistory.push(`/edit`);
         } else {
@@ -99,17 +97,11 @@ class RecepyListBase extends React.Component<RecepyListBaseProps, RecepyListBase
     }
 }
 
-const mapStateToProps = (state: RootState) => {
+const mapStateToProps = (state: RootState): ReduxProps => {
     const {
-        root: { processing, recepies }
+        root: { processing, recepies, recepy }
     } = state;
-    return { processing, recepies };
+    return { processing, recepies, recepy };
 };
 
-const mapDispatchToProps = (dispatch: Dispatch<RootAction>) => bindActionCreators({
-    make: RootActions.CMD_MAKE,
-    create: RootActions.CMD_NEW,
-    setRecepy: RootActions.SET_RECEPY
-}, dispatch);
-
-export const RecepyList = connect(mapStateToProps, mapDispatchToProps)(RecepyListBase);
+export const RecepyList = connect(mapStateToProps)(RecepyListBase);
