@@ -1,7 +1,5 @@
 # WIP!!!!!!
 
-## Development
-
 ### Server
 ```
 NODE_ENV='emulate' npm run watch
@@ -24,4 +22,10 @@ npm start
 ```
 npm build-all
 npm run serve
+```
+
+## Development
+Symlink types from client folder
+```
+ln -s ../client/src/types.ts ./src
 ```
