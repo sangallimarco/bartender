@@ -32,7 +32,7 @@ class App extends React.Component<AppProps, AppState> {
           <Router history={browserHistory}>
             <Switch>
               <Route path="/edit" component={RecepyEdit} />
-              <Route path="/" component={RecepyList} exact={true} />
+              <Route path="/" component={RecepyList} />
             </Switch>
           </Router>
         </div>
