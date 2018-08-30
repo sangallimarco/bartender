@@ -1,5 +1,5 @@
 import { PumpsUtils } from './pump-utils';
-import { RecepyFamily, Recepy } from 'shared-types';
+import { RecepyFamily, Recepy } from '../types';
 import Lowdb from 'lowdb';
 import FileAsync from 'lowdb/adapters/FileAsync';
 import { cloneDeep } from 'lodash';

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { RouteComponentProps } from '../../../node_modules/@types/react-router';
 import { RootState, RootActions, RootAction } from '../../stores';
-import { Recepy, RecepyFamily, Pump } from '../../shared';
+import { Recepy, RecepyFamily, Pump } from '../../types';
 import Button, { ButtonType } from '../button/button';
 import { Input } from '../input/input';
 import './recepy-edit.css';

@@ -1,5 +1,5 @@
 import { Reducer } from 'redux';
-import { Recepy, RecepyFamily, MakePayload, CMD_MAKE, CMD_FAMILIES, CMD_EDIT, CMD_NEW, CMD_DELETE } from '../shared';
+import { Recepy, RecepyFamily, MakePayload, CMD_MAKE, CMD_FAMILIES, CMD_EDIT, CMD_NEW, CMD_DELETE } from '../types';
 import { RootAction, RootActions } from './actions';
 import { webSocketService } from '../core/websocket';
 import { getType } from 'typesafe-actions';

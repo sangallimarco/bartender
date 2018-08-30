@@ -1,6 +1,6 @@
 import * as React from 'react';
 import './recepy-item.css';
-import { Recepy } from '../../shared';
+import { Recepy } from '../../types';
 
 export interface RecepyItemProps {
     recepy: Recepy;

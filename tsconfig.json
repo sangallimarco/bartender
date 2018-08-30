@@ -19,11 +19,5 @@
         "webpack",
         "jest",
         "src/setupTests.ts"
-    ],
-    "typeRoots": [
-        "./types"
-    ],
-    "paths": {
-        "shared-types": ["./types"]
-    }
+    ]
 }
