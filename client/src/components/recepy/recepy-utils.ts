@@ -1,4 +1,4 @@
-import { RecepyIngredient, RecepyFamily, Recepy } from "../../types";
+import { RecepyIngredient, RecepyFamily, Recepy } from "../../stores/types";
 
 export function getCurrentFamilyIngredients(families: RecepyFamily[], recepy: Recepy): RecepyIngredient[] {
     if (recepy && families) {

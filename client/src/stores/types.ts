@@ -15,6 +15,17 @@ export const SET_PART = 'SET_PART';
 export const SET_ATTRIBUTE = 'SET_ATTRIBUTE';
 export const CMD_DELETE = 'CMD_DELETE';
 
+// from redux -------------------
+export interface Action<T = any, P = any> {
+    type: T;
+    payload: P;
+}
+export type Reducer<S = any, A extends Action = AnyAction> = (wsInstance: S | undefined, action: A) => S;
+export interface AnyAction extends Action {
+    [extraProps: string]: any;
+}
+// from redux -------------------
+
 export interface ProcessingPayload {
     processing: boolean;
 }

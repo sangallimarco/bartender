@@ -6,7 +6,7 @@
       "recepyFamily": "default",
       "parts": [
         123,
-        33,
+        333,
         13,
         33,
         3
@@ -15,18 +15,6 @@
     {
       "id": "75njbo9zwjky6x2tu",
       "label": "OK",
-      "recepyFamily": "default",
-      "parts": [
-        1,
-        1,
-        1,
-        1,
-        1
-      ]
-    },
-    {
-      "id": "75njboiu3jlcgow6z",
-      "label": "goood",
       "recepyFamily": "default",
       "parts": [
         1,
@@ -74,14 +62,38 @@
     },
     {
       "id": "75njbo9zwjkxmwne7",
-      "label": "Fantasy",
+      "label": "Fantasy3",
       "recepyFamily": "default",
       "parts": [
-        22,
-        232343,
-        122,
-        1233,
-        212
+        12,
+        23,
+        12,
+        12,
+        12
+      ]
+    },
+    {
+      "id": "2w4dvj416vpjlglhwpo",
+      "label": "new",
+      "recepyFamily": "default",
+      "parts": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "id": "2w4dvj417onjlgn9z1a",
+      "label": "qweqwweqwe",
+      "recepyFamily": "default",
+      "parts": [
+        1,
+        1,
+        1,
+        1,
+        1
       ]
     }
   ],

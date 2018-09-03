@@ -6,7 +6,7 @@ import Processing from '../processing/processing';
 import { browserHistory } from '../../core/browser-history';
 import { RootState, RootAction, RootActions } from '../../stores';
 import { connect } from 'react-redux';
-import { Recepy } from '../../types';
+import { Recepy } from '../../stores/types';
 // import { Dispatch } from 'redux';
 import { ReduxDispatch } from '../../core/types';
 

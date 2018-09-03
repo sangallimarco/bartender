@@ -1,36 +1,23 @@
 import { WebsocketCallback, WebsocketListener, WebsocketListenerUri, WebsocketPayload } from "./websocket-types";
 import { EventEmitter } from "events";
+import {Action, Reducer} from "../types";
+import {ActionType} from "typesafe-actions";
 
 export class WebSocketRouter {
-    private routes: any;
+    private reducer: Reducer;
+    private actions: ActionType<any>;
 
-    constructor() {
-        this.routes = [];
-    }
-
-    public on<T>(action: string, callback: WebsocketCallback<T>) {
-        const listener: WebsocketListener<T> = {
-            action,
-            callback
-        };
-        this.routes.push(listener);
-        return listener;
+    public register<T>(actions: ActionType<T>, reducer: Reducer) {
+        this.actions = actions;
+        this.reducer = reducer;
     }
 
     public dispatch(ws: EventEmitter, payload: string) {
-        let payloadObject: WebsocketPayload<any>;
         try {
-            payloadObject = JSON.parse(payload);
+            const payloadObject = JSON.parse(payload) as Action;
+            this.reducer(ws, payloadObject as Action);
         } catch (e) {
             return;
-        }
-        const {
-            action,
-            data
-        } = payloadObject;
-        const route = this.routes.find((x: WebsocketListenerUri) => x.action === action);
-        if (route) {
-            route.callback(ws, action, data);
         }
     }
 }

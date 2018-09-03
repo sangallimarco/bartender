@@ -7,7 +7,7 @@ export interface WebsocketPayload<T> {
     data: T
 }
 
-export type WebsocketCallback<T> = (ws: EventEmitter, action: string, data: T) => void;
+export type WebsocketCallback<T> = (ws: EventEmitter, data: T) => void;
 
 export interface WebsocketListenerUri {
     action: string;
