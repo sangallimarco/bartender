@@ -1,4 +1,4 @@
-import { Dispatch, Action, AnyAction } from "redux";
+import { Dispatch, Action, AnyAction } from 'redux';
 
 export namespace Types {
     export interface Dictionary<T> {

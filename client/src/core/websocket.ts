@@ -41,7 +41,7 @@ class WebSocketService {
             this.ready = false;
         }
         );
-        this.ws.addEventListener("message", this.onMessage);
+        this.ws.addEventListener('message', this.onMessage);
 
         setInterval(() => {
             this.processQueue();
