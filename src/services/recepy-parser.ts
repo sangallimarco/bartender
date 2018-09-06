@@ -14,7 +14,7 @@ enum Collection {
 
 interface DBSchema {
     [Collection.RECEPIES]: Recepy[];
-    [Collection.FAMILIES]: RecepyFamily[]
+    [Collection.FAMILIES]: RecepyFamily[];
 }
 
 const DEFAULT_RECEPY: Recepy = {
@@ -22,7 +22,7 @@ const DEFAULT_RECEPY: Recepy = {
     label: '',
     recepyFamily: DEFAULT_FAMILY,
     parts: []
-}
+};
 
 export class RecepyService {
     private recepyFamily: RecepyFamily;
@@ -154,4 +154,3 @@ export class RecepyService {
     }
 
 }
-

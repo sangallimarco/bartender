@@ -52,13 +52,13 @@ export interface Recepy {
     id: string;
     recepyFamily: string;
     label: string;
-    parts: number[]
+    parts: number[];
 }
 
 export interface RecepyFamily {
     id: string;
     label: string;
-    ingredients: RecepyIngredient[]
+    ingredients: RecepyIngredient[];
 }
 
 export enum RecepyIngredient {

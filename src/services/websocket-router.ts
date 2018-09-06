@@ -1,5 +1,5 @@
-import { WebsocketCallback, WebsocketListener, WebsocketListenerUri, WebsocketPayload } from "./websocket-types";
-import { EventEmitter } from "events";
+import { WebsocketCallback, WebsocketListener, WebsocketListenerUri, WebsocketPayload } from './websocket-types';
+import { EventEmitter } from 'events';
 
 export class WebSocketRouter {
     private routes: any;

@@ -21,7 +21,7 @@ export namespace PumpsUtils {
         PumpPin.forEach((pin: number) => {
             gpiop.setup(pin, Direction.DIR_OUT)
                 .catch((err) => {
-                    console.log('Error: ', pin, err.toString())
+                    console.log('Error: ', pin, err.toString());
                 });
         });
     }
@@ -29,7 +29,7 @@ export namespace PumpsUtils {
     export function setValue(pump: Pump, value: boolean) {
         return gpiop.write(pump, value)
             .catch((err) => {
-                console.log('Error: ', pump, err.toString())
+                console.log('Error: ', pump, err.toString());
             });
     }
 

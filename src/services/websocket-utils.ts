@@ -1,4 +1,4 @@
-import { WebsocketPayload } from "./websocket-types";
+import { WebsocketPayload } from './websocket-types';
 import ws from 'ws';
 
 export namespace WebSocketUtils {
@@ -6,7 +6,7 @@ export namespace WebSocketUtils {
         const message: WebsocketPayload<T> = {
             action,
             data
-        }
+        };
         return JSON.stringify(message);
     }
 
