@@ -13,18 +13,6 @@
       ]
     },
     {
-      "id": "75njboiu3jlcgow6z",
-      "label": "goood",
-      "recepyFamily": "default",
-      "parts": [
-        12,
-        12,
-        12,
-        12,
-        12
-      ]
-    },
-    {
       "id": "75njboiu3jlcgp4d7",
       "label": "3333",
       "recepyFamily": "cocktails",
@@ -62,7 +50,7 @@
     },
     {
       "id": "75njbo9zwjkxmwne7",
-      "label": "Fantasy2",
+      "label": "Fantasy",
       "recepyFamily": "default",
       "parts": [
         22,
@@ -70,18 +58,6 @@
         122,
         1233,
         212
-      ]
-    },
-    {
-      "id": "75njbowxkjm6hdjeb",
-      "label": "seeeee",
-      "recepyFamily": "default",
-      "parts": [
-        1,
-        1,
-        1,
-        1,
-        1
       ]
     }
   ],
