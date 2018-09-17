@@ -6,7 +6,6 @@ import { webSocketRouter, webSocketMiddleware, WebSocketUtils } from './services
 import { RecepyService } from './services/recepy-parser';
 import { RootAction, RootActions, RECEPIES, NEW, FAMILIES, MAKE } from './types';
 import { getType } from 'typesafe-actions';
-import { EventEmitter } from 'events';
 
 const { app } = expressWs(express());
 const PORT = 8888;
@@ -14,6 +13,7 @@ const ROOT_PATH = __dirname;
 const recepyMaker = new RecepyService();
 recepyMaker.initDatabases();
 
+// REDUCER
 const MainReducer = async (data: RootAction, wsInstance: ws) => {
     switch (data.type) {
         case getType(RootActions.CMD_RECEPIES):
@@ -71,6 +71,7 @@ const MainReducer = async (data: RootAction, wsInstance: ws) => {
 };
 webSocketRouter.setReducer(MainReducer);
 
+// ROUTES
 app.use('/ws', webSocketMiddleware);
 app.use('/app', express.static(path.join(__dirname, '../client/build')));
 app.use('/assets', express.static(path.join(ROOT_PATH, 'assets')));

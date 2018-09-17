@@ -2,10 +2,10 @@
   "RECEPIES": [
     {
       "id": "75njbo9wgjkxmutv5",
-      "label": "Aperol Spritz22",
+      "label": "Aperol Spritz",
       "recepyFamily": "default",
       "parts": [
-        1232,
+        12,
         33,
         13,
         33,
@@ -70,6 +70,18 @@
         122,
         1233,
         212
+      ]
+    },
+    {
+      "id": "75njbowxkjm6hdjeb",
+      "label": "seeeee",
+      "recepyFamily": "default",
+      "parts": [
+        1,
+        1,
+        1,
+        1,
+        1
       ]
     }
   ],
