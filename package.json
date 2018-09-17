@@ -38,6 +38,7 @@
     "concurrently": "^3.6.0",
     "ts-node": "^7.0.0",
     "tslint": "^5.10.0",
+    "typesafe-actions": "^2.0.4",
     "typescript": "^3.0.3"
   },
   "author": "Marco Sangalli<sangalli.marco@gmail.com>",

@@ -4,7 +4,9 @@ import expressWs from 'express-ws';
 import ws from 'ws';
 import { webSocketRouter, webSocketMiddleware, WebSocketUtils } from './services';
 import { RecepyService } from './services/recepy-parser';
-import { CMD_RECEPIES, RECEPIES, CMD_EDIT, GET, CMD_FAMILIES, FAMILIES, CMD_MAKE, MAKE, CMD_NEW, NEW, ProcessingPayload, RecepiesPayload, MakePayload, RecepyPayload, GetPayload, RecepyFamiliesPayload, SET_RECEPY, CMD_DELETE } from './types';
+import { RootAction, RootActions } from './types';
+import { getType } from 'typesafe-actions';
+import { EventEmitter } from 'events';
 
 const { app } = expressWs(express());
 const PORT = 8888;
@@ -37,68 +39,89 @@ async function initDB() {
 // @TODO refactor this, test only
 initDB();
 
+const MainReducer = async (data: RootAction, wsInstance: ws) => {
+    switch (data.type) {
+        case getType(RootActions.CMD_RECEPIES):
+            const recepies = await recepyMaker.getRecepies();
+            // WebSocketUtils.sendMessage<RecepiesPayload>(wsInstance, RECEPIES, {
+            //     recepies
+            // });
+            break;
+        case getType(RootActions.CMD_EDIT): {
+            const { recepy } = data.payload;
+            await recepyMaker.upsertRecepy(recepy);
+            const recepies = await recepyMaker.getRecepies();
+            // WebSocketUtils.sendMessage<RecepiesPayload>(wsInstance, RECEPIES, {
+            //     recepies
+            // });
+        }
+    }
+}
+
+webSocketRouter.setReducer(MainReducer);
+
 // routes
-webSocketRouter.on<{}>(CMD_RECEPIES, async (wsInstance: ws, uri: string, data: {}) => {
-    const recepies = await recepyMaker.getRecepies();
-    WebSocketUtils.sendMessage<RecepiesPayload>(wsInstance, RECEPIES, {
-        recepies
-    });
-});
+// webSocketRouter.on<{}>(CMD_RECEPIES, async (wsInstance: ws, uri: string, data: {}) => {
+//     const recepies = await recepyMaker.getRecepies();
+//     WebSocketUtils.sendMessage<RecepiesPayload>(wsInstance, RECEPIES, {
+//         recepies
+//     });
+// });
 
-webSocketRouter.on<GetPayload>(GET, async (wsInstance: ws, uri: string, data) => {
-    const { id } = data;
-    const recepy = await recepyMaker.getRecepy(id);
-    WebSocketUtils.sendMessage<RecepyPayload>(wsInstance, SET_RECEPY, {
-        recepy
-    });
-});
+// webSocketRouter.on<GetPayload>(GET, async (wsInstance: ws, uri: string, data) => {
+//     const { id } = data;
+//     const recepy = await recepyMaker.getRecepy(id);
+//     WebSocketUtils.sendMessage<RecepyPayload>(wsInstance, SET_RECEPY, {
+//         recepy
+//     });
+// });
 
-webSocketRouter.on<{}>(CMD_NEW, async (wsInstance: ws, uri: string, data) => {
-    const recepy = await recepyMaker.createRecepy();
-    WebSocketUtils.sendMessage<RecepyPayload>(wsInstance, NEW, {
-        recepy
-    });
-});
+// webSocketRouter.on<{}>(CMD_NEW, async (wsInstance: ws, uri: string, data) => {
+//     const recepy = await recepyMaker.createRecepy();
+//     WebSocketUtils.sendMessage<RecepyPayload>(wsInstance, NEW, {
+//         recepy
+//     });
+// });
 
-webSocketRouter.on<RecepyPayload>(CMD_EDIT, async (wsInstance: ws, uri: string, data) => {
-    const { recepy } = data;
-    await recepyMaker.upsertRecepy(recepy);
-    const recepies = await recepyMaker.getRecepies();
-    WebSocketUtils.sendMessage<RecepiesPayload>(wsInstance, RECEPIES, {
-        recepies
-    });
-});
+// webSocketRouter.on<RecepyPayload>(CMD_EDIT, async (wsInstance: ws, uri: string, data) => {
+//     const { recepy } = data;
+//     await recepyMaker.upsertRecepy(recepy);
+//     const recepies = await recepyMaker.getRecepies();
+//     WebSocketUtils.sendMessage<RecepiesPayload>(wsInstance, RECEPIES, {
+//         recepies
+//     });
+// });
 
-webSocketRouter.on<RecepyPayload>(CMD_DELETE, async (wsInstance: ws, uri: string, data) => {
-    const { recepy } = data;
-    await recepyMaker.delRecepy(recepy);
-    const recepies = await recepyMaker.getRecepies();
-    WebSocketUtils.sendMessage<RecepiesPayload>(wsInstance, RECEPIES, {
-        recepies
-    });
-});
+// webSocketRouter.on<RecepyPayload>(CMD_DELETE, async (wsInstance: ws, uri: string, data) => {
+//     const { recepy } = data;
+//     await recepyMaker.delRecepy(recepy);
+//     const recepies = await recepyMaker.getRecepies();
+//     WebSocketUtils.sendMessage<RecepiesPayload>(wsInstance, RECEPIES, {
+//         recepies
+//     });
+// });
 
-webSocketRouter.on<{}>(CMD_FAMILIES, async (wsInstance: ws, uri: string, data) => {
-    const families = await recepyMaker.getFamilies();
-    WebSocketUtils.sendMessage<RecepyFamiliesPayload>(wsInstance, FAMILIES, {
-        families
-    });
-});
+// webSocketRouter.on<{}>(CMD_FAMILIES, async (wsInstance: ws, uri: string, data) => {
+//     const families = await recepyMaker.getFamilies();
+//     WebSocketUtils.sendMessage<RecepyFamiliesPayload>(wsInstance, FAMILIES, {
+//         families
+//     });
+// });
 
-// testing post processing
-webSocketRouter.on<MakePayload>(CMD_MAKE, async (wsInstance: ws, uri: string, data) => {
-    const { id } = data;
+// // testing post processing
+// webSocketRouter.on<MakePayload>(CMD_MAKE, async (wsInstance: ws, uri: string, data) => {
+//     const { id } = data;
 
-    await recepyMaker.setRecepy(id);
-    WebSocketUtils.sendMessage<ProcessingPayload>(wsInstance, MAKE, {
-        processing: true
-    });
+//     await recepyMaker.setRecepy(id);
+//     WebSocketUtils.sendMessage<ProcessingPayload>(wsInstance, MAKE, {
+//         processing: true
+//     });
 
-    await recepyMaker.setPumps();
-    WebSocketUtils.sendMessage<ProcessingPayload>(wsInstance, MAKE, {
-        processing: false
-    });
-});
+//     await recepyMaker.setPumps();
+//     WebSocketUtils.sendMessage<ProcessingPayload>(wsInstance, MAKE, {
+//         processing: false
+//     });
+// });
 
 app.use('/ws', webSocketMiddleware);
 app.use('/app', express.static(path.join(__dirname, '../client/build')));
