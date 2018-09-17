@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { RouteComponentProps } from '../../../node_modules/@types/react-router';
-import { RootState, RootActions, RootAction } from '../../stores';
-import { Recepy, RecepyFamily, Pump } from '../../types';
+import { RootState } from '../../stores';
+import { Recepy, RecepyFamily, Pump, RootActions, RootAction } from '../../types';
 import Button, { ButtonType } from '../button/button';
 import { Input } from '../input/input';
 import './recepy-edit.css';
@@ -66,9 +66,12 @@ export class RecepyEditBase extends React.Component<ReduxProps & ReduxDispatch<R
     }
 
     private handleRemove = () => {
+        const { recepy } = this.props;
         const { dispatch } = this.props;
-        dispatch(RootActions.CMD_DELETE());
-        browserHistory.push('/');
+        if (recepy) {
+            dispatch(RootActions.CMD_DELETE({ recepy }));
+            browserHistory.push('/');
+        }
     }
 
     private handleSubmit = () => {

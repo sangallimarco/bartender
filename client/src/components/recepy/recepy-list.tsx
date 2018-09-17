@@ -4,9 +4,9 @@ import RecepyItem from './recepy-item';
 import Dialog from '../dialog/dialog';
 import Processing from '../processing/processing';
 import { browserHistory } from '../../core/browser-history';
-import { RootState, RootAction, RootActions } from '../../stores';
+import { RootState } from '../../stores';
 import { connect } from 'react-redux';
-import { Recepy } from '../../types';
+import { Recepy, RootActions, RootAction } from '../../types';
 // import { Dispatch } from 'redux';
 import { ReduxDispatch } from '../../core/types';
 
@@ -67,8 +67,10 @@ class RecepyListBase extends React.Component<ReduxProps & ReduxDispatch<RootActi
     }
 
     private handleConfirm = () => {
-        const { dispatch } = this.props;
-        dispatch(RootActions.CMD_MAKE());
+        const { dispatch, recepy } = this.props;
+        if (recepy) {
+            dispatch(RootActions.CMD_MAKE({ id: recepy.id }));
+        }
         this.setState({ dialogVisible: false });
     }
 

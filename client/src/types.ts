@@ -96,7 +96,7 @@ export const RootActions = {
     }),
 
     [CMD_MAKE]: createAction(CMD_MAKE, resolve => {
-        return () => resolve({});
+        return (data: MakePayload) => resolve(data);
     }),
     [MAKE]: createAction(MAKE, resolve => {
         return (data: ProcessingPayload) => resolve(data);
@@ -124,7 +124,7 @@ export const RootActions = {
     }),
 
     [CMD_DELETE]: createAction(CMD_DELETE, resolve => {
-        return () => resolve({});
+        return (data: RecepyPayload) => resolve(data);
     }),
 
     [SET_RECEPY]: createAction(SET_RECEPY, resolve => {
