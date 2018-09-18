@@ -96,7 +96,7 @@ export const RootActions = {
     }),
 
     [CMD_MAKE]: createAction(CMD_MAKE, resolve => {
-        return (data: MakePayload) => resolve(data);
+        return (data: RecepyPayload) => resolve(data);
     }),
     [MAKE]: createAction(MAKE, resolve => {
         return (data: ProcessingPayload) => resolve(data);

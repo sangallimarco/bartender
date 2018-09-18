@@ -69,7 +69,7 @@ class RecepyListBase extends React.Component<ReduxProps & ReduxDispatch<RootActi
     private handleConfirm = () => {
         const { dispatch, recepy } = this.props;
         if (recepy) {
-            dispatch(RootActions.CMD_MAKE({ id: recepy.id }));
+            dispatch(RootActions.CMD_MAKE({ recepy }));
         }
         this.setState({ dialogVisible: false });
     }

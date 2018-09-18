@@ -55,13 +55,12 @@ const MainReducer = async (data: RootAction, wsInstance: ws) => {
             break;
         }
         case getType(RootActions.CMD_MAKE): {
-            const { id } = data.payload;
-            await recepyMaker.setRecepy(id);
+            const { recepy } = data.payload;
             WebSocketUtils.sendMessage(wsInstance, MAKE, {
                 processing: true
             });
 
-            await recepyMaker.setPumps();
+            await recepyMaker.setPumps(recepy);
             WebSocketUtils.sendMessage(wsInstance, MAKE, {
                 processing: false
             });

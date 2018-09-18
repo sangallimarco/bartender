@@ -67,15 +67,6 @@ export class RecepyService {
         }
     }
 
-    public async setRecepy(id: string) {
-        const recepy = await this.db.get(Collection.RECEPIES)
-            .find({ id })
-            .value();
-        if (recepy) {
-            this.recepy = recepy;
-        }
-    }
-
     public async upsertRecepy(recepy: Recepy) {
         const { id } = recepy;
         const found = await this.db.get(Collection.RECEPIES)
@@ -128,18 +119,10 @@ export class RecepyService {
         return families;
     }
 
-    public async getRecepy(id: string): Promise<Recepy> {
-        const recepy = await this.db.get(Collection.RECEPIES)
-            .find({ id })
-            .value();
-
-        return recepy;
-    }
-
-    public setPumps(): Promise<void> {
-        if (!this.executing && this.recepy) {
+    public setPumps(recepy: Recepy): Promise<void> {
+        if (!this.executing && recepy) {
             this.executing = true;
-            const { parts } = this.recepy;
+            const { parts } = recepy;
             const promises: Array<Promise<void>> = parts.map((quantity: number, indx: number) => {
                 return PumpsUtils.activateWithTimer(indx, quantity * 1000);
             });

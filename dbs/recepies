@@ -5,10 +5,10 @@
       "label": "Aperol Spritz",
       "recepyFamily": "default",
       "parts": [
-        12,
-        33,
-        13,
-        33,
+        2,
+        2,
+        3,
+        3,
         3
       ]
     },
@@ -53,11 +53,35 @@
       "label": "Fantasy",
       "recepyFamily": "default",
       "parts": [
-        22,
-        232343,
-        122,
-        1233,
-        212
+        2,
+        2,
+        3,
+        2,
+        2
+      ]
+    },
+    {
+      "id": "75njbowxkjm7eav6y",
+      "label": "asdasdads",
+      "recepyFamily": "default",
+      "parts": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "id": "75njbowxkjm7pbfjk",
+      "label": "ooollllaa",
+      "recepyFamily": "default",
+      "parts": [
+        1,
+        1,
+        1,
+        1,
+        1
       ]
     }
   ],

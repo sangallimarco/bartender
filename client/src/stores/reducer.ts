@@ -1,5 +1,5 @@
 import { Reducer } from 'redux';
-import { Recepy, RecepyFamily, MakePayload, CMD_MAKE, CMD_FAMILIES, CMD_EDIT, CMD_NEW, CMD_DELETE, CMD_RECEPIES } from '../types';
+import { Recepy, RecepyFamily, CMD_MAKE, CMD_FAMILIES, CMD_EDIT, CMD_NEW, CMD_DELETE, CMD_RECEPIES } from '../types';
 import { RootAction, RootActions } from '../types';
 import { webSocketService } from '../core/websocket';
 import { getType } from 'typesafe-actions';
@@ -40,11 +40,8 @@ export const reducer: Reducer<RootReducerState> = (
             return { ...state, families };
 
         case getType(RootActions.CMD_MAKE):
-            const { recepy } = state;
-            if (recepy !== null) {
-                const { id: recepyId } = recepy;
-                const message: MakePayload = { id: recepyId };
-                webSocketService.send(CMD_MAKE, message);
+            if (action.payload.recepy !== null) {
+                webSocketService.send(CMD_MAKE, action.payload);
             }
             return state;
         case getType(RootActions.MAKE):
