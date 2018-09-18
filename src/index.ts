@@ -15,7 +15,7 @@ const recepyMaker = new RecepyService();
 recepyMaker.initDatabases();
 
 // REDUCER
-const MainReducer = async (data: RootAction, wsInstance: ws, rootWs: Server) => {
+const MainDispatcher = async (data: RootAction, wsInstance: ws, rootWs: Server) => {
     switch (data.type) {
         case getType(RootActions.CMD_RECEPIES):
             const recepies = await recepyMaker.getRecepies();
@@ -70,7 +70,7 @@ const MainReducer = async (data: RootAction, wsInstance: ws, rootWs: Server) => 
     }
 };
 webSocketRouter.setWsServer(expressWsInstance.getWss());
-webSocketRouter.setReducer(MainReducer);
+webSocketRouter.setReducer(MainDispatcher);
 
 // ROUTES
 app.use('/ws', webSocketMiddleware);
