@@ -1,18 +1,17 @@
 import { WebsocketCallback, WebsocketListener, WebsocketListenerUri, WebsocketPayload } from './websocket-types';
-// import { EventEmitter } from 'events';
-// import { ActionType, createAction, getType } from 'typesafe-actions';
-import ws from 'ws';
+import ws, { Server } from 'ws';
 
 type StringType = string;
 type PayloadAction<T extends StringType, P> = {
     type: T;
     payload: P;
 };
-type ReducerCallback = (action: PayloadAction<string, any>, wsInstance: ws) => void;
+type ReducerCallback = (action: PayloadAction<string, any>, wsInstance: ws, rootWs: Server) => void;
 
 export class WebSocketRouter {
     private routes: any;
     private reducer: ReducerCallback;
+    private rootWs: Server;
 
     constructor() {
         this.routes = [];
@@ -31,6 +30,10 @@ export class WebSocketRouter {
         this.reducer = reducer;
     }
 
+    public setWsServer(rootWs: Server) {
+        this.rootWs = rootWs;
+    }
+
     public dispatch(ws: ws, payload: string) {
         let payloadObject: WebsocketPayload<any>;
         try {
@@ -45,7 +48,7 @@ export class WebSocketRouter {
 
         // @TODO refactor here
         const actionObj: PayloadAction<string, any> = { type: action, payload: data };
-        this.reducer(actionObj, ws);
+        this.reducer(actionObj, ws, this.rootWs);
     }
 }
 

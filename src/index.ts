@@ -1,20 +1,21 @@
 import express from 'express';
 import path from 'path';
 import expressWs from 'express-ws';
-import ws from 'ws';
+import ws, { Server } from 'ws';
 import { webSocketRouter, webSocketMiddleware, WebSocketUtils } from './services';
 import { RecepyService } from './services/recepy-parser';
 import { RootAction, RootActions, RECEPIES, NEW, FAMILIES, MAKE } from './types';
 import { getType } from 'typesafe-actions';
 
-const { app } = expressWs(express());
+const expressWsInstance = expressWs(express());
+const { app } = expressWsInstance;
 const PORT = 8888;
 const ROOT_PATH = __dirname;
 const recepyMaker = new RecepyService();
 recepyMaker.initDatabases();
 
 // REDUCER
-const MainReducer = async (data: RootAction, wsInstance: ws) => {
+const MainReducer = async (data: RootAction, wsInstance: ws, rootWs: Server) => {
     switch (data.type) {
         case getType(RootActions.CMD_RECEPIES):
             const recepies = await recepyMaker.getRecepies();
@@ -26,7 +27,7 @@ const MainReducer = async (data: RootAction, wsInstance: ws) => {
             const { recepy } = data.payload;
             await recepyMaker.upsertRecepy(recepy);
             const recepies = await recepyMaker.getRecepies();
-            WebSocketUtils.sendMessage(wsInstance, RECEPIES, {
+            WebSocketUtils.broadcastMessage(rootWs, RECEPIES, {
                 recepies
             });
             break;
@@ -42,7 +43,7 @@ const MainReducer = async (data: RootAction, wsInstance: ws) => {
             const { recepy } = data.payload;
             await recepyMaker.delRecepy(recepy);
             const recepies = await recepyMaker.getRecepies();
-            WebSocketUtils.sendMessage(wsInstance, RECEPIES, {
+            WebSocketUtils.broadcastMessage(rootWs, RECEPIES, {
                 recepies
             });
             break;
@@ -56,18 +57,19 @@ const MainReducer = async (data: RootAction, wsInstance: ws) => {
         }
         case getType(RootActions.CMD_MAKE): {
             const { recepy } = data.payload;
-            WebSocketUtils.sendMessage(wsInstance, MAKE, {
+            WebSocketUtils.broadcastMessage(rootWs, MAKE, {
                 processing: true
             });
 
             await recepyMaker.setPumps(recepy);
-            WebSocketUtils.sendMessage(wsInstance, MAKE, {
+            WebSocketUtils.broadcastMessage(rootWs, MAKE, {
                 processing: false
             });
             break;
         }
     }
 };
+webSocketRouter.setWsServer(expressWsInstance.getWss());
 webSocketRouter.setReducer(MainReducer);
 
 // ROUTES
