@@ -1,15 +1,28 @@
 .recepy__item {
-    display: flex;
+    display: grid;
+    grid-template-rows: min-content auto;
+    grid-template-columns: auto;
+    grid-template-areas: "title""glass";
     color: white;
     font-size: 2rem;
-    flex: 1;
-    align-items: center;
-    justify-content: center;
     border: 0.2rem solid white;
-    height: 2rem;
     padding: 1rem;
     margin: 0.5rem;
     cursor: pointer;
+}
+
+.recepy__item__title {
+    grid-area: title;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.recepy__item__glass {
+    grid-area: glass;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .recepy__item:hover {

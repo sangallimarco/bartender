@@ -1,5 +1,5 @@
 import * as React from 'react';
-import './recepy.css';
+import './recepy-list.css';
 import RecepyItem from './recepy-item';
 import Dialog from '../dialog/dialog';
 import Processing from '../processing/processing';
@@ -44,7 +44,7 @@ class RecepyListBase extends React.Component<ReduxProps & ReduxDispatch<RootActi
         const { recepies, processing } = this.props;
         const { dialogVisible, message } = this.state;
         return (
-            <div className="recepy-list">
+            <div className="recepy__list">
                 {this.renderItems(recepies)}
                 <Dialog active={dialogVisible} onConfirm={this.handleConfirm} onDismiss={this.handleDismiss} message={message} />
                 <Processing active={processing} />
