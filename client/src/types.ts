@@ -63,16 +63,17 @@ export interface RecepyFamily {
     ingredients: RecepyIngredient[];
 }
 
-export enum RecepyIngredient {
-    COKE = 'COKE',
-    RUM = 'RUM',
-    TONIC = 'TONIC',
-    APEROL = 'APEROL',
-    GIN = 'GIN'
+export interface RecepyIngredient {
+    label: string;
+    color: string;
 }
 
 export const PumpPin = [
-    7, 11, 12, 13, 15
+    7,
+    11,
+    12,
+    13,
+    // 15
 ];
 
 export enum Pump {
@@ -80,7 +81,7 @@ export enum Pump {
     B = PumpPin[1], // GPIO-17
     C = PumpPin[2], // GPIO-18
     D = PumpPin[3], // GPIO-27
-    E = PumpPin[4] // GPIO-22
+    // E = PumpPin[4] // GPIO-22
 }
 
 // @TODO refactor this

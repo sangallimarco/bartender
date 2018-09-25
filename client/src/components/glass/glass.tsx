@@ -17,6 +17,6 @@ export class Glass extends React.Component<GlassProps, {}>{
 
     private saveRef = (ref: SVGSVGElement) => {
         const { parts } = this.props;
-        buildGlass(parts, ['#ff00ff', '#FFFF00', '#FAFAFA', '#000FF', '#00FF00'], ref)
+        buildGlass(parts, ['#ff00ff', '#FFFF00', '#FAFAFA', '#0000FF', '#00FF00'], ref)
     }
 }

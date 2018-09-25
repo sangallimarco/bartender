@@ -5,9 +5,9 @@
       "label": "Aperol Spritz",
       "recepyFamily": "default",
       "parts": [
-        1,
-        1,
-        5,
+        2,
+        2,
+        2,
         2,
         1
       ]
@@ -83,6 +83,17 @@
         2,
         1
       ]
+    },
+    {
+      "id": "75njbol2ljmhvxvzv",
+      "label": "ok",
+      "recepyFamily": "default",
+      "parts": [
+        1,
+        1,
+        1,
+        1
+      ]
     }
   ],
   "FAMILIES": [
@@ -90,22 +101,44 @@
       "id": "default",
       "label": "Default Config",
       "ingredients": [
-        "APEROL",
-        "TONIC",
-        "GIN",
-        "COKE",
-        "COKE"
+        {
+          "label": "APEROL",
+          "color": "#ff0000"
+        },
+        {
+          "label": "CAMPARI",
+          "color": "#ff0011"
+        },
+        {
+          "label": "SODA",
+          "color": "#FAFAFA"
+        },
+        {
+          "label": "VERMOUT",
+          "color": "#ff0066"
+        }
       ]
     },
     {
       "id": "cocktails",
       "label": "Cocktails",
       "ingredients": [
-        "ORANGE JUICE",
-        "SODA",
-        "RUM",
-        "VODKA",
-        "VERMOUT"
+        {
+          "label": "APEROL",
+          "color": "#ff0000"
+        },
+        {
+          "label": "CAMPARI",
+          "color": "#ff0011"
+        },
+        {
+          "label": "SODA",
+          "color": "#FAFAFA"
+        },
+        {
+          "label": "VERMOUT",
+          "color": "#ff0066"
+        }
       ]
     }
   ]

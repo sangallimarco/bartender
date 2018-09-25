@@ -48,10 +48,13 @@ export class RecepyEditBase extends React.Component<ReduxProps & ReduxDispatch<R
             return range.map((i: number, indx: number) => {
                 const name = `${i}`;
                 const value = parts[i] || 0;
-                const label = ingredients[i];
-                return <InputContainer key={name} label={label}>
-                    <Input name={name} value={value.toString()} onChange={this.handlePumpChange} />
-                </InputContainer>;
+                if (ingredients[i]) {
+                    const { label } = ingredients[i];
+                    return <InputContainer key={name} label={label}>
+                        <Input name={name} value={value.toString()} onChange={this.handlePumpChange} />
+                    </InputContainer>;
+                }
+                return null;
             });
         }
         return null;

@@ -53,7 +53,6 @@ export function buildGlass(parts: number[], colors: string[], element: SVGSVGEle
         height: vh
     } = element.getBoundingClientRect();
 
-    // const struct = new Map<number, string>();
     const struct: PartColor[] = parts.map((part: number, i: number) => {
         const color: string = colors[i] || '#ffffff';
         return { part, color };
