@@ -60,10 +60,12 @@ export function buildGlass(parts: number[], colors: string[], element: SVGSVGEle
     })
 
     const svg = select(element);
+    const padding = 10;
+    const vk = vh - (padding * 2); // padding
     const total = struct.reduce((c, { part }) => c + part, 0);
-    const k = ((vh - vh * 0.3) / total);
+    const k = (vk / total);
 
-    let y = vh - 20;
+    let y = vh - padding;
     let r = vw / 6;
     struct.forEach(({ part, color }) => {
         const ml = part * k;
