@@ -10,7 +10,7 @@ import { browserHistory } from '../../core/browser-history';
 import { connect } from 'react-redux';
 import { Select } from '../select/select';
 import InputContainer from '../input-container/input-container';
-import { getCurrentFamilyIngredients } from './recepy-utils';
+import { getCurrentFamily } from './recepy-utils';
 import { ReduxDispatch } from '../../core/types';
 
 interface ReduxProps extends RouteComponentProps<any> {
@@ -43,19 +43,22 @@ export class RecepyEditBase extends React.Component<ReduxProps & ReduxDispatch<R
     private renderPumps(parts: number[]) {
         const { families, recepy } = this.props;
         if (families && recepy) {
-            const ingredients = getCurrentFamilyIngredients(families, recepy);
-            const range = generateRangeFromEnumKeys(Pump);
-            return range.map((i: number, indx: number) => {
-                const name = `${i}`;
-                const value = parts[i] || 0;
-                if (ingredients[i]) {
-                    const { label } = ingredients[i];
-                    return <InputContainer key={name} label={label}>
-                        <Input name={name} value={value.toString()} onChange={this.handlePumpChange} />
-                    </InputContainer>;
-                }
-                return null;
-            });
+            const family = getCurrentFamily(families, recepy);
+            if (family) {
+                const { ingredients } = family;
+                const range = generateRangeFromEnumKeys(Pump);
+                return range.map((i: number, indx: number) => {
+                    const name = `${i}`;
+                    const value = parts[i] || 0;
+                    if (ingredients[i]) {
+                        const { label } = ingredients[i];
+                        return <InputContainer key={name} label={label}>
+                            <Input name={name} value={value.toString()} onChange={this.handlePumpChange} />
+                        </InputContainer>;
+                    }
+                    return null;
+                });
+            }
         }
         return null;
     }

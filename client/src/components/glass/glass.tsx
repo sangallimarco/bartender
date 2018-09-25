@@ -1,11 +1,12 @@
 import * as React from 'react';
-// import { RecepyIngredient } from '../../types';
 import { buildGlass } from '../../core/glass-builder';
 import './glass.css';
+import { RecepyIngredient } from '../../types';
+import { getIngredientColors } from '../recepy/recepy-utils';
 
 
 export interface GlassProps {
-    // ingredients: RecepyIngredient[];
+    ingredients: RecepyIngredient[];
     parts: number[];
 }
 
@@ -16,7 +17,8 @@ export class Glass extends React.Component<GlassProps, {}>{
     }
 
     private saveRef = (ref: SVGSVGElement) => {
-        const { parts } = this.props;
-        buildGlass(parts, ['#ff00ff', '#FFFF00', '#FAFAFA', '#0000FF', '#00FF00'], ref)
+        const { parts, ingredients } = this.props;
+        const colors = getIngredientColors(ingredients);
+        buildGlass(parts, colors, ref)
     }
 }

@@ -6,14 +6,16 @@ import Processing from '../processing/processing';
 import { browserHistory } from '../../core/browser-history';
 import { RootState } from '../../stores';
 import { connect } from 'react-redux';
-import { Recepy, RootActions, RootAction } from '../../types';
+import { Recepy, RootActions, RootAction, RecepyFamily } from '../../types';
 // import { Dispatch } from 'redux';
 import { ReduxDispatch } from '../../core/types';
+import { getCurrentFamily } from './recepy-utils';
 
 interface ReduxProps {
     recepies: Recepy[];
     recepy: Recepy | null;
     processing: boolean;
+    families: RecepyFamily[];
 }
 
 interface RecepyListBaseState {
@@ -41,11 +43,11 @@ class RecepyListBase extends React.Component<ReduxProps & ReduxDispatch<RootActi
     }
 
     public render() {
-        const { recepies, processing } = this.props;
+        const { recepies, processing, families } = this.props;
         const { dialogVisible, message } = this.state;
         return (
             <div className="recepy__list">
-                {this.renderItems(recepies)}
+                {this.renderItems(recepies, families)}
                 <Dialog active={dialogVisible} onConfirm={this.handleConfirm} onDismiss={this.handleDismiss} message={message} />
                 <Processing active={processing} />
             </div>
@@ -91,19 +93,24 @@ class RecepyListBase extends React.Component<ReduxProps & ReduxDispatch<RootActi
         }
     }
 
-    private renderItems(items: Recepy[]) {
+    private renderItems(items: Recepy[], families: RecepyFamily[]) {
         return items.map((recepy: Recepy) => {
             const { id } = recepy;
-            return <RecepyItem key={id} recepy={recepy} onClick={this.handleSelected} />;
+            const family = getCurrentFamily(families, recepy);
+            if (family) {
+                const { ingredients } = family;
+                return <RecepyItem key={id} recepy={recepy} ingredients={ingredients} onClick={this.handleSelected} />;
+            }
+            return null;
         })
     }
 }
 
 const mapStateToProps = (state: RootState): ReduxProps => {
     const {
-        root: { processing, recepies, recepy }
+        root: { processing, recepies, recepy, families }
     } = state;
-    return { processing, recepies, recepy };
+    return { processing, recepies, recepy, families };
 };
 
 export const RecepyList = connect(mapStateToProps)(RecepyListBase);

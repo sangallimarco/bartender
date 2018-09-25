@@ -1,6 +1,5 @@
 {
-  "RECEPIES": [
-    {
+  "RECEPIES": [{
       "id": "75njbo9wgjkxmutv5",
       "label": "Aperol Spritz",
       "recepyFamily": "default",
@@ -94,36 +93,44 @@
         1,
         1
       ]
+    },
+    {
+      "id": "75njbol2ljmhw1f9z",
+      "label": "test1",
+      "recepyFamily": "default",
+      "parts": [
+        0,
+        1,
+        5,
+        4
+      ]
     }
   ],
-  "FAMILIES": [
-    {
+  "FAMILIES": [{
       "id": "default",
       "label": "Default Config",
-      "ingredients": [
-        {
+      "ingredients": [{
           "label": "APEROL",
-          "color": "#ff0000"
+          "color": "#f34021"
         },
         {
           "label": "CAMPARI",
-          "color": "#ff0011"
+          "color": "#a01728"
         },
         {
           "label": "SODA",
-          "color": "#FAFAFA"
+          "color": "#e8e8f2"
         },
         {
           "label": "VERMOUT",
-          "color": "#ff0066"
+          "color": "#48110c"
         }
       ]
     },
     {
       "id": "cocktails",
       "label": "Cocktails",
-      "ingredients": [
-        {
+      "ingredients": [{
           "label": "APEROL",
           "color": "#ff0000"
         },

@@ -8,13 +8,13 @@
 }
 
 .button-action {
-    background-color: blueviolet;
+    background-color: #333333;
     color: white;
 }
 
 .button-default {
-    background-color: white;
-    color: blueviolet;
+    background-color: #dddddd;
+    color: #333333;
 }
 
 .button:hover {

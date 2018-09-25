@@ -1,13 +1,18 @@
 import { RecepyIngredient, RecepyFamily, Recepy } from '../../types';
 
-export function getCurrentFamilyIngredients(families: RecepyFamily[], recepy: Recepy): RecepyIngredient[] {
+export function getCurrentFamily(families: RecepyFamily[], recepy: Recepy): RecepyFamily | null {
     if (recepy && families) {
-        const { recepyFamily } = recepy as Recepy;
-        const cfamilies = families as RecepyFamily[];
-        const currentFamily = cfamilies.find((family: RecepyFamily) => family.id === recepyFamily);
+        const { recepyFamily } = recepy;
+        const currentFamily = families.find(family => family.id === recepyFamily);
         if (currentFamily) {
-            return currentFamily.ingredients;
+            return currentFamily;
         }
     }
-    return [];
+    return null;
+}
+
+export function getIngredientColors(ingredients: RecepyIngredient[]): string[] {
+    return ingredients.map(ingredient => {
+        return ingredient.color;
+    });
 }
