@@ -6,7 +6,7 @@
     color: var(--text-color);
     font-size: 2rem;
     background-color: var(--card-color);
-    padding: 1rem;
+    padding: var(--padding);
     margin: 0.5rem;
     cursor: pointer;
 }

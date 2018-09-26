@@ -23,7 +23,7 @@
     grid-area: message;
     color: var(--text-color);
     font-size: 2rem;
-    padding: 1rem;
+    padding: var(--padding);
     display: flex;
     justify-content: center;
 }
@@ -32,14 +32,14 @@
     grid-area: dismiss;
     display: flex;
     justify-content: flex-start;
-    padding: 1rem;
+    padding: var(--padding);
 }
 
 .dialog__confirm {
     grid-area: confirm;
     display: flex;
     justify-content: flex-end;
-    padding: 1rem;
+    padding: var(--padding);
 }
 
 .dialog-active {

@@ -73,18 +73,6 @@
       ]
     },
     {
-      "id": "75njbowxkjm7pbfjk",
-      "label": "ooollllaa",
-      "recepyFamily": "default",
-      "parts": [
-        2,
-        2,
-        2,
-        2,
-        1
-      ]
-    },
-    {
       "id": "75njbol2ljmhvxvzv",
       "label": "ok",
       "recepyFamily": "default",
@@ -104,6 +92,17 @@
         1,
         5,
         4
+      ]
+    },
+    {
+      "id": "7q77m91jmjbg4p6",
+      "label": "Negroni",
+      "recepyFamily": "default",
+      "parts": [
+        2,
+        2,
+        0,
+        2
       ]
     }
   ],
