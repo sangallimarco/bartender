@@ -7,3 +7,14 @@ html {
   font-size: 2vw;
   background: black;
 }
+
+:root {
+  --button-action-color: #fefefe;
+  --button-action-text-color: black;
+  --button-default-color: #999999;
+  --button-default-text-color: white;
+  --card-color: #282828;
+  --card-color-hover: #666666;
+  --text-color: white;
+  --canvas-color: #111111;
+}

@@ -3,18 +3,18 @@
     align-items: center;
     justify-content: center;
     font-size: 2rem;
-    border: 0.2rem solid white;
+    border: none;
     cursor: pointer;
 }
 
 .button-action {
-    background-color: #333333;
-    color: white;
+    background-color: var(--button-action-color);
+    color: var(--button-action-text-color);
 }
 
 .button-default {
-    background-color: #dddddd;
-    color: #333333;
+    background-color: var(--button-default-color);
+    color: var(--button-default-text-color);
 }
 
 .button:hover {

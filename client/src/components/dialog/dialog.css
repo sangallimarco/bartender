@@ -11,16 +11,17 @@
 }
 
 .dialog__container {
-    border: 0.2rem solid white;
+    /* border: 0.2rem solid white; */
     display: grid;
     grid-template-rows: auto auto;
     grid-template-columns: auto auto;
-    grid-template-areas: "message message" "dismiss confirm";
+    grid-template-areas: "message message""dismiss confirm";
+    background-color: var(--card-color);
 }
 
 .dialog__message {
     grid-area: message;
-    color: white;
+    color: var(--text-color);
     font-size: 2rem;
     padding: 1rem;
     display: flex;

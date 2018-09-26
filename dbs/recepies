@@ -1,5 +1,6 @@
 {
-  "RECEPIES": [{
+  "RECEPIES": [
+    {
       "id": "75njbo9wgjkxmutv5",
       "label": "Aperol Spritz",
       "recepyFamily": "default",
@@ -88,8 +89,8 @@
       "label": "ok",
       "recepyFamily": "default",
       "parts": [
-        1,
-        1,
+        2,
+        2,
         1,
         1
       ]
@@ -106,10 +107,12 @@
       ]
     }
   ],
-  "FAMILIES": [{
+  "FAMILIES": [
+    {
       "id": "default",
       "label": "Default Config",
-      "ingredients": [{
+      "ingredients": [
+        {
           "label": "APEROL",
           "color": "#f34021"
         },
@@ -130,7 +133,8 @@
     {
       "id": "cocktails",
       "label": "Cocktails",
-      "ingredients": [{
+      "ingredients": [
+        {
           "label": "APEROL",
           "color": "#ff0000"
         },
