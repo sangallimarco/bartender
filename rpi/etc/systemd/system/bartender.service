@@ -1,12 +1,12 @@
 [Service]
 WorkingDirectory=/home/pi/bartender
-ExecStart=/usr/bin/node --expose-gc /home/pi/bartender/dist/index.js
+ExecStart=/usr/local/bin/node --expose-gc /home/pi/bartender/dist/index.js
 Restart=always
 StandardOutput=syslog
 StandardError=syslog
 SyslogIdentifier=nodeServer
-User=pi
-Group=pi
+User=root
+Group=root
 Environment=NODE_ENV=production
 
 [Install]
