@@ -1,17 +1,30 @@
 .recepy__item {
-    display: flex;
-    color: white;
+    display: grid;
+    grid-template-rows: min-content;
+    grid-template-columns: 1fr 2fr;
+    grid-template-areas: "glass title";
+    color: var(--text-color);
     font-size: 2rem;
-    flex: 1;
-    align-items: center;
-    justify-content: center;
-    border: 0.2rem solid white;
-    height: 2rem;
-    padding: 1rem;
+    background-color: var(--card-color);
+    padding: var(--padding);
     margin: 0.5rem;
     cursor: pointer;
 }
 
+.recepy__item__title {
+    grid-area: title;
+    display: flex;
+    align-items: center;
+    /* justify-content: center; */
+}
+
+.recepy__item__glass {
+    grid-area: glass;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .recepy__item:hover {
-    background-color: blueviolet;
+    background-color: var(--card-color-hover);
 }

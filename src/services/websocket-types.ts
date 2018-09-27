@@ -1,10 +1,10 @@
-import { EventEmitter } from "events";
-import { RequestHandler, NextFunction, Request, Response } from "express";
+import { EventEmitter } from 'events';
+import { RequestHandler, NextFunction, Request, Response } from 'express';
 import ws from 'ws';
 
 export interface WebsocketPayload<T> {
-    action: string,
-    data: T
+    action: string;
+    data: T;
 }
 
 export type WebsocketCallback<T> = (ws: EventEmitter, action: string, data: T) => void;
@@ -14,7 +14,7 @@ export interface WebsocketListenerUri {
 }
 
 export interface WebsocketListener<T> extends WebsocketListenerUri {
-    callback: WebsocketCallback<T>
+    callback: WebsocketCallback<T>;
 }
 
 export interface WebsocketRequest extends Request {

@@ -1,5 +1,5 @@
 import { PumpsUtils } from './pump-utils';
-import { RecepyFamily, Recepy } from '../shared';
+import { RecepyFamily, Recepy } from '../types';
 import Lowdb from 'lowdb';
 import FileAsync from 'lowdb/adapters/FileAsync';
 import { cloneDeep } from 'lodash';
@@ -14,7 +14,7 @@ enum Collection {
 
 interface DBSchema {
     [Collection.RECEPIES]: Recepy[];
-    [Collection.FAMILIES]: RecepyFamily[]
+    [Collection.FAMILIES]: RecepyFamily[];
 }
 
 const DEFAULT_RECEPY: Recepy = {
@@ -22,7 +22,7 @@ const DEFAULT_RECEPY: Recepy = {
     label: '',
     recepyFamily: DEFAULT_FAMILY,
     parts: []
-}
+};
 
 export class RecepyService {
     private recepyFamily: RecepyFamily;
@@ -64,15 +64,6 @@ export class RecepyService {
             await found
                 .assign(family)
                 .write();
-        }
-    }
-
-    public async setRecepy(id: string) {
-        const recepy = await this.db.get(Collection.RECEPIES)
-            .find({ id })
-            .value();
-        if (recepy) {
-            this.recepy = recepy;
         }
     }
 
@@ -128,18 +119,10 @@ export class RecepyService {
         return families;
     }
 
-    public async getRecepy(id: string): Promise<Recepy> {
-        const recepy = await this.db.get(Collection.RECEPIES)
-            .find({ id })
-            .value();
-
-        return recepy;
-    }
-
-    public setPumps(): Promise<void> {
-        if (!this.executing && this.recepy) {
+    public setPumps(recepy: Recepy): Promise<void> {
+        if (!this.executing && recepy) {
             this.executing = true;
-            const { parts } = this.recepy;
+            const { parts } = recepy;
             const promises: Array<Promise<void>> = parts.map((quantity: number, indx: number) => {
                 return PumpsUtils.activateWithTimer(indx, quantity * 1000);
             });
@@ -154,4 +137,3 @@ export class RecepyService {
     }
 
 }
-

@@ -2,6 +2,7 @@
   "dependencies": {
     "express": "^4.16.3",
     "express-ws": "^4.0.0",
+    "lodash": "^4.17.10",
     "lowdb": "^1.0.0",
     "rpi-gpio": "^1.0.0",
     "uniqid": "^5.0.3",
@@ -21,7 +22,8 @@
     "tslint": "tslint -c tslint.json -p tsconfig.json",
     "debug": "npm run build && npm run watch-debug",
     "serve-debug": "nodemon --inspect dist/index.js",
-    "watch-debug": "concurrently -k -p \"[{name}]\" -n \"Sass,TypeScript,Node\" -c \"yellow.bold,cyan.bold,green.bold\" \"npm run watch-sass\" \"npm run watch-ts\" \"npm run serve-debug\""
+    "watch-debug": "concurrently -k -p \"[{name}]\" -n \"Sass,TypeScript,Node\" -c \"yellow.bold,cyan.bold,green.bold\" \"npm run watch-sass\" \"npm run watch-ts\" \"npm run serve-debug\"",
+    "format": "tslint ./src/**/*.ts* --fix"
   },
   "name": "bartender",
   "version": "1.0.0",
@@ -36,10 +38,10 @@
     "concurrently": "^3.6.0",
     "ts-node": "^7.0.0",
     "tslint": "^5.10.0",
-    "tslint-config-prettier": "^1.13.0",
-    "typescript": "^2.9.2"
+    "typesafe-actions": "^2.0.4",
+    "typescript": "^3.0.3"
   },
-  "author": "",
+  "author": "Marco Sangalli<sangalli.marco@gmail.com>",
   "license": "ISC",
   "description": ""
 }

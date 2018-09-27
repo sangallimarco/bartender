@@ -1,110 +1,83 @@
-import express from "express";
+import express from 'express';
 import path from 'path';
 import expressWs from 'express-ws';
-import ws from 'ws';
+import ws, { Server } from 'ws';
 import { webSocketRouter, webSocketMiddleware, WebSocketUtils } from './services';
-import { RecepyService } from "./services/recepy-parser";
-import { CMD_RECEPIES, RECEPIES, CMD_EDIT, GET, CMD_FAMILIES, FAMILIES, CMD_MAKE, MAKE, CMD_NEW, NEW, ProcessingPayload, RecepiesPayload, MakePayload, RecepyPayload, GetPayload, RecepyFamiliesPayload, SET_RECEPY, CMD_DELETE } from './shared';
+import { RecepyService } from './services/recepy-parser';
+import { RootAction, RootActions, RECEPIES, NEW, FAMILIES, MAKE } from './types';
+import { getType } from 'typesafe-actions';
 
-const { app } = expressWs(express());
+const expressWsInstance = expressWs(express());
+const { app } = expressWsInstance;
 const PORT = 8888;
 const ROOT_PATH = __dirname;
 const recepyMaker = new RecepyService();
+recepyMaker.initDatabases();
 
-async function initDB() {
-    await recepyMaker.initDatabases();
+// REDUCER
+const MainDispatcher = async (data: RootAction, wsInstance: ws, rootWs: Server) => {
+    switch (data.type) {
+        case getType(RootActions.CMD_RECEPIES):
+            const recepies = await recepyMaker.getRecepies();
+            WebSocketUtils.sendMessage(wsInstance, RECEPIES, {
+                recepies
+            });
+            break;
+        case getType(RootActions.CMD_EDIT): {
+            const { recepy } = data.payload;
+            await recepyMaker.upsertRecepy(recepy);
+            const recepies = await recepyMaker.getRecepies();
+            WebSocketUtils.broadcastMessage(rootWs, RECEPIES, {
+                recepies
+            });
+            break;
+        }
+        case getType(RootActions.CMD_NEW): {
+            const recepy = await recepyMaker.createRecepy();
+            WebSocketUtils.sendMessage(wsInstance, NEW, {
+                recepy
+            });
+            break;
+        }
+        case getType(RootActions.CMD_DELETE): {
+            const { recepy } = data.payload;
+            await recepyMaker.delRecepy(recepy);
+            const recepies = await recepyMaker.getRecepies();
+            WebSocketUtils.broadcastMessage(rootWs, RECEPIES, {
+                recepies
+            });
+            break;
+        }
+        case getType(RootActions.CMD_FAMILIES): {
+            const families = await recepyMaker.getFamilies();
+            WebSocketUtils.sendMessage(wsInstance, FAMILIES, {
+                families
+            });
+            break;
+        }
+        case getType(RootActions.CMD_MAKE): {
+            const { recepy } = data.payload;
+            WebSocketUtils.broadcastMessage(rootWs, MAKE, {
+                processing: true
+            });
 
-    // recepyMaker.upsertFamily({
-    //     id: 'default',
-    //     label: 'Default Config',
-    //     ingredients: [
-    //         RecepyIngredient.APEROL,
-    //         RecepyIngredient.TONIC,
-    //         RecepyIngredient.GIN,
-    //         RecepyIngredient.COKE,
-    //         RecepyIngredient.COKE
-    //     ]
-    // });
+            await recepyMaker.setPumps(recepy);
+            WebSocketUtils.broadcastMessage(rootWs, MAKE, {
+                processing: false
+            });
+            break;
+        }
+    }
+};
+webSocketRouter.setWsServer(expressWsInstance.getWss());
+webSocketRouter.setReducer(MainDispatcher);
 
-    // recepyMaker.upsertRecepy({
-    //     id: 'gin',
-    //     recepyFamily: 'default',
-    //     label: 'Gin',
-    //     parts: [1, 1, 1, 1, 1]
-    // });
-}
-
-// @TODO refactor this, test only
-initDB();
-
-// routes
-webSocketRouter.on<{}>(CMD_RECEPIES, async (wsInstance: ws, uri: string, data: {}) => {
-    const recepies = await recepyMaker.getRecepies()
-    WebSocketUtils.sendMessage<RecepiesPayload>(wsInstance, RECEPIES, {
-        recepies
-    });
-});
-
-webSocketRouter.on<GetPayload>(GET, async (wsInstance: ws, uri: string, data) => {
-    const { id } = data;
-    const recepy = await recepyMaker.getRecepy(id);
-    WebSocketUtils.sendMessage<RecepyPayload>(wsInstance, SET_RECEPY, {
-        recepy
-    });
-});
-
-webSocketRouter.on<{}>(CMD_NEW, async (wsInstance: ws, uri: string, data) => {
-    const recepy = await recepyMaker.createRecepy();
-    WebSocketUtils.sendMessage<RecepyPayload>(wsInstance, NEW, {
-        recepy
-    });
-});
-
-webSocketRouter.on<RecepyPayload>(CMD_EDIT, async (wsInstance: ws, uri: string, data) => {
-    const { recepy } = data;
-    await recepyMaker.upsertRecepy(recepy);
-    const recepies = await recepyMaker.getRecepies()
-    WebSocketUtils.sendMessage<RecepiesPayload>(wsInstance, RECEPIES, {
-        recepies
-    });
-});
-
-webSocketRouter.on<RecepyPayload>(CMD_DELETE, async (wsInstance: ws, uri: string, data) => {
-    const { recepy } = data;
-    await recepyMaker.delRecepy(recepy);
-    const recepies = await recepyMaker.getRecepies()
-    WebSocketUtils.sendMessage<RecepiesPayload>(wsInstance, RECEPIES, {
-        recepies
-    });
-});
-
-webSocketRouter.on<{}>(CMD_FAMILIES, async (wsInstance: ws, uri: string, data) => {
-    const families = await recepyMaker.getFamilies();
-    WebSocketUtils.sendMessage<RecepyFamiliesPayload>(wsInstance, FAMILIES, {
-        families
-    });
-});
-
-// testing post processing
-webSocketRouter.on<MakePayload>(CMD_MAKE, async (wsInstance: ws, uri: string, data) => {
-    const { id } = data;
-
-    await recepyMaker.setRecepy(id);
-    WebSocketUtils.sendMessage<ProcessingPayload>(wsInstance, MAKE, {
-        processing: true
-    });
-
-    await recepyMaker.setPumps();
-    WebSocketUtils.sendMessage<ProcessingPayload>(wsInstance, MAKE, {
-        processing: false
-    });
-});
-
+// ROUTES
 app.use('/ws', webSocketMiddleware);
 app.use('/app', express.static(path.join(__dirname, '../client/build')));
 app.use('/assets', express.static(path.join(ROOT_PATH, 'assets')));
 
 app.listen(PORT, () => {
     console.log(`Open browser page: http://localhost:${PORT}/app`);
-    console.log("  Press CTRL-C to stop\n");
+    console.log('  Press CTRL-C to stop\n');
 });

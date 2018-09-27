@@ -3,8 +3,7 @@ import { RootReducerState, reducer } from './reducer';
 import { createStore, compose } from 'redux';
 // import ReduxThunk from 'redux-thunk';
 import { webSocketService } from '../core/websocket';
-import { RootAction, RootActions } from './actions';
-export { RootAction, RootActions } from './actions';
+import { RootAction, RootActions } from '../types';
 
 export interface RootState {
     root: RootReducerState;

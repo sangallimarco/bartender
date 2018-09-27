@@ -5,46 +5,10 @@
       "label": "Aperol Spritz",
       "recepyFamily": "default",
       "parts": [
-        12,
-        3,
-        1,
-        3,
-        3
-      ]
-    },
-    {
-      "id": "75njbo9zwjkxmwne7",
-      "label": "Fantasy",
-      "recepyFamily": "default",
-      "parts": [
-        22,
-        123,
-        122,
-        1233,
-        212
-      ]
-    },
-    {
-      "id": "75njbo9zwjky6x2tu",
-      "label": "OK",
-      "recepyFamily": "default",
-      "parts": [
-        1,
-        1,
-        1,
-        1,
-        1
-      ]
-    },
-    {
-      "id": "75njboiu3jlcgow6z",
-      "label": "goood",
-      "recepyFamily": "default",
-      "parts": [
-        1,
-        1,
-        1,
-        1,
+        2,
+        2,
+        2,
+        2,
         1
       ]
     },
@@ -83,6 +47,52 @@
         1,
         1
       ]
+    },
+    {
+      "id": "75njbo9zwjkxmwne7",
+      "label": "Fantasy",
+      "recepyFamily": "default",
+      "parts": [
+        5,
+        1,
+        1,
+        1,
+        2
+      ]
+    },
+    {
+      "id": "75njbowxkjm7eav6y",
+      "label": "Strong",
+      "recepyFamily": "default",
+      "parts": [
+        1,
+        1,
+        3,
+        3,
+        1
+      ]
+    },
+    {
+      "id": "75njbol2ljmhvxvzv",
+      "label": "ok",
+      "recepyFamily": "default",
+      "parts": [
+        2,
+        2,
+        1,
+        1
+      ]
+    },
+    {
+      "id": "75njbol2ljmhw1f9z",
+      "label": "test1",
+      "recepyFamily": "default",
+      "parts": [
+        0,
+        3,
+        5,
+        4
+      ]
     }
   ],
   "FAMILIES": [
@@ -90,22 +100,44 @@
       "id": "default",
       "label": "Default Config",
       "ingredients": [
-        "APEROL",
-        "TONIC",
-        "GIN",
-        "COKE",
-        "COKE"
+        {
+          "label": "APEROL",
+          "color": "#f34021"
+        },
+        {
+          "label": "CAMPARI",
+          "color": "#a01728"
+        },
+        {
+          "label": "SODA",
+          "color": "#e8e8f2"
+        },
+        {
+          "label": "VERMOUT",
+          "color": "#48110c"
+        }
       ]
     },
     {
       "id": "cocktails",
       "label": "Cocktails",
       "ingredients": [
-        "ORANGE JUICE",
-        "SODA",
-        "RUM",
-        "VODKA",
-        "VERMOUT"
+        {
+          "label": "APEROL",
+          "color": "#ff0000"
+        },
+        {
+          "label": "CAMPARI",
+          "color": "#ff0011"
+        },
+        {
+          "label": "SODA",
+          "color": "#FAFAFA"
+        },
+        {
+          "label": "VERMOUT",
+          "color": "#ff0066"
+        }
       ]
     }
   ]

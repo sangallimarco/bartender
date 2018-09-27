@@ -1,29 +1,25 @@
 import * as React from 'react';
 import { RouteComponentProps } from '../../../node_modules/@types/react-router';
-import { RootState, RootActions, RootAction } from '../../stores';
-import { Recepy, RecepyPayload, RecepyFamily, Pump, AttributePayload } from '../../shared';
+import { RootState } from '../../stores';
+import { Recepy, RecepyFamily, Pump, RootActions, RootAction } from '../../types';
 import Button, { ButtonType } from '../button/button';
 import { Input } from '../input/input';
 import './recepy-edit.css';
 import { generateRangeFromEnumKeys } from '../../core/enum-utils';
 import { browserHistory } from '../../core/browser-history';
-import { Dispatch, bindActionCreators, } from 'redux';
 import { connect } from 'react-redux';
 import { Select } from '../select/select';
 import InputContainer from '../input-container/input-container';
-import { getCurrentFamilyIngredients } from './recepy-utils';
+import { getCurrentFamily } from './recepy-utils';
+import { ReduxDispatch } from '../../core/types';
 
-interface RecepyEditBaseProps extends RouteComponentProps<any> {
+interface ReduxProps extends RouteComponentProps<any> {
     id: string;
     recepy: Recepy | null;
     families: RecepyFamily[];
-    submit: (recepy: RecepyPayload) => void;
-    setPart: (payload: AttributePayload) => void;
-    setAttribute: (payload: AttributePayload) => void;
-    remove: () => void;
 }
 
-export class RecepyEditBase extends React.Component<RecepyEditBaseProps, {}> {
+export class RecepyEditBase extends React.Component<ReduxProps & ReduxDispatch<RootAction>, {}> {
 
     public render() {
         const { recepy, families } = this.props;
@@ -47,53 +43,62 @@ export class RecepyEditBase extends React.Component<RecepyEditBaseProps, {}> {
     private renderPumps(parts: number[]) {
         const { families, recepy } = this.props;
         if (families && recepy) {
-            const ingredients = getCurrentFamilyIngredients(families, recepy);
-            const range = generateRangeFromEnumKeys(Pump);
-            return range.map((i: number, indx: number) => {
-                const name = `${i}`;
-                const value = parts[i] || 0;
-                const label = ingredients[i];
-                return <InputContainer key={name} label={label}>
-                    <Input name={name} value={value.toString()} onChange={this.handlePumpChange} />
-                </InputContainer>;
-            });
+            const family = getCurrentFamily(families, recepy);
+            if (family) {
+                const { ingredients } = family;
+                const range = generateRangeFromEnumKeys(Pump);
+                return range.map((i: number, indx: number) => {
+                    const name = `${i}`;
+                    const value = parts[i] || 0;
+                    if (ingredients[i]) {
+                        const { label } = ingredients[i];
+                        return <InputContainer key={name} label={label}>
+                            <Input name={name} value={value.toString()} onChange={this.handlePumpChange} />
+                        </InputContainer>;
+                    }
+                    return null;
+                });
+            }
         }
         return null;
     }
 
     private handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { recepy, setAttribute } = this.props;
+        const { recepy, dispatch } = this.props;
         const { target: { value, name } } = e;
         if (recepy) {
-            setAttribute({ id: name, value })
+            dispatch(RootActions.SET_ATTRIBUTE({ id: name, value }))
         }
     }
 
     private handleRemove = () => {
-        const { remove } = this.props;
-        remove();
-        browserHistory.push('/');
+        const { recepy } = this.props;
+        const { dispatch } = this.props;
+        if (recepy) {
+            dispatch(RootActions.CMD_DELETE({ recepy }));
+            browserHistory.push('/');
+        }
     }
 
     private handleSubmit = () => {
-        const { recepy, submit } = this.props;
+        const { recepy, dispatch } = this.props;
         if (recepy) {
-            submit({ recepy });
+            dispatch(RootActions.CMD_EDIT({ recepy }));
             browserHistory.push('/');
         }
     }
 
     private handlePumpChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { setPart } = this.props;
+        const { dispatch } = this.props;
         const { target: { value, name } } = e;
-        setPart({ id: name, value });
+        dispatch(RootActions.SET_PART({ id: name, value }));
     }
 
     private handleSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        const { recepy, setAttribute } = this.props;
+        const { recepy, dispatch } = this.props;
         if (recepy) {
             const { target: { value, name } } = e;
-            setAttribute({ id: name, value })
+            dispatch(RootActions.SET_ATTRIBUTE({ id: name, value }))
         }
     }
 }
@@ -105,11 +110,4 @@ const mapStateToProps = (state: RootState) => {
     return { recepy, families };
 };
 
-const mapDispatchToProps = (dispatch: Dispatch<RootAction>) => bindActionCreators({
-    submit: RootActions.CMD_EDIT,
-    setPart: RootActions.SET_PART,
-    setAttribute: RootActions.SET_ATTRIBUTE,
-    remove: RootActions.CMD_DELETE,
-}, dispatch);
-
-export const RecepyEdit = connect(mapStateToProps, mapDispatchToProps)(RecepyEditBase);
+export const RecepyEdit = connect(mapStateToProps)(RecepyEditBase);

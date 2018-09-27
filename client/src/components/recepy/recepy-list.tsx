@@ -1,21 +1,21 @@
 import * as React from 'react';
-import './recepy.css';
+import './recepy-list.css';
 import RecepyItem from './recepy-item';
 import Dialog from '../dialog/dialog';
 import Processing from '../processing/processing';
 import { browserHistory } from '../../core/browser-history';
-import { RootState, RootActions, RootAction } from '../../stores';
-import { Dispatch, bindActionCreators, } from 'redux';
+import { RootState } from '../../stores';
 import { connect } from 'react-redux';
-import { Recepy } from '../../shared';
+import { Recepy, RootActions, RootAction, RecepyFamily } from '../../types';
+// import { Dispatch } from 'redux';
+import { ReduxDispatch } from '../../core/types';
+import { getCurrentFamily } from './recepy-utils';
 
-interface RecepyListBaseProps {
+interface ReduxProps {
     recepies: Recepy[];
-    recepy: Recepy;
+    recepy: Recepy | null;
     processing: boolean;
-    make: () => void;
-    create: () => void;
-    setRecepy: (recepy: Recepy) => void;
+    families: RecepyFamily[];
 }
 
 interface RecepyListBaseState {
@@ -24,7 +24,7 @@ interface RecepyListBaseState {
     message: string;
 }
 
-class RecepyListBase extends React.Component<RecepyListBaseProps, RecepyListBaseState> {
+class RecepyListBase extends React.Component<ReduxProps & ReduxDispatch<RootAction>, RecepyListBaseState> {
 
     public state = {
         dialogVisible: false,
@@ -43,11 +43,11 @@ class RecepyListBase extends React.Component<RecepyListBaseProps, RecepyListBase
     }
 
     public render() {
-        const { recepies, processing } = this.props;
+        const { recepies, processing, families } = this.props;
         const { dialogVisible, message } = this.state;
         return (
-            <div className="recepy-list">
-                {this.renderItems(recepies)}
+            <div className="recepy__list">
+                {this.renderItems(recepies, families)}
                 <Dialog active={dialogVisible} onConfirm={this.handleConfirm} onDismiss={this.handleDismiss} message={message} />
                 <Processing active={processing} />
             </div>
@@ -56,21 +56,23 @@ class RecepyListBase extends React.Component<RecepyListBaseProps, RecepyListBase
 
     public handleKeyDown = (e: KeyboardEvent) => {
         const { key } = e;
-        const { create } = this.props;
+        const { dispatch } = this.props;
         switch (key) {
             case 'e':
                 this.setState({ edit: true });
                 break;
             case 'n':
-                create();
+                dispatch(RootActions.CMD_NEW());
                 browserHistory.push(`/edit`);
                 break;
         }
     }
 
     private handleConfirm = () => {
-        const { make } = this.props;
-        make();
+        const { dispatch, recepy } = this.props;
+        if (recepy) {
+            dispatch(RootActions.CMD_MAKE({ recepy }));
+        }
         this.setState({ dialogVisible: false });
     }
 
@@ -79,10 +81,10 @@ class RecepyListBase extends React.Component<RecepyListBaseProps, RecepyListBase
     }
 
     private handleSelected = (recepy: Recepy) => {
-        const { setRecepy } = this.props;
+        const { dispatch } = this.props;
         const { edit } = this.state;
         const { label } = recepy;
-        setRecepy(recepy);
+        dispatch(RootActions.SET_RECEPY(recepy));
         if (edit) {
             browserHistory.push(`/edit`);
         } else {
@@ -91,25 +93,24 @@ class RecepyListBase extends React.Component<RecepyListBaseProps, RecepyListBase
         }
     }
 
-    private renderItems(items: Recepy[]) {
+    private renderItems(items: Recepy[], families: RecepyFamily[]) {
         return items.map((recepy: Recepy) => {
             const { id } = recepy;
-            return <RecepyItem key={id} recepy={recepy} onClick={this.handleSelected} />;
+            const family = getCurrentFamily(families, recepy);
+            if (family) {
+                const { ingredients } = family;
+                return <RecepyItem key={id} recepy={recepy} ingredients={ingredients} onClick={this.handleSelected} />;
+            }
+            return null;
         })
     }
 }
 
-const mapStateToProps = (state: RootState) => {
+const mapStateToProps = (state: RootState): ReduxProps => {
     const {
-        root: { processing, recepies }
+        root: { processing, recepies, recepy, families }
     } = state;
-    return { processing, recepies };
+    return { processing, recepies, recepy, families };
 };
 
-const mapDispatchToProps = (dispatch: Dispatch<RootAction>) => bindActionCreators({
-    make: RootActions.CMD_MAKE,
-    create: RootActions.CMD_NEW,
-    setRecepy: RootActions.SET_RECEPY
-}, dispatch);
-
-export const RecepyList = connect(mapStateToProps, mapDispatchToProps)(RecepyListBase);
+export const RecepyList = connect(mapStateToProps)(RecepyListBase);

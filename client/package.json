@@ -4,6 +4,8 @@
   "homepage": "/app",
   "private": true,
   "dependencies": {
+    "@types/d3": "^5.0.0",
+    "d3": "^5.7.0",
     "history": "^4.7.2",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",

@@ -1,0 +1,13 @@
+[Service]
+WorkingDirectory=/home/pi/bartender
+ExecStart=/usr/bin/node --expose-gc /home/pi/bartender/dist/index.js
+Restart=always
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=nodeServer
+User=pi
+Group=pi
+Environment=NODE_ENV=production
+
+[Install]
+WantedBy=multi-user.target
