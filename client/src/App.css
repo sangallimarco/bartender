@@ -15,10 +15,10 @@ body {
 }
 
 :root {
-  --button-action-color: #fefefe;
-  --button-action-text-color: black;
-  --button-default-color: #6c607d;
-  --button-default-text-color: #fefefe;
+  --button-action-color: #b55757;
+  --button-action-text-color: white;
+  --button-default-color: #5d506f;
+  --button-default-text-color: #a9a6c5;
   --card-color: #444152;
   --card-color-hover: #b55757;
   --text-color: #dedede;
