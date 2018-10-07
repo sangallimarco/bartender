@@ -12,17 +12,7 @@ interface AppProps {
   store: Store;
 }
 
-interface AppState {
-  data: {},
-  recepies: RecepyOption[]
-};
-
-interface RecepyOption {
-  id: string;
-  label: string;
-}
-
-class App extends React.Component<AppProps, AppState> {
+class App extends React.Component<AppProps, {}> {
 
   public render() {
     const { store } = this.props;

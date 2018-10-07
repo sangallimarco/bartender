@@ -1,5 +1,5 @@
 import { Reducer } from 'redux';
-import { Recepy, RecepyFamily, CMD_MAKE, CMD_FAMILIES, CMD_EDIT, CMD_NEW, CMD_DELETE, CMD_RECEPIES } from '../types';
+import { Recepy, RecepyFamily, Actions } from '../types';
 import { RootAction, RootActions } from '../types';
 import { webSocketService } from '../core/websocket';
 import { getType } from 'typesafe-actions';
@@ -26,14 +26,14 @@ export const reducer: Reducer<RootReducerState> = (
 ): RootReducerState => {
     switch (action.type) {
         case getType(RootActions.CMD_RECEPIES):
-            webSocketService.send(CMD_RECEPIES, {});
+            webSocketService.send(Actions.CMD_RECEPIES, {});
             return state;
         case getType(RootActions.RECEPIES):
             const { recepies } = action.payload;
             return { ...state, recepies };
 
         case getType(RootActions.CMD_FAMILIES):
-            webSocketService.send(CMD_FAMILIES, {});
+            webSocketService.send(Actions.CMD_FAMILIES, {});
             return state;
         case getType(RootActions.FAMILIES):
             const { families } = action.payload;
@@ -41,7 +41,7 @@ export const reducer: Reducer<RootReducerState> = (
 
         case getType(RootActions.CMD_MAKE):
             if (action.payload.recepy !== null) {
-                webSocketService.send(CMD_MAKE, action.payload);
+                webSocketService.send(Actions.CMD_MAKE, action.payload);
             }
             return state;
         case getType(RootActions.MAKE):
@@ -49,11 +49,11 @@ export const reducer: Reducer<RootReducerState> = (
             return { ...state, processing };
 
         case getType(RootActions.CMD_EDIT):
-            webSocketService.send(CMD_EDIT, action.payload);
+            webSocketService.send(Actions.CMD_EDIT, action.payload);
             return state;
 
         case getType(RootActions.CMD_NEW):
-            webSocketService.send(CMD_NEW, {});
+            webSocketService.send(Actions.CMD_NEW, {});
             return state;
         case getType(RootActions.NEW):
             const { recepy: newRecepy } = action.payload;
@@ -61,7 +61,7 @@ export const reducer: Reducer<RootReducerState> = (
 
         case getType(RootActions.CMD_DELETE):
             const { recepy: deleteRecepy } = state;
-            webSocketService.send(CMD_DELETE, { recepy: deleteRecepy });
+            webSocketService.send(Actions.CMD_DELETE, { recepy: deleteRecepy });
             return { ...state, recepy: null };
 
         case getType(RootActions.SET_RECEPY):

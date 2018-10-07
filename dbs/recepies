@@ -55,8 +55,8 @@
       "parts": [
         5,
         1,
-        1,
-        1,
+        2,
+        2,
         2
       ]
     },
@@ -92,6 +92,28 @@
         3,
         5,
         4
+      ]
+    },
+    {
+      "id": "shbouk6jmu5m2cy",
+      "label": "asdasd",
+      "recepyFamily": "default",
+      "parts": [
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "id": "shbo19c7jmyybeoq",
+      "label": "wewewe",
+      "recepyFamily": "default",
+      "parts": [
+        1,
+        1,
+        1,
+        1
       ]
     }
   ],

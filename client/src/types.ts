@@ -1,21 +1,23 @@
 import { ActionType, createAction } from 'typesafe-actions';
 
-export const TEST = 'TEST';
-export const CMD_MAKE = 'CMD_MAKE';
-export const MAKE = 'MAKE';
-export const CMD_RECEPIES = 'CMD_RECEPIES';
-export const RECEPIES = 'RECEPIES';
-export const CMD_NEW = 'CMD_NEW';
-export const NEW = 'NEW';
-export const CMD_EDIT = 'CMD_EDIT';
-export const EDIT = 'EDIT';
-export const GET = 'GET';
-export const CMD_FAMILIES = 'CMD_FAMILIES';
-export const FAMILIES = 'FAMILIES';
-export const SET_RECEPY = 'SET_RECEPY';
-export const SET_PART = 'SET_PART';
-export const SET_ATTRIBUTE = 'SET_ATTRIBUTE';
-export const CMD_DELETE = 'CMD_DELETE';
+export enum Actions {
+    TEST = 'TEST',
+    CMD_MAKE = 'CMD_MAKE',
+    MAKE = 'MAKE',
+    CMD_RECEPIES = 'CMD_RECEPIES',
+    RECEPIES = 'RECEPIES',
+    CMD_NEW = 'CMD_NEW',
+    NEW = 'NEW',
+    CMD_EDIT = 'CMD_EDIT',
+    EDIT = 'EDIT',
+    GET = 'GET',
+    CMD_FAMILIES = 'CMD_FAMILIES',
+    FAMILIES = 'FAMILIES',
+    SET_RECEPY = 'SET_RECEPY',
+    SET_PART = 'SET_PART',
+    SET_ATTRIBUTE = 'SET_ATTRIBUTE',
+    CMD_DELETE = 'CMD_DELETE',
+}
 
 export interface ProcessingPayload {
     processing: boolean;
@@ -87,54 +89,54 @@ export enum Pump {
 // @TODO refactor this
 
 export const RootActions = {
-    [CMD_RECEPIES]: createAction(CMD_RECEPIES, resolve => {
+    [Actions.CMD_RECEPIES]: createAction(Actions.CMD_RECEPIES, resolve => {
         return () => {
             return resolve({});
         };
     }),
-    [RECEPIES]: createAction(RECEPIES, resolve => {
+    [Actions.RECEPIES]: createAction(Actions.RECEPIES, resolve => {
         return (data: RecepiesPayload) => resolve(data);
     }),
 
-    [CMD_MAKE]: createAction(CMD_MAKE, resolve => {
+    [Actions.CMD_MAKE]: createAction(Actions.CMD_MAKE, resolve => {
         return (data: RecepyPayload) => resolve(data);
     }),
-    [MAKE]: createAction(MAKE, resolve => {
+    [Actions.MAKE]: createAction(Actions.MAKE, resolve => {
         return (data: ProcessingPayload) => resolve(data);
     }),
 
-    [CMD_FAMILIES]: createAction(CMD_FAMILIES, resolve => {
+    [Actions.CMD_FAMILIES]: createAction(Actions.CMD_FAMILIES, resolve => {
         return () => resolve({});
     }),
-    [FAMILIES]: createAction(FAMILIES, resolve => {
+    [Actions.FAMILIES]: createAction(Actions.FAMILIES, resolve => {
         return (data: RecepyFamiliesPayload) => resolve(data);
     }),
 
-    [CMD_EDIT]: createAction(CMD_EDIT, resolve => {
+    [Actions.CMD_EDIT]: createAction(Actions.CMD_EDIT, resolve => {
         return (data: RecepyPayload) => resolve(data);
     }),
-    [EDIT]: createAction(EDIT, resolve => {
+    [Actions.EDIT]: createAction(Actions.EDIT, resolve => {
         return () => resolve({});
     }),
 
-    [CMD_NEW]: createAction(CMD_NEW, resolve => {
+    [Actions.CMD_NEW]: createAction(Actions.CMD_NEW, resolve => {
         return () => resolve({});
     }),
-    [NEW]: createAction(NEW, resolve => {
+    [Actions.NEW]: createAction(Actions.NEW, resolve => {
         return (data: RecepyPayload) => resolve(data);
     }),
 
-    [CMD_DELETE]: createAction(CMD_DELETE, resolve => {
+    [Actions.CMD_DELETE]: createAction(Actions.CMD_DELETE, resolve => {
         return (data: RecepyPayload) => resolve(data);
     }),
 
-    [SET_RECEPY]: createAction(SET_RECEPY, resolve => {
+    [Actions.SET_RECEPY]: createAction(Actions.SET_RECEPY, resolve => {
         return (data: Recepy) => resolve(data);
     }),
-    [SET_PART]: createAction(SET_PART, resolve => {
+    [Actions.SET_PART]: createAction(Actions.SET_PART, resolve => {
         return (data: AttributePayload) => resolve(data);
     }),
-    [SET_ATTRIBUTE]: createAction(SET_ATTRIBUTE, resolve => {
+    [Actions.SET_ATTRIBUTE]: createAction(Actions.SET_ATTRIBUTE, resolve => {
         return (data: AttributePayload) => resolve(data);
     }),
 };

@@ -6,7 +6,7 @@ export interface InputContainerProps {
     children: JSX.Element
 }
 
-export default class InputContainer extends React.Component<InputContainerProps, any> {
+export default class InputContainer extends React.Component<InputContainerProps, {}> {
     public render() {
         const { children, label } = this.props;
         return (
