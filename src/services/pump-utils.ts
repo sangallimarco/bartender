@@ -1,4 +1,4 @@
-import { Pump, PumpPin } from '../types';
+import { PumpPin } from '../types';
 const { env: { NODE_ENV } } = process;
 
 // see rpi-gpio.js
@@ -23,33 +23,33 @@ export namespace PumpsUtils {
         });
     }
 
-    export function setValue(pump: Pump, value: boolean) {
-        return gpiop.setup(pump, Direction.DIR_OUT)
+    export function setValue(pin: number, value: boolean) {
+        return gpiop.setup(pin, Direction.DIR_OUT)
             .then(() => {
-                return gpiop.write(pump, value)
+                return gpiop.write(pin, value)
                     .catch((err) => {
-                        console.log('Write Error: ', pump, err.toString());
+                        console.log('Write Error: ', pin, value, err.toString());
                     });
             })
             .catch((err) => {
-                console.log('Setup Error: ', pump, err.toString());
+                console.log('Setup Error: ', pin, value, err.toString());
             }
             );
     }
 
-    export function activate(pump: Pump): Promise<{}> {
-        return setValue(pump, true);
+    export function activate(pin: number): Promise<{}> {
+        return setValue(pin, true);
     }
 
-    export function deactivate(pump: Pump): Promise<{}> {
-        return setValue(pump, false);
+    export function deactivate(pin: number): Promise<{}> {
+        return setValue(pin, false);
     }
 
-    export function activateWithTimer(pump: Pump, timeout: number): Promise<void> {
+    export function activateWithTimer(pin: number, timeout: number): Promise<void> {
         return new Promise((resolve, reject) => {
-            activate(pump).then(() => {
+            activate(pin).then(() => {
                 setTimeout(() => {
-                    deactivate(pump).then(() => {
+                    deactivate(pin).then(() => {
                         resolve();
                     });
                 }, timeout);

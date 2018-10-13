@@ -12,6 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const pump_utils_1 = require("./pump-utils");
+const types_1 = require("../types");
 const lowdb_1 = __importDefault(require("lowdb"));
 const FileAsync_1 = __importDefault(require("lowdb/adapters/FileAsync"));
 const lodash_1 = require("lodash");
@@ -133,7 +134,8 @@ class RecepyService {
             this.executing = true;
             const { parts } = recepy;
             const promises = parts.map((quantity, indx) => {
-                return pump_utils_1.PumpsUtils.activateWithTimer(indx, quantity * 1000);
+                const pin = types_1.PumpPin[indx];
+                return pump_utils_1.PumpsUtils.activateWithTimer(pin, quantity * 1000);
             });
             // wait for all timers to resolve
             return Promise.all(promises).then(() => {

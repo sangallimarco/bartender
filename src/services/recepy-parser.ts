@@ -1,5 +1,5 @@
 import { PumpsUtils } from './pump-utils';
-import { RecepyFamily, Recepy } from '../types';
+import { RecepyFamily, Recepy, PumpPin } from '../types';
 import Lowdb from 'lowdb';
 import FileAsync from 'lowdb/adapters/FileAsync';
 import { cloneDeep } from 'lodash';
@@ -124,7 +124,8 @@ export class RecepyService {
             this.executing = true;
             const { parts } = recepy;
             const promises: Array<Promise<void>> = parts.map((quantity: number, indx: number) => {
-                return PumpsUtils.activateWithTimer(indx, quantity * 1000);
+                const pin = PumpPin[indx];
+                return PumpsUtils.activateWithTimer(pin, quantity * 1000);
             });
             // wait for all timers to resolve
             return Promise.all(promises).then(

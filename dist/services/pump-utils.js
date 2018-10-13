@@ -24,32 +24,32 @@ var PumpsUtils;
         });
     }
     PumpsUtils.init = init;
-    function setValue(pump, value) {
-        return gpiop.setup(pump, Direction.DIR_OUT)
+    function setValue(pin, value) {
+        return gpiop.setup(pin, Direction.DIR_OUT)
             .then(() => {
-            return gpiop.write(pump, value)
+            return gpiop.write(pin, value)
                 .catch((err) => {
-                console.log('Write Error: ', pump, err.toString());
+                console.log('Write Error: ', pin, value, err.toString());
             });
         })
             .catch((err) => {
-            console.log('Setup Error: ', pump, err.toString());
+            console.log('Setup Error: ', pin, value, err.toString());
         });
     }
     PumpsUtils.setValue = setValue;
-    function activate(pump) {
-        return setValue(pump, true);
+    function activate(pin) {
+        return setValue(pin, true);
     }
     PumpsUtils.activate = activate;
-    function deactivate(pump) {
-        return setValue(pump, false);
+    function deactivate(pin) {
+        return setValue(pin, false);
     }
     PumpsUtils.deactivate = deactivate;
-    function activateWithTimer(pump, timeout) {
+    function activateWithTimer(pin, timeout) {
         return new Promise((resolve, reject) => {
-            activate(pump).then(() => {
+            activate(pin).then(() => {
                 setTimeout(() => {
-                    deactivate(pump).then(() => {
+                    deactivate(pin).then(() => {
                         resolve();
                     });
                 }, timeout);
