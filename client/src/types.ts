@@ -57,6 +57,7 @@ export interface Recepy {
     recepyFamily: string;
     label: string;
     parts: number[];
+    description: string;
 }
 
 export interface RecepyFamily {

@@ -12,11 +12,12 @@ export interface RecepyItemProps {
 export default class RecepyItem extends React.PureComponent<RecepyItemProps, any> {
 
     public render() {
-        const { recepy: { label, parts }, ingredients } = this.props;
+        const { recepy: { label, parts, description }, ingredients } = this.props;
         return (
             <div className="recepy__item" onClick={this.handleClick}>
                 <div className="recepy__item__title">{label}</div>
                 <div className="recepy__item__glass"><Glass parts={parts} ingredients={ingredients} /></div>
+                <div className="recepy__item__description">{description}</div>
             </div >
         );
     }

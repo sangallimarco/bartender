@@ -27,7 +27,8 @@ const DEFAULT_RECEPY = {
     id: '',
     label: '',
     recepyFamily: DEFAULT_FAMILY,
-    parts: []
+    parts: [],
+    description: ''
 };
 class RecepyService {
     constructor() {

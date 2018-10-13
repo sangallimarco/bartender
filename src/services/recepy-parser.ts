@@ -21,7 +21,8 @@ const DEFAULT_RECEPY: Recepy = {
     id: '',
     label: '',
     recepyFamily: DEFAULT_FAMILY,
-    parts: []
+    parts: [],
+    description: ''
 };
 
 export class RecepyService {

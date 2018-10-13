@@ -24,7 +24,7 @@ export class RecepyEditBase extends React.Component<ReduxProps & ReduxDispatch<R
     public render() {
         const { recepy, families } = this.props;
         if (recepy && families) {
-            const { label, parts, recepyFamily } = recepy as Recepy;
+            const { label, parts, recepyFamily, description } = recepy as Recepy;
             return <div className="recepy-edit">
                 <InputContainer label="Label">
                     <Input name="label" value={label} onChange={this.handleChange} />
@@ -32,6 +32,10 @@ export class RecepyEditBase extends React.Component<ReduxProps & ReduxDispatch<R
                 <InputContainer label="Label">
                     <Select name="recepyFamily" value={recepyFamily} onChange={this.handleSelect} options={families} />
                 </InputContainer>
+                <InputContainer label="Description">
+                    <Input name="description" value={description} onChange={this.handleChange} />
+                </InputContainer>
+                <div />
                 {this.renderPumps(parts)}
                 <Button onClick={this.handleRemove} type={ButtonType.DEFAULT}>DELETE</Button>
                 <Button onClick={this.handleSubmit} type={ButtonType.ACTION}>SAVE</Button>
