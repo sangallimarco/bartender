@@ -19,21 +19,21 @@ else {
 var PumpsUtils;
 (function (PumpsUtils) {
     function init() {
-        types_1.PumpPin.forEach((pump) => {
-            setValue(pump, false);
+        types_1.PumpPin.forEach((pin) => {
+            gpiop.setup(pin, Direction.DIR_OUT)
+                .then(() => {
+                setValue(pin, false);
+            })
+                .catch((err) => {
+                console.log('Error: ', pin, err.toString());
+            });
         });
     }
     PumpsUtils.init = init;
     function setValue(pin, value) {
-        return gpiop.setup(pin, Direction.DIR_OUT)
-            .then(() => {
-            return gpiop.write(pin, value)
-                .catch((err) => {
-                console.log('Write Error: ', pin, value, err.toString());
-            });
-        })
+        return gpiop.write(pin, value)
             .catch((err) => {
-            console.log('Setup Error: ', pin, value, err.toString());
+            console.log('Write Error: ', pin, value, err.toString());
         });
     }
     PumpsUtils.setValue = setValue;
