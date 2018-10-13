@@ -19,6 +19,6 @@ export namespace WebSocketUtils {
         const message = buildMessage<T>(action, data);
         rootInstance.clients.forEach((wsInstance: ws) => {
             wsInstance.send(message);
-        })
+        });
     }
 }

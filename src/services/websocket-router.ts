@@ -2,10 +2,10 @@ import { WebsocketCallback, WebsocketListener, WebsocketListenerUri, WebsocketPa
 import ws, { Server } from 'ws';
 
 type StringType = string;
-type PayloadAction<T extends StringType, P> = {
+interface PayloadAction<T extends StringType, P> {
     type: T;
     payload: P;
-};
+}
 type ReducerCallback = (action: PayloadAction<string, any>, wsInstance: ws, rootWs: Server) => void;
 
 export class WebSocketRouter {
@@ -34,7 +34,7 @@ export class WebSocketRouter {
         this.rootWs = rootWs;
     }
 
-    public dispatch(ws: ws, payload: string) {
+    public dispatch(wsRef: ws, payload: string) {
         let payloadObject: WebsocketPayload<any>;
         try {
             payloadObject = JSON.parse(payload);
@@ -48,7 +48,7 @@ export class WebSocketRouter {
 
         // @TODO refactor here
         const actionObj: PayloadAction<string, any> = { type: action, payload: data };
-        this.reducer(actionObj, ws, this.rootWs);
+        this.reducer(actionObj, wsRef, this.rootWs);
     }
 }
 
