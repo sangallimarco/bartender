@@ -31,10 +31,14 @@ export namespace PumpsUtils {
     }
 
     export function setValue(pin: number, value: boolean) {
-        return gpiop.write(pin, value)
-            .catch((err) => {
-                console.log('Write Error: ', pin, value, err.toString());
-            });
+        if (pin > 0) {
+            return gpiop.write(pin, value)
+                .catch((err) => {
+                    console.log('Write Error: ', pin, value, err.toString());
+                });
+        }
+        // silently resolving a promise
+        return Promise.resolve();
     }
 
     export function activate(pin: number): Promise<{}> {

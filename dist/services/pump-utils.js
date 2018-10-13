@@ -31,10 +31,14 @@ var PumpsUtils;
     }
     PumpsUtils.init = init;
     function setValue(pin, value) {
-        return gpiop.write(pin, value)
-            .catch((err) => {
-            console.log('Write Error: ', pin, value, err.toString());
-        });
+        if (pin > 0) {
+            return gpiop.write(pin, value)
+                .catch((err) => {
+                console.log('Write Error: ', pin, value, err.toString());
+            });
+        }
+        // silently resolving a promise
+        return Promise.resolve();
     }
     PumpsUtils.setValue = setValue;
     function activate(pin) {
