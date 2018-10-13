@@ -26,9 +26,9 @@ const MainDispatcher = async (data: RootAction, wsInstance: ws, rootWs: Server) 
         case getType(RootActions.CMD_EDIT): {
             const { recepy } = data.payload;
             await recepyMaker.upsertRecepy(recepy);
-            const recepies = await recepyMaker.getRecepies();
+            const editRecepies = await recepyMaker.getRecepies();
             WebSocketUtils.broadcastMessage(rootWs, Actions.RECEPIES, {
-                recepies
+                editRecepies
             });
             break;
         }
