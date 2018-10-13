@@ -22,7 +22,7 @@ var PumpsUtils;
         types_1.PumpPin.forEach((pin) => {
             gpiop.setup(pin, Direction.DIR_OUT)
                 .then(() => {
-                setValue(pin, false);
+                setValue(pin, true); // pullup
             })
                 .catch((err) => {
                 console.log('Error: ', pin, err.toString());
@@ -42,11 +42,11 @@ var PumpsUtils;
     }
     PumpsUtils.setValue = setValue;
     function activate(pin) {
-        return setValue(pin, true);
+        return setValue(pin, false);
     }
     PumpsUtils.activate = activate;
     function deactivate(pin) {
-        return setValue(pin, false);
+        return setValue(pin, true);
     }
     PumpsUtils.deactivate = deactivate;
     function activateWithTimer(pin, timeout) {

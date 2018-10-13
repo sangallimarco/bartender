@@ -21,7 +21,7 @@ export namespace PumpsUtils {
         PumpPin.forEach((pin: number) => {
             gpiop.setup(pin, Direction.DIR_OUT)
                 .then(() => {
-                    setValue(pin, false);
+                    setValue(pin, true); // pullup
                 })
                 .catch((err) => {
                     console.log('Error: ', pin, err.toString());
@@ -42,11 +42,11 @@ export namespace PumpsUtils {
     }
 
     export function activate(pin: number): Promise<{}> {
-        return setValue(pin, true);
+        return setValue(pin, false);
     }
 
     export function deactivate(pin: number): Promise<{}> {
-        return setValue(pin, false);
+        return setValue(pin, true);
     }
 
     export function activateWithTimer(pin: number, timeout: number): Promise<void> {
