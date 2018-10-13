@@ -1,4 +1,4 @@
 export const ROUTE = {
-    root: '/app/',
-    edit: '/app/edit/',
+    root: '/',
+    edit: '/edit/',
 }

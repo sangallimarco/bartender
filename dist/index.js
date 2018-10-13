@@ -38,7 +38,7 @@ const MainDispatcher = (data, wsInstance, rootWs) => __awaiter(this, void 0, voi
             yield recepyMaker.upsertRecepy(recepy);
             const editRecepies = yield recepyMaker.getRecepies();
             services_1.WebSocketUtils.broadcastMessage(rootWs, types_1.Actions.RECEPIES, {
-                editRecepies
+                recepies: editRecepies
             });
             break;
         }
@@ -82,8 +82,8 @@ services_1.webSocketRouter.setWsServer(expressWsInstance.getWss());
 services_1.webSocketRouter.setReducer(MainDispatcher);
 // ROUTES
 app.use('/ws', services_1.webSocketMiddleware);
-app.use('/app', express_1.default.static(path_1.default.join(__dirname, '../client/build')));
 app.use('/assets', express_1.default.static(path_1.default.join(ROOT_PATH, 'assets')));
+app.use('/', express_1.default.static(path_1.default.join(__dirname, '../client/build')));
 app.listen(PORT, () => {
     console.log(`Open browser page: http://localhost:${PORT}/app`);
     console.log('  Press CTRL-C to stop\n');

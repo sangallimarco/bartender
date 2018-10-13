@@ -28,7 +28,7 @@ const MainDispatcher = async (data: RootAction, wsInstance: ws, rootWs: Server) 
             await recepyMaker.upsertRecepy(recepy);
             const editRecepies = await recepyMaker.getRecepies();
             WebSocketUtils.broadcastMessage(rootWs, Actions.RECEPIES, {
-                editRecepies
+                recepies: editRecepies
             });
             break;
         }
@@ -74,8 +74,8 @@ webSocketRouter.setReducer(MainDispatcher);
 
 // ROUTES
 app.use('/ws', webSocketMiddleware);
-app.use('/app', express.static(path.join(__dirname, '../client/build')));
 app.use('/assets', express.static(path.join(ROOT_PATH, 'assets')));
+app.use('/', express.static(path.join(__dirname, '../client/build')));
 
 app.listen(PORT, () => {
     console.log(`Open browser page: http://localhost:${PORT}/app`);
