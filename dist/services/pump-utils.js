@@ -22,7 +22,7 @@ var PumpsUtils;
         types_1.PumpPin.forEach((pin) => {
             gpiop.setup(pin, Direction.DIR_OUT)
                 .then(() => {
-                setValue(pin, true); // pullup
+                deactivate(pin);
             })
                 .catch((err) => {
                 console.log('Error: ', pin, err.toString());

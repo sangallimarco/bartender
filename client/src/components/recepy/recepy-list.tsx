@@ -10,6 +10,7 @@ import { Recepy, RootActions, RootAction, RecepyFamily } from '../../types';
 // import { Dispatch } from 'redux';
 import { ReduxDispatch } from '../../core/types';
 import { getCurrentFamily } from './recepy-utils';
+import { ROUTE } from '../../routes';
 
 interface ReduxProps {
     recepies: Recepy[];
@@ -63,7 +64,7 @@ class RecepyListBase extends React.Component<ReduxProps & ReduxDispatch<RootActi
                 break;
             case 'n':
                 dispatch(RootActions.CMD_NEW());
-                browserHistory.push(`/edit`);
+                browserHistory.push(ROUTE.edit);
                 break;
         }
     }
@@ -86,7 +87,7 @@ class RecepyListBase extends React.Component<ReduxProps & ReduxDispatch<RootActi
         const { label } = recepy;
         dispatch(RootActions.SET_RECEPY(recepy));
         if (edit) {
-            browserHistory.push(`/edit`);
+            browserHistory.push(ROUTE.edit);
         } else {
             const message = `Confirm ${label}?`;
             this.setState({ dialogVisible: true, message });

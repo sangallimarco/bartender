@@ -21,7 +21,7 @@ export namespace PumpsUtils {
         PumpPin.forEach((pin: number) => {
             gpiop.setup(pin, Direction.DIR_OUT)
                 .then(() => {
-                    setValue(pin, true); // pullup
+                    deactivate(pin);
                 })
                 .catch((err) => {
                     console.log('Error: ', pin, err.toString());

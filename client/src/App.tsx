@@ -7,6 +7,7 @@ import { browserHistory } from './core/browser-history';
 import { RecepyEdit } from './components/recepy/recepy-edit';
 import { Store } from 'redux';
 import { Provider } from 'react-redux';
+import { ROUTE } from './routes';
 
 interface AppProps {
   store: Store;
@@ -21,8 +22,8 @@ class App extends React.Component<AppProps, {}> {
         <div className="App">
           <Router history={browserHistory}>
             <Switch>
-              <Route path="/edit" component={RecepyEdit} />
-              <Route path="/" component={RecepyList} />
+              <Route path={ROUTE.edit} component={RecepyEdit} />
+              <Route path={ROUTE.root} component={RecepyList} />
             </Switch>
           </Router>
         </div>

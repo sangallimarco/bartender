@@ -26,14 +26,13 @@ exports.PumpPin = [
     12,
     13,
 ];
-var Pump;
-(function (Pump) {
-    Pump[Pump["A"] = exports.PumpPin[0]] = "A";
-    Pump[Pump["B"] = exports.PumpPin[1]] = "B";
-    Pump[Pump["C"] = exports.PumpPin[2]] = "C";
-    Pump[Pump["D"] = exports.PumpPin[3]] = "D";
-    // E = PumpPin[4] // GPIO-22
-})(Pump = exports.Pump || (exports.Pump = {}));
+// export enum Pump {
+//     A = PumpPin[0], // GPIO-4
+//     B = PumpPin[1], // GPIO-17
+//     C = PumpPin[2], // GPIO-18
+//     D = PumpPin[3], // GPIO-27
+//     // E = PumpPin[4] // GPIO-22
+// }
 // @TODO refactor this
 exports.RootActions = {
     [Actions.CMD_RECEPIES]: typesafe_actions_1.createAction(Actions.CMD_RECEPIES, resolve => {
