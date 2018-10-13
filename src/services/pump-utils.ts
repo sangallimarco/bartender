@@ -18,19 +18,23 @@ if (NODE_ENV !== 'emulate') {
 export namespace PumpsUtils {
 
     export function init() {
-        PumpPin.forEach((pin: number) => {
-            gpiop.setup(pin, Direction.DIR_OUT)
-                .catch((err) => {
-                    console.log('Error: ', pin, err.toString());
-                });
+        PumpPin.forEach((pump: number) => {
+            setValue(pump, false);
         });
     }
 
     export function setValue(pump: Pump, value: boolean) {
-        return gpiop.write(pump, value)
+        return gpiop.setup(pump, Direction.DIR_OUT)
+            .then(() => {
+                return gpiop.write(pump, value)
+                    .catch((err) => {
+                        console.log('Write Error: ', pump, err.toString());
+                    });
+            })
             .catch((err) => {
-                console.log('Error: ', pump, err.toString());
-            });
+                console.log('Setup Error: ', pump, err.toString());
+            }
+            );
     }
 
     export function activate(pump: Pump): Promise<{}> {
