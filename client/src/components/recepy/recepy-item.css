@@ -19,6 +19,7 @@
     align-items: center;
     justify-content: center;
     overflow: hidden;
+    color: var(--title-text-color);
     /* justify-content: center; */
 }
 
@@ -33,7 +34,7 @@
     grid-area: description;
     display: flex;
     align-items: left;
-    font-size: 1.2rem;
+    font-size: 1.25rem;
     overflow: hidden;
 }
 

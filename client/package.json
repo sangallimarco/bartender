@@ -39,8 +39,12 @@
   },
   "proxy": {
     "/ws": {
-      "target": "http://localhost:8888",
+      "target": "ws://localhost:8888",
       "ws": true
+    },
+    "/assets": {
+      "target": "http://localhost:8888",
+      "ws": false
     }
   }
 }

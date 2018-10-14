@@ -10,7 +10,6 @@ import { getType } from 'typesafe-actions';
 const expressWsInstance = expressWs(express());
 const { app } = expressWsInstance;
 const PORT = 8888;
-const ROOT_PATH = __dirname;
 const recepyMaker = new RecepyService();
 recepyMaker.initDatabases();
 
@@ -74,7 +73,7 @@ webSocketRouter.setReducer(MainDispatcher);
 
 // ROUTES
 app.use('/ws', webSocketMiddleware);
-app.use('/assets', express.static(path.join(ROOT_PATH, 'assets')));
+app.use('/assets', express.static(path.join(__dirname, '../assets')));
 app.use('/', express.static(path.join(__dirname, '../client/build')));
 
 app.listen(PORT, () => {

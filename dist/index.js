@@ -21,7 +21,6 @@ const typesafe_actions_1 = require("typesafe-actions");
 const expressWsInstance = express_ws_1.default(express_1.default());
 const { app } = expressWsInstance;
 const PORT = 8888;
-const ROOT_PATH = __dirname;
 const recepyMaker = new recepy_parser_1.RecepyService();
 recepyMaker.initDatabases();
 // REDUCER
@@ -82,7 +81,7 @@ services_1.webSocketRouter.setWsServer(expressWsInstance.getWss());
 services_1.webSocketRouter.setReducer(MainDispatcher);
 // ROUTES
 app.use('/ws', services_1.webSocketMiddleware);
-app.use('/assets', express_1.default.static(path_1.default.join(ROOT_PATH, 'assets')));
+app.use('/assets', express_1.default.static(path_1.default.join(__dirname, '../assets')));
 app.use('/', express_1.default.static(path_1.default.join(__dirname, '../client/build')));
 app.listen(PORT, () => {
     console.log(`Open browser page: http://localhost:${PORT}/app`);

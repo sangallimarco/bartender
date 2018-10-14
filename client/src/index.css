@@ -1,12 +1,39 @@
-body {
-  margin: 0;
-  padding: 0;
-  font-family: sans-serif;
-  -webkit-user-select: none;
-  /* Chrome all / Safari all */
-  -moz-user-select: none;
-  /* Firefox all */
-  -ms-user-select: none;
-  /* IE 10+ */
-  user-select: none;
+/* roboto-condensed-regular - latin_latin-ext */
+@font-face {
+  font-family: 'Roboto Condensed';
+  font-style: normal;
+  font-weight: 400;
+  src: url('/assets/roboto-condensed-v16-latin_latin-ext-regular.eot');
+  /* IE9 Compat Modes */
+  src: local('Roboto Condensed'), local('RobotoCondensed-Regular'),
+    url('/assets/roboto-condensed-v16-latin_latin-ext-regular.eot?#iefix') format('embedded-opentype'),
+    /* IE6-IE8 */
+    url('/assets/roboto-condensed-v16-latin_latin-ext-regular.woff2') format('woff2'),
+    /* Super Modern Browsers */
+    url('/assets/roboto-condensed-v16-latin_latin-ext-regular.woff') format('woff'),
+    /* Modern Browsers */
+    url('/assets/roboto-condensed-v16-latin_latin-ext-regular.ttf') format('truetype'),
+    /* Safari, Android, iOS */
+    url('/assets/roboto-condensed-v16-latin_latin-ext-regular.svg#RobotoCondensed') format('svg');
+  /* Legacy iOS */
+}
+
+/* roboto-condensed-700 - latin_latin-ext */
+@font-face {
+  font-family: 'Roboto Condensed';
+  font-style: normal;
+  font-weight: 700;
+  src: url('/assets/roboto-condensed-v16-latin_latin-ext-700.eot');
+  /* IE9 Compat Modes */
+  src: local('Roboto Condensed Bold'), local('RobotoCondensed-Bold'),
+    url('/assets/roboto-condensed-v16-latin_latin-ext-700.eot?#iefix') format('embedded-opentype'),
+    /* IE6-IE8 */
+    url('/assets/roboto-condensed-v16-latin_latin-ext-700.woff2') format('woff2'),
+    /* Super Modern Browsers */
+    url('/assets/roboto-condensed-v16-latin_latin-ext-700.woff') format('woff'),
+    /* Modern Browsers */
+    url('/assets/roboto-condensed-v16-latin_latin-ext-700.ttf') format('truetype'),
+    /* Safari, Android, iOS */
+    url('/assets/roboto-condensed-v16-latin_latin-ext-700.svg#RobotoCondensed') format('svg');
+  /* Legacy iOS */
 }

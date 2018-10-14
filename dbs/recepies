@@ -10,7 +10,8 @@
         2,
         2,
         1
-      ]
+      ],
+      "description": "Aperol Spritz. Add 3 parts prosecco, 2 parts Aperol and top up with soda water, garnish with a slice of orange and serve. An Aperol Spritz is an aperitif cocktail consisting of prosecco, Aperol and soda water."
     },
     {
       "id": "75njboiu3jlcgp4d7",
@@ -70,17 +71,6 @@
         1,
         3,
         3,
-        1
-      ]
-    },
-    {
-      "id": "75njbol2ljmhvxvzv",
-      "label": "ok",
-      "recepyFamily": "default",
-      "parts": [
-        2,
-        2,
-        1,
         1
       ]
     },
