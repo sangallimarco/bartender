@@ -7,8 +7,9 @@ html {
   --button-action-text-color: white;
   --button-default-color: #131214;
   --button-default-text-color: #b1afbf;
-  --card-color: #30285acc;
-  --card-color-hover: #853980cc;
+  --card-color: #524885bb;
+  --card-color-hover: #853980bb;
+  --dialog-color: #6981cbee;
   --text-color: #cfcddd;
   --title-text-color: #dedede;
   --canvas-color: #474864;
