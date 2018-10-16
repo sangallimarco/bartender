@@ -5,7 +5,7 @@
 html {
   --button-action-color: #8e35a6;
   --button-action-text-color: white;
-  --button-default-color: #131214;
+  --button-default-color: #1e357f;
   --button-default-text-color: #b1afbf;
   --card-color: #524885bb;
   --card-color-hover: #853980bb;
@@ -16,6 +16,8 @@ html {
   --padding: 1rem;
   --background-color: #333333;
   --input-color: #333333;
+  --input-padding: .5rem;
+  --font-family: 'Roboto Condensed', Helvetica, Arial, sans-serif;
 
   font-family: 'Roboto Condensed', Helvetica, Arial, sans-serif;
   font-size: 14px;

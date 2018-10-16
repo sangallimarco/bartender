@@ -1,6 +1,10 @@
 .select {
     display: flex;
-    border: 0.2rem solid white;
+    border: 0;
     color: var(--input-color);
     font-size: 2rem;
+    font-family: var(--font-family);
+    -webkit-appearance: none;
+    -webkit-border-radius: 0px;
+    padding: var(--input-padding);
 }

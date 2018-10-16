@@ -68,11 +68,13 @@ const MainDispatcher = (data, wsInstance, rootWs) => __awaiter(this, void 0, voi
             const { recipe } = data.payload;
             const totalTime = recipeMaker.getTotalTime(recipe);
             services_1.WebSocketUtils.broadcastMessage(rootWs, types_1.Actions.MAKE, {
-                processing: true
+                processing: true,
+                totalTime
             });
             yield recipeMaker.setPumps(recipe);
             services_1.WebSocketUtils.broadcastMessage(rootWs, types_1.Actions.MAKE, {
-                processing: false
+                processing: false,
+                totalTime: 0
             });
             break;
         }

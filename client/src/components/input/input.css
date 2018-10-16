@@ -1,6 +1,8 @@
 .input {
     display: flex;
-    border: 0.2rem solid white;
+    border: 0;
     color: var(--input-color);
     font-size: 2rem;
+    font-family: var(--font-family);
+    padding: var(--input-padding);
 }

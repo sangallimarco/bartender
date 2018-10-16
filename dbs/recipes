@@ -75,28 +75,6 @@
       ]
     },
     {
-      "id": "75njbol2ljmhw1f9z",
-      "label": "test1",
-      "recipeFamily": "default",
-      "parts": [
-        0,
-        3,
-        5,
-        4
-      ]
-    },
-    {
-      "id": "shbouk6jmu5m2cy",
-      "label": "asdasd",
-      "recipeFamily": "default",
-      "parts": [
-        1,
-        1,
-        1,
-        1
-      ]
-    },
-    {
       "id": "shbo19c7jmyybeoq",
       "label": "Mojito",
       "recipeFamily": "default",
