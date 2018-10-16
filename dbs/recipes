@@ -1,12 +1,12 @@
 {
-  "RECEPIES": [
+  "recipes": [
     {
       "id": "75njbo9wgjkxmutv5",
       "label": "Aperol Spritz",
-      "recepyFamily": "default",
+      "recipeFamily": "default",
       "parts": [
         2,
-        2,
+        4,
         2,
         2,
         1
@@ -16,7 +16,7 @@
     {
       "id": "75njboiu3jlcgp4d7",
       "label": "3333",
-      "recepyFamily": "cocktails",
+      "recipeFamily": "cocktails",
       "parts": [
         1,
         1,
@@ -28,7 +28,7 @@
     {
       "id": "75njboiu3jlcgp7k9",
       "label": "test",
-      "recepyFamily": "cocktails",
+      "recipeFamily": "cocktails",
       "parts": [
         12,
         11,
@@ -40,7 +40,7 @@
     {
       "id": "75njbojc8jlchee57",
       "label": "maaarcoooo",
-      "recepyFamily": "cocktails",
+      "recipeFamily": "cocktails",
       "parts": [
         1,
         1,
@@ -51,8 +51,8 @@
     },
     {
       "id": "75njbo9zwjkxmwne7",
-      "label": "Fantasy",
-      "recepyFamily": "default",
+      "label": "Fantasy2",
+      "recipeFamily": "default",
       "parts": [
         5,
         1,
@@ -65,7 +65,7 @@
     {
       "id": "75njbowxkjm7eav6y",
       "label": "Strong",
-      "recepyFamily": "default",
+      "recipeFamily": "default",
       "parts": [
         1,
         1,
@@ -77,7 +77,7 @@
     {
       "id": "75njbol2ljmhw1f9z",
       "label": "test1",
-      "recepyFamily": "default",
+      "recipeFamily": "default",
       "parts": [
         0,
         3,
@@ -88,7 +88,7 @@
     {
       "id": "shbouk6jmu5m2cy",
       "label": "asdasd",
-      "recepyFamily": "default",
+      "recipeFamily": "default",
       "parts": [
         1,
         1,
@@ -99,7 +99,7 @@
     {
       "id": "shbo19c7jmyybeoq",
       "label": "Mojito",
-      "recepyFamily": "default",
+      "recipeFamily": "default",
       "parts": [
         1,
         1,

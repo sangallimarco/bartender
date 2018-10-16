@@ -1,4 +1,4 @@
-.recepy__item {
+.recipe__item {
     display: grid;
     grid-template-rows: 1fr 3fr 3fr;
     /* grid-template-columns: 1fr 2fr; */
@@ -12,7 +12,7 @@
     /* grid-gap: 1rem; */
 }
 
-.recepy__item__title {
+.recipe__item__title {
     grid-area: title;
     font-size: 2.2rem;
     display: flex;
@@ -23,14 +23,14 @@
     /* justify-content: center; */
 }
 
-.recepy__item__glass {
+.recipe__item__glass {
     grid-area: glass;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-.recepy__item__description {
+.recipe__item__description {
     grid-area: description;
     display: flex;
     align-items: left;
@@ -38,6 +38,6 @@
     overflow: hidden;
 }
 
-.recepy__item:hover {
+.recipe__item:hover {
     background-color: var(--card-color-hover);
 }

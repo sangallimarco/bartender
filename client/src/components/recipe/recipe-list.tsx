@@ -1,31 +1,31 @@
 import * as React from 'react';
-import './recepy-list.css';
-import RecepyItem from './recepy-item';
+import './recipe-list.css';
+import RecipeItem from './recipe-item';
 import Dialog from '../dialog/dialog';
 import Processing from '../processing/processing';
 import { browserHistory } from '../../core/browser-history';
 import { RootState } from '../../stores';
 import { connect } from 'react-redux';
-import { Recepy, RootActions, RootAction, RecepyFamily } from '../../types';
+import { Recipe, RootActions, RootAction, RecipeFamily } from '../../types';
 // import { Dispatch } from 'redux';
 import { ReduxDispatch } from '../../core/types';
-import { getCurrentFamily } from './recepy-utils';
+import { getCurrentFamily } from './recipe-utils';
 import { ROUTE } from '../../routes';
 
 interface ReduxProps {
-    recepies: Recepy[];
-    recepy: Recepy | null;
+    recipes: Recipe[];
+    recipe: Recipe | null;
     processing: boolean;
-    families: RecepyFamily[];
+    families: RecipeFamily[];
 }
 
-interface RecepyListBaseState {
+interface RecipeListBaseState {
     edit: boolean;
     dialogVisible: boolean;
     message: string;
 }
 
-class RecepyListBase extends React.Component<ReduxProps & ReduxDispatch<RootAction>, RecepyListBaseState> {
+class RecipeListBase extends React.Component<ReduxProps & ReduxDispatch<RootAction>, RecipeListBaseState> {
 
     public state = {
         dialogVisible: false,
@@ -44,11 +44,11 @@ class RecepyListBase extends React.Component<ReduxProps & ReduxDispatch<RootActi
     }
 
     public render() {
-        const { recepies, processing, families } = this.props;
+        const { recipes, processing, families } = this.props;
         const { dialogVisible, message } = this.state;
         return (
-            <div className="recepy__list">
-                {this.renderItems(recepies, families)}
+            <div className="recipe__list">
+                {this.renderItems(recipes, families)}
                 <Dialog active={dialogVisible} onConfirm={this.handleConfirm} onDismiss={this.handleDismiss} message={message} />
                 <Processing active={processing} />
             </div>
@@ -70,9 +70,9 @@ class RecepyListBase extends React.Component<ReduxProps & ReduxDispatch<RootActi
     }
 
     private handleConfirm = () => {
-        const { dispatch, recepy } = this.props;
-        if (recepy) {
-            dispatch(RootActions.CMD_MAKE({ recepy }));
+        const { dispatch, recipe } = this.props;
+        if (recipe) {
+            dispatch(RootActions.CMD_MAKE({ recipe }));
         }
         this.setState({ dialogVisible: false });
     }
@@ -81,11 +81,11 @@ class RecepyListBase extends React.Component<ReduxProps & ReduxDispatch<RootActi
         this.setState({ dialogVisible: false });
     }
 
-    private handleSelected = (recepy: Recepy) => {
+    private handleSelected = (recipe: Recipe) => {
         const { dispatch } = this.props;
         const { edit } = this.state;
-        const { label } = recepy;
-        dispatch(RootActions.SET_RECEPY(recepy));
+        const { label } = recipe;
+        dispatch(RootActions.SET_RECEPY(recipe));
         if (edit) {
             browserHistory.push(ROUTE.edit);
         } else {
@@ -94,13 +94,13 @@ class RecepyListBase extends React.Component<ReduxProps & ReduxDispatch<RootActi
         }
     }
 
-    private renderItems(items: Recepy[], families: RecepyFamily[]) {
-        return items.map((recepy: Recepy) => {
-            const { id } = recepy;
-            const family = getCurrentFamily(families, recepy);
+    private renderItems(items: Recipe[], families: RecipeFamily[]) {
+        return items.map((recipe: Recipe) => {
+            const { id } = recipe;
+            const family = getCurrentFamily(families, recipe);
             if (family) {
                 const { ingredients } = family;
-                return <RecepyItem key={id} recepy={recepy} ingredients={ingredients} onClick={this.handleSelected} />;
+                return <RecipeItem key={id} recipe={recipe} ingredients={ingredients} onClick={this.handleSelected} />;
             }
             return null;
         })
@@ -109,9 +109,9 @@ class RecepyListBase extends React.Component<ReduxProps & ReduxDispatch<RootActi
 
 const mapStateToProps = (state: RootState): ReduxProps => {
     const {
-        root: { processing, recepies, recepy, families }
+        root: { processing, recipes, recipe, families }
     } = state;
-    return { processing, recepies, recepy, families };
+    return { processing, recipes, recipe, families };
 };
 
-export const RecepyList = connect(mapStateToProps)(RecepyListBase);
+export const RecipeList = connect(mapStateToProps)(RecipeListBase);

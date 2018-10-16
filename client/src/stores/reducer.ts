@@ -1,23 +1,23 @@
 import { Reducer } from 'redux';
-import { Recepy, RecepyFamily, Actions } from '../types';
+import { Recipe, RecipeFamily, Actions } from '../types';
 import { RootAction, RootActions } from '../types';
 import { webSocketService } from '../core/websocket';
 import { getType } from 'typesafe-actions';
 
 export interface RootReducerState {
     family: string;
-    families: RecepyFamily[];
+    families: RecipeFamily[];
     processing: boolean;
-    recepy: Recepy | null;
-    recepies: Recepy[];
+    recipe: Recipe | null;
+    recipes: Recipe[];
 }
 
 const initialState: RootReducerState = {
     family: 'default',
     families: [],
     processing: false,
-    recepy: null,
-    recepies: []
+    recipe: null,
+    recipes: []
 };
 
 export const reducer: Reducer<RootReducerState> = (
@@ -28,9 +28,9 @@ export const reducer: Reducer<RootReducerState> = (
         case getType(RootActions.CMD_RECEPIES):
             webSocketService.send(Actions.CMD_RECEPIES, {});
             return state;
-        case getType(RootActions.RECEPIES):
-            const { recepies } = action.payload;
-            return { ...state, recepies };
+        case getType(RootActions.recipes):
+            const { recipes } = action.payload;
+            return { ...state, recipes };
 
         case getType(RootActions.CMD_FAMILIES):
             webSocketService.send(Actions.CMD_FAMILIES, {});
@@ -40,7 +40,7 @@ export const reducer: Reducer<RootReducerState> = (
             return { ...state, families };
 
         case getType(RootActions.CMD_MAKE):
-            if (action.payload.recepy !== null) {
+            if (action.payload.recipe !== null) {
                 webSocketService.send(Actions.CMD_MAKE, action.payload);
             }
             return state;
@@ -56,32 +56,32 @@ export const reducer: Reducer<RootReducerState> = (
             webSocketService.send(Actions.CMD_NEW, {});
             return state;
         case getType(RootActions.NEW):
-            const { recepy: newRecepy } = action.payload;
-            return { ...state, recepy: newRecepy };
+            const { recipe: newRecipe } = action.payload;
+            return { ...state, recipe: newRecipe };
 
         case getType(RootActions.CMD_DELETE):
-            const { recepy: deleteRecepy } = state;
-            webSocketService.send(Actions.CMD_DELETE, { recepy: deleteRecepy });
-            return { ...state, recepy: null };
+            const { recipe: deleteRecipe } = state;
+            webSocketService.send(Actions.CMD_DELETE, { recipe: deleteRecipe });
+            return { ...state, recipe: null };
 
         case getType(RootActions.SET_RECEPY):
-            return { ...state, recepy: action.payload };
+            return { ...state, recipe: action.payload };
 
         case getType(RootActions.SET_PART):
             const { id, value } = action.payload;
-            if (state.recepy) {
+            if (state.recipe) {
                 const indx = +id;
                 const quantity = +value;
-                const { parts } = state.recepy;
+                const { parts } = state.recipe;
                 parts.splice(indx, 1, quantity);
-                return { ...state, recepy: { ...state.recepy, parts } };
+                return { ...state, recipe: { ...state.recipe, parts } };
             }
             return state;
 
         case getType(RootActions.SET_ATTRIBUTE):
             const { id: attributeKey, value: attributeValue } = action.payload;
-            const modifiedRecepy = { ...state.recepy, [attributeKey]: attributeValue } as Recepy;
-            return { ...state, recepy: modifiedRecepy };
+            const modifiedRecipe = { ...state.recipe, [attributeKey]: attributeValue } as Recipe;
+            return { ...state, recipe: modifiedRecipe };
 
         default:
             return state;

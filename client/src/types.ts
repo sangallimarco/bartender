@@ -5,7 +5,7 @@ export enum Actions {
     CMD_MAKE = 'CMD_MAKE',
     MAKE = 'MAKE',
     CMD_RECEPIES = 'CMD_RECEPIES',
-    RECEPIES = 'RECEPIES',
+    recipes = 'recipes',
     CMD_NEW = 'CMD_NEW',
     NEW = 'NEW',
     CMD_EDIT = 'CMD_EDIT',
@@ -21,22 +21,23 @@ export enum Actions {
 
 export interface ProcessingPayload {
     processing: boolean;
+    total: number;
 }
 
-export interface RecepyPayload {
-    recepy: Recepy;
+export interface RecipePayload {
+    recipe: Recipe;
 }
 
-export interface RecepyNewPayload {
+export interface RecipeNewPayload {
     id: string;
 }
 
-export interface RecepyFamiliesPayload {
-    families: RecepyFamily[];
+export interface RecipeFamiliesPayload {
+    families: RecipeFamily[];
 }
 
 export interface RecepiesPayload {
-    recepies: Recepy[];
+    recipes: Recipe[];
 }
 
 export interface MakePayload {
@@ -52,21 +53,21 @@ export interface AttributePayload {
     value: string;
 }
 
-export interface Recepy {
+export interface Recipe {
     id: string;
-    recepyFamily: string;
+    recipeFamily: string;
     label: string;
     parts: number[];
     description: string;
 }
 
-export interface RecepyFamily {
+export interface RecipeFamily {
     id: string;
     label: string;
-    ingredients: RecepyIngredient[];
+    ingredients: RecipeIngredient[];
 }
 
-export interface RecepyIngredient {
+export interface RecipeIngredient {
     label: string;
     color: string;
 }
@@ -95,12 +96,12 @@ export const RootActions = {
             return resolve({});
         };
     }),
-    [Actions.RECEPIES]: createAction(Actions.RECEPIES, resolve => {
+    [Actions.recipes]: createAction(Actions.recipes, resolve => {
         return (data: RecepiesPayload) => resolve(data);
     }),
 
     [Actions.CMD_MAKE]: createAction(Actions.CMD_MAKE, resolve => {
-        return (data: RecepyPayload) => resolve(data);
+        return (data: RecipePayload) => resolve(data);
     }),
     [Actions.MAKE]: createAction(Actions.MAKE, resolve => {
         return (data: ProcessingPayload) => resolve(data);
@@ -110,11 +111,11 @@ export const RootActions = {
         return () => resolve({});
     }),
     [Actions.FAMILIES]: createAction(Actions.FAMILIES, resolve => {
-        return (data: RecepyFamiliesPayload) => resolve(data);
+        return (data: RecipeFamiliesPayload) => resolve(data);
     }),
 
     [Actions.CMD_EDIT]: createAction(Actions.CMD_EDIT, resolve => {
-        return (data: RecepyPayload) => resolve(data);
+        return (data: RecipePayload) => resolve(data);
     }),
     [Actions.EDIT]: createAction(Actions.EDIT, resolve => {
         return () => resolve({});
@@ -124,15 +125,15 @@ export const RootActions = {
         return () => resolve({});
     }),
     [Actions.NEW]: createAction(Actions.NEW, resolve => {
-        return (data: RecepyPayload) => resolve(data);
+        return (data: RecipePayload) => resolve(data);
     }),
 
     [Actions.CMD_DELETE]: createAction(Actions.CMD_DELETE, resolve => {
-        return (data: RecepyPayload) => resolve(data);
+        return (data: RecipePayload) => resolve(data);
     }),
 
     [Actions.SET_RECEPY]: createAction(Actions.SET_RECEPY, resolve => {
-        return (data: Recepy) => resolve(data);
+        return (data: Recipe) => resolve(data);
     }),
     [Actions.SET_PART]: createAction(Actions.SET_PART, resolve => {
         return (data: AttributePayload) => resolve(data);

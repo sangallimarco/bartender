@@ -1,6 +1,6 @@
 .select {
     display: flex;
     border: 0.2rem solid white;
-    color: var(--text-color);
+    color: var(--input-color);
     font-size: 2rem;
 }

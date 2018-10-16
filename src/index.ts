@@ -3,64 +3,65 @@ import path from 'path';
 import expressWs from 'express-ws';
 import ws, { Server } from 'ws';
 import { webSocketRouter, webSocketMiddleware, WebSocketUtils } from './services';
-import { RecepyService } from './services/recepy-parser';
+import { RecipeService } from './services/recipe-parser';
 import { RootAction, RootActions, Actions } from './types';
 import { getType } from 'typesafe-actions';
 
 const expressWsInstance = expressWs(express());
 const { app } = expressWsInstance;
 const PORT = 8888;
-const recepyMaker = new RecepyService();
-recepyMaker.initDatabases();
+const recipeMaker = new RecipeService();
+recipeMaker.initDatabases();
 
 // REDUCER
 const MainDispatcher = async (data: RootAction, wsInstance: ws, rootWs: Server) => {
     switch (data.type) {
         case getType(RootActions.CMD_RECEPIES):
-            const recepies = await recepyMaker.getRecepies();
-            WebSocketUtils.sendMessage(wsInstance, Actions.RECEPIES, {
-                recepies
+            const recipes = await recipeMaker.getRecepies();
+            WebSocketUtils.sendMessage(wsInstance, Actions.recipes, {
+                recipes
             });
             break;
         case getType(RootActions.CMD_EDIT): {
-            const { recepy } = data.payload;
-            await recepyMaker.upsertRecepy(recepy);
-            const editRecepies = await recepyMaker.getRecepies();
-            WebSocketUtils.broadcastMessage(rootWs, Actions.RECEPIES, {
-                recepies: editRecepies
+            const { recipe } = data.payload;
+            await recipeMaker.upsertRecipe(recipe);
+            const editRecepies = await recipeMaker.getRecepies();
+            WebSocketUtils.broadcastMessage(rootWs, Actions.recipes, {
+                recipes: editRecepies
             });
             break;
         }
         case getType(RootActions.CMD_NEW): {
-            const recepy = await recepyMaker.createRecepy();
+            const recipe = await recipeMaker.createRecipe();
             WebSocketUtils.sendMessage(wsInstance, Actions.NEW, {
-                recepy
+                recipe
             });
             break;
         }
         case getType(RootActions.CMD_DELETE): {
-            const { recepy } = data.payload;
-            await recepyMaker.delRecepy(recepy);
-            const recepies = await recepyMaker.getRecepies();
-            WebSocketUtils.broadcastMessage(rootWs, Actions.RECEPIES, {
-                recepies
+            const { recipe } = data.payload;
+            await recipeMaker.delRecipe(recipe);
+            const recipes = await recipeMaker.getRecepies();
+            WebSocketUtils.broadcastMessage(rootWs, Actions.recipes, {
+                recipes
             });
             break;
         }
         case getType(RootActions.CMD_FAMILIES): {
-            const families = await recepyMaker.getFamilies();
+            const families = await recipeMaker.getFamilies();
             WebSocketUtils.sendMessage(wsInstance, Actions.FAMILIES, {
                 families
             });
             break;
         }
         case getType(RootActions.CMD_MAKE): {
-            const { recepy } = data.payload;
+            const { recipe } = data.payload;
+            const totalTime = recipeMaker.getTotalTime(recipe);
             WebSocketUtils.broadcastMessage(rootWs, Actions.MAKE, {
                 processing: true
             });
 
-            await recepyMaker.setPumps(recepy);
+            await recipeMaker.setPumps(recipe);
             WebSocketUtils.broadcastMessage(rootWs, Actions.MAKE, {
                 processing: false
             });

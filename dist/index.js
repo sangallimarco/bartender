@@ -15,61 +15,62 @@ const express_1 = __importDefault(require("express"));
 const path_1 = __importDefault(require("path"));
 const express_ws_1 = __importDefault(require("express-ws"));
 const services_1 = require("./services");
-const recepy_parser_1 = require("./services/recepy-parser");
+const recipe_parser_1 = require("./services/recipe-parser");
 const types_1 = require("./types");
 const typesafe_actions_1 = require("typesafe-actions");
 const expressWsInstance = express_ws_1.default(express_1.default());
 const { app } = expressWsInstance;
 const PORT = 8888;
-const recepyMaker = new recepy_parser_1.RecepyService();
-recepyMaker.initDatabases();
+const recipeMaker = new recipe_parser_1.RecipeService();
+recipeMaker.initDatabases();
 // REDUCER
 const MainDispatcher = (data, wsInstance, rootWs) => __awaiter(this, void 0, void 0, function* () {
     switch (data.type) {
         case typesafe_actions_1.getType(types_1.RootActions.CMD_RECEPIES):
-            const recepies = yield recepyMaker.getRecepies();
-            services_1.WebSocketUtils.sendMessage(wsInstance, types_1.Actions.RECEPIES, {
-                recepies
+            const recipes = yield recipeMaker.getRecepies();
+            services_1.WebSocketUtils.sendMessage(wsInstance, types_1.Actions.recipes, {
+                recipes
             });
             break;
         case typesafe_actions_1.getType(types_1.RootActions.CMD_EDIT): {
-            const { recepy } = data.payload;
-            yield recepyMaker.upsertRecepy(recepy);
-            const editRecepies = yield recepyMaker.getRecepies();
-            services_1.WebSocketUtils.broadcastMessage(rootWs, types_1.Actions.RECEPIES, {
-                recepies: editRecepies
+            const { recipe } = data.payload;
+            yield recipeMaker.upsertRecipe(recipe);
+            const editRecepies = yield recipeMaker.getRecepies();
+            services_1.WebSocketUtils.broadcastMessage(rootWs, types_1.Actions.recipes, {
+                recipes: editRecepies
             });
             break;
         }
         case typesafe_actions_1.getType(types_1.RootActions.CMD_NEW): {
-            const recepy = yield recepyMaker.createRecepy();
+            const recipe = yield recipeMaker.createRecipe();
             services_1.WebSocketUtils.sendMessage(wsInstance, types_1.Actions.NEW, {
-                recepy
+                recipe
             });
             break;
         }
         case typesafe_actions_1.getType(types_1.RootActions.CMD_DELETE): {
-            const { recepy } = data.payload;
-            yield recepyMaker.delRecepy(recepy);
-            const recepies = yield recepyMaker.getRecepies();
-            services_1.WebSocketUtils.broadcastMessage(rootWs, types_1.Actions.RECEPIES, {
-                recepies
+            const { recipe } = data.payload;
+            yield recipeMaker.delRecipe(recipe);
+            const recipes = yield recipeMaker.getRecepies();
+            services_1.WebSocketUtils.broadcastMessage(rootWs, types_1.Actions.recipes, {
+                recipes
             });
             break;
         }
         case typesafe_actions_1.getType(types_1.RootActions.CMD_FAMILIES): {
-            const families = yield recepyMaker.getFamilies();
+            const families = yield recipeMaker.getFamilies();
             services_1.WebSocketUtils.sendMessage(wsInstance, types_1.Actions.FAMILIES, {
                 families
             });
             break;
         }
         case typesafe_actions_1.getType(types_1.RootActions.CMD_MAKE): {
-            const { recepy } = data.payload;
+            const { recipe } = data.payload;
+            const totalTime = recipeMaker.getTotalTime(recipe);
             services_1.WebSocketUtils.broadcastMessage(rootWs, types_1.Actions.MAKE, {
                 processing: true
             });
-            yield recepyMaker.setPumps(recepy);
+            yield recipeMaker.setPumps(recipe);
             services_1.WebSocketUtils.broadcastMessage(rootWs, types_1.Actions.MAKE, {
                 processing: false
             });

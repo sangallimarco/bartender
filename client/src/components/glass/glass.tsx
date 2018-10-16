@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { buildGlass } from '../../core/glass-builder';
 import './glass.css';
-import { RecepyIngredient } from '../../types';
-import { getIngredientColors } from '../recepy/recepy-utils';
+import { RecipeIngredient } from '../../types';
+import { getIngredientColors } from '../recipe/recipe-utils';
 
 
 export interface GlassProps {
-    ingredients: RecepyIngredient[];
+    ingredients: RecipeIngredient[];
     parts: number[];
 }
 

@@ -1,4 +1,4 @@
-.recepy__list {
+.recipe__list {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
     grid-auto-rows: 33rem;

@@ -1,4 +1,4 @@
-.recepy-edit {
+.recipe-edit {
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-auto-rows: auto;

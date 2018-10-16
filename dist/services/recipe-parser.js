@@ -1,38 +1,16 @@
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    return new(P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) {
-            try {
-                step(generator.next(value));
-            } catch (e) {
-                reject(e);
-            }
-        }
-
-        function rejected(value) {
-            try {
-                step(generator["throw"](value));
-            } catch (e) {
-                reject(e);
-            }
-        }
-
-        function step(result) {
-            result.done ? resolve(result.value) : new P(function (resolve) {
-                resolve(result.value);
-            }).then(fulfilled, rejected);
-        }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
 var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : {
-        "default": mod
-    };
+    return (mod && mod.__esModule) ? mod : { "default": mod };
 };
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
+Object.defineProperty(exports, "__esModule", { value: true });
 const pump_utils_1 = require("./pump-utils");
 const types_1 = require("../types");
 const lowdb_1 = __importDefault(require("lowdb"));
@@ -72,27 +50,22 @@ class RecipeService {
     setFamily(id) {
         return __awaiter(this, void 0, void 0, function* () {
             const recipeFamily = yield this.db.get(Collection.FAMILIES)
-                .find({
-                    id
-                })
+                .find({ id })
                 .value();
             this.recipeFamily = recipeFamily;
         });
     }
     upsertFamily(family) {
         return __awaiter(this, void 0, void 0, function* () {
-            const {
-                id
-            } = family;
+            const { id } = family;
             const found = yield this.db.get(Collection.FAMILIES)
-                .find({
-                    id
-                });
+                .find({ id });
             if (!found.value()) {
                 yield this.db.get(Collection.FAMILIES)
                     .push(family)
                     .write();
-            } else {
+            }
+            else {
                 yield found
                     .assign(family)
                     .write();
@@ -101,18 +74,15 @@ class RecipeService {
     }
     upsertRecipe(recipe) {
         return __awaiter(this, void 0, void 0, function* () {
-            const {
-                id
-            } = recipe;
+            const { id } = recipe;
             const found = yield this.db.get(Collection.recipes)
-                .find({
-                    id
-                });
+                .find({ id });
             if (!found.value()) {
                 yield this.db.get(Collection.recipes)
                     .push(recipe)
                     .write();
-            } else {
+            }
+            else {
                 yield found
                     .assign(recipe)
                     .write();
@@ -121,13 +91,9 @@ class RecipeService {
     }
     delRecipe(recipe) {
         return __awaiter(this, void 0, void 0, function* () {
-            const {
-                id
-            } = recipe;
+            const { id } = recipe;
             yield this.db.get(Collection.recipes)
-                .remove({
-                    id
-                })
+                .remove({ id })
                 .write();
         });
     }
@@ -136,10 +102,7 @@ class RecipeService {
             const id = uniqid_1.default();
             const parts = pump_utils_1.PumpsUtils.generateDefaultParts();
             const cloned = lodash_1.cloneDeep(DEFAULT_RECEPY);
-            const recipe = Object.assign({}, cloned, {
-                id,
-                parts
-            });
+            const recipe = Object.assign({}, cloned, { id, parts });
             yield this.upsertRecipe(recipe);
             return recipe;
         });
@@ -147,17 +110,14 @@ class RecipeService {
     getRecepies() {
         return __awaiter(this, void 0, void 0, function* () {
             if (this.recipeFamily) {
-                const {
-                    id: recipeFamily
-                } = this.recipeFamily;
+                const { id: recipeFamily } = this.recipeFamily;
                 const recipes = yield this.db.get(Collection.recipes)
-                    .filter({
-                        recipeFamily
-                    })
+                    .filter({ recipeFamily })
                     .sortBy('label')
                     .value();
                 return recipes;
-            } else {
+            }
+            else {
                 return Promise.resolve([]);
             }
         });
@@ -173,9 +133,7 @@ class RecipeService {
     setPumps(recipe) {
         if (!this.executing && recipe) {
             this.executing = true;
-            const {
-                parts
-            } = recipe;
+            const { parts } = recipe;
             const promises = parts.map((quantity, indx) => {
                 const pin = types_1.PumpPin[indx];
                 return pump_utils_1.PumpsUtils.activateWithTimer(pin, quantity * 1000);
@@ -186,6 +144,17 @@ class RecipeService {
                 return;
             });
         }
+    }
+    getTotalTime(recipe) {
+        if (recipe) {
+            const { parts } = recipe;
+            if (parts.length > 0) {
+                const unsorted = [...parts];
+                unsorted.sort();
+                return unsorted[0];
+            }
+        }
+        return 0;
     }
 }
 exports.RecipeService = RecipeService;

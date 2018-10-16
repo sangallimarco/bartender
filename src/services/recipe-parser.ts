@@ -1,5 +1,5 @@
 import { PumpsUtils } from './pump-utils';
-import { RecepyFamily, Recepy, PumpPin } from '../types';
+import { RecipeFamily, Recipe, PumpPin } from '../types';
 import Lowdb from 'lowdb';
 import FileAsync from 'lowdb/adapters/FileAsync';
 import { cloneDeep } from 'lodash';
@@ -8,26 +8,26 @@ import uniqid from 'uniqid';
 const DEFAULT_FAMILY = 'default';
 
 enum Collection {
-    RECEPIES = 'RECEPIES',
+    recipes = 'recipes',
     FAMILIES = 'FAMILIES'
 }
 
 interface DBSchema {
-    [Collection.RECEPIES]: Recepy[];
-    [Collection.FAMILIES]: RecepyFamily[];
+    [Collection.recipes]: Recipe[];
+    [Collection.FAMILIES]: RecipeFamily[];
 }
 
-const DEFAULT_RECEPY: Recepy = {
+const DEFAULT_RECEPY: Recipe = {
     id: '',
     label: '',
-    recepyFamily: DEFAULT_FAMILY,
+    recipeFamily: DEFAULT_FAMILY,
     parts: [],
     description: ''
 };
 
-export class RecepyService {
-    private recepyFamily: RecepyFamily;
-    private recepy: Recepy;
+export class RecipeService {
+    private recipeFamily: RecipeFamily;
+    private recipe: Recipe;
     private executing: boolean = false;
     private db: Lowdb.LowdbAsync<DBSchema>;
 
@@ -36,9 +36,9 @@ export class RecepyService {
     }
 
     public async initDatabases(): Promise<void> {
-        const adapter = new FileAsync<DBSchema>('dbs/recepies', {
+        const adapter = new FileAsync<DBSchema>('dbs/recipes', {
             defaultValue: {
-                [Collection.RECEPIES]: [],
+                [Collection.recipes]: [],
                 [Collection.FAMILIES]: []
             }
         });
@@ -47,13 +47,13 @@ export class RecepyService {
     }
 
     public async setFamily(id: string): Promise<void> {
-        const recepyFamily = await this.db.get(Collection.FAMILIES)
+        const recipeFamily = await this.db.get(Collection.FAMILIES)
             .find({ id })
             .value();
-        this.recepyFamily = recepyFamily;
+        this.recipeFamily = recipeFamily;
     }
 
-    public async upsertFamily(family: RecepyFamily) {
+    public async upsertFamily(family: RecipeFamily) {
         const { id } = family;
         const found = await this.db.get(Collection.FAMILIES)
             .find({ id });
@@ -68,62 +68,62 @@ export class RecepyService {
         }
     }
 
-    public async upsertRecepy(recepy: Recepy) {
-        const { id } = recepy;
-        const found = await this.db.get(Collection.RECEPIES)
+    public async upsertRecipe(recipe: Recipe) {
+        const { id } = recipe;
+        const found = await this.db.get(Collection.recipes)
             .find({ id });
         if (!found.value()) {
-            await this.db.get(Collection.RECEPIES)
-                .push(recepy)
+            await this.db.get(Collection.recipes)
+                .push(recipe)
                 .write();
         } else {
             await found
-                .assign(recepy)
+                .assign(recipe)
                 .write();
 
         }
     }
 
-    public async delRecepy(recepy: Recepy) {
-        const { id } = recepy;
-        await this.db.get(Collection.RECEPIES)
+    public async delRecipe(recipe: Recipe) {
+        const { id } = recipe;
+        await this.db.get(Collection.recipes)
             .remove({ id })
             .write();
     }
 
-    public async createRecepy(): Promise<Recepy> {
+    public async createRecipe(): Promise<Recipe> {
         const id = uniqid();
         const parts: number[] = PumpsUtils.generateDefaultParts();
-        const cloned: Recepy = cloneDeep(DEFAULT_RECEPY);
-        const recepy: Recepy = { ...cloned, id, parts };
-        await this.upsertRecepy(recepy);
-        return recepy;
+        const cloned: Recipe = cloneDeep(DEFAULT_RECEPY);
+        const recipe: Recipe = { ...cloned, id, parts };
+        await this.upsertRecipe(recipe);
+        return recipe;
     }
 
-    public async getRecepies(): Promise<Recepy[]> {
-        if (this.recepyFamily) {
-            const { id: recepyFamily } = this.recepyFamily;
-            const recepies = await this.db.get(Collection.RECEPIES)
-                .filter({ recepyFamily })
+    public async getRecepies(): Promise<Recipe[]> {
+        if (this.recipeFamily) {
+            const { id: recipeFamily } = this.recipeFamily;
+            const recipes = await this.db.get(Collection.recipes)
+                .filter({ recipeFamily })
                 .sortBy('label')
                 .value();
-            return recepies;
+            return recipes;
         } else {
             return Promise.resolve([]);
         }
     }
 
-    public async getFamilies(): Promise<RecepyFamily[]> {
+    public async getFamilies(): Promise<RecipeFamily[]> {
         const families = await this.db.get(Collection.FAMILIES)
             .sortBy('label')
             .value();
         return families;
     }
 
-    public setPumps(recepy: Recepy): Promise<void> {
-        if (!this.executing && recepy) {
+    public setPumps(recipe: Recipe): Promise<void> {
+        if (!this.executing && recipe) {
             this.executing = true;
-            const { parts } = recepy;
+            const { parts } = recipe;
             const promises: Array<Promise<void>> = parts.map((quantity: number, indx: number) => {
                 const pin = PumpPin[indx];
                 return PumpsUtils.activateWithTimer(pin, quantity * 1000);
@@ -136,6 +136,18 @@ export class RecepyService {
                 }
             );
         }
+    }
+
+    public getTotalTime(recipe: Recipe): number {
+        if (recipe) {
+            const { parts } = recipe;
+            if (parts.length > 0) {
+                const unsorted = [...parts];
+                unsorted.sort();
+                return unsorted[0];
+            }
+        }
+        return 0;
     }
 
 }
