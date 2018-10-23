@@ -7,7 +7,7 @@ var Actions;
     Actions["CMD_MAKE"] = "CMD_MAKE";
     Actions["MAKE"] = "MAKE";
     Actions["CMD_RECEPIES"] = "CMD_RECEPIES";
-    Actions["recipes"] = "recipes";
+    Actions["RECIPES"] = "RECIPES";
     Actions["CMD_NEW"] = "CMD_NEW";
     Actions["NEW"] = "NEW";
     Actions["CMD_EDIT"] = "CMD_EDIT";
@@ -40,7 +40,7 @@ exports.RootActions = {
             return resolve({});
         };
     }),
-    [Actions.recipes]: typesafe_actions_1.createAction(Actions.recipes, resolve => {
+    [Actions.RECIPES]: typesafe_actions_1.createAction(Actions.RECIPES, resolve => {
         return (data) => resolve(data);
     }),
     [Actions.CMD_MAKE]: typesafe_actions_1.createAction(Actions.CMD_MAKE, resolve => {

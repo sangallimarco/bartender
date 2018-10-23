@@ -28,7 +28,7 @@ export const reducer: Reducer<RootReducerState> = (
         case getType(RootActions.CMD_RECEPIES):
             webSocketService.send(Actions.CMD_RECEPIES, {});
             return state;
-        case getType(RootActions.recipes):
+        case getType(RootActions.RECIPES):
             const { recipes } = action.payload;
             return { ...state, recipes };
 

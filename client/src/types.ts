@@ -5,7 +5,7 @@ export enum Actions {
     CMD_MAKE = 'CMD_MAKE',
     MAKE = 'MAKE',
     CMD_RECEPIES = 'CMD_RECEPIES',
-    recipes = 'recipes',
+    RECIPES = 'RECIPES',
     CMD_NEW = 'CMD_NEW',
     NEW = 'NEW',
     CMD_EDIT = 'CMD_EDIT',
@@ -96,7 +96,7 @@ export const RootActions = {
             return resolve({});
         };
     }),
-    [Actions.recipes]: createAction(Actions.recipes, resolve => {
+    [Actions.RECIPES]: createAction(Actions.RECIPES, resolve => {
         return (data: RecepiesPayload) => resolve(data);
     }),
 

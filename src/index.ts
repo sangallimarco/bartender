@@ -18,7 +18,7 @@ const MainDispatcher = async (data: RootAction, wsInstance: ws, rootWs: Server) 
     switch (data.type) {
         case getType(RootActions.CMD_RECEPIES):
             const recipes = await recipeMaker.getRecepies();
-            WebSocketUtils.sendMessage(wsInstance, Actions.recipes, {
+            WebSocketUtils.sendMessage(wsInstance, Actions.RECIPES, {
                 recipes
             });
             break;
@@ -26,7 +26,7 @@ const MainDispatcher = async (data: RootAction, wsInstance: ws, rootWs: Server) 
             const { recipe } = data.payload;
             await recipeMaker.upsertRecipe(recipe);
             const editRecepies = await recipeMaker.getRecepies();
-            WebSocketUtils.broadcastMessage(rootWs, Actions.recipes, {
+            WebSocketUtils.broadcastMessage(rootWs, Actions.RECIPES, {
                 recipes: editRecepies
             });
             break;
@@ -42,7 +42,7 @@ const MainDispatcher = async (data: RootAction, wsInstance: ws, rootWs: Server) 
             const { recipe } = data.payload;
             await recipeMaker.delRecipe(recipe);
             const recipes = await recipeMaker.getRecepies();
-            WebSocketUtils.broadcastMessage(rootWs, Actions.recipes, {
+            WebSocketUtils.broadcastMessage(rootWs, Actions.RECIPES, {
                 recipes
             });
             break;

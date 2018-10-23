@@ -28,7 +28,7 @@ const MainDispatcher = (data, wsInstance, rootWs) => __awaiter(this, void 0, voi
     switch (data.type) {
         case typesafe_actions_1.getType(types_1.RootActions.CMD_RECEPIES):
             const recipes = yield recipeMaker.getRecepies();
-            services_1.WebSocketUtils.sendMessage(wsInstance, types_1.Actions.recipes, {
+            services_1.WebSocketUtils.sendMessage(wsInstance, types_1.Actions.RECIPES, {
                 recipes
             });
             break;
@@ -36,7 +36,7 @@ const MainDispatcher = (data, wsInstance, rootWs) => __awaiter(this, void 0, voi
             const { recipe } = data.payload;
             yield recipeMaker.upsertRecipe(recipe);
             const editRecepies = yield recipeMaker.getRecepies();
-            services_1.WebSocketUtils.broadcastMessage(rootWs, types_1.Actions.recipes, {
+            services_1.WebSocketUtils.broadcastMessage(rootWs, types_1.Actions.RECIPES, {
                 recipes: editRecepies
             });
             break;
@@ -52,7 +52,7 @@ const MainDispatcher = (data, wsInstance, rootWs) => __awaiter(this, void 0, voi
             const { recipe } = data.payload;
             yield recipeMaker.delRecipe(recipe);
             const recipes = yield recipeMaker.getRecepies();
-            services_1.WebSocketUtils.broadcastMessage(rootWs, types_1.Actions.recipes, {
+            services_1.WebSocketUtils.broadcastMessage(rootWs, types_1.Actions.RECIPES, {
                 recipes
             });
             break;
