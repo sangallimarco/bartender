@@ -41,7 +41,16 @@
     "typesafe-actions": "^2.0.4",
     "typescript": "^3.0.3"
   },
-  "author": "Marco Sangalli<sangalli.marco@gmail.com>",
+  "author": "Marco Sangalli <sangalli.marco@gmail.com>",
   "license": "ISC",
-  "description": ""
+  "description": "Automatic Bartneder using RPI",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sangallimarco/bartender.git"
+  },
+  "keywords": [],
+  "bugs": {
+    "url": "https://github.com/sangallimarco/bartender/issues"
+  },
+  "homepage": "https://github.com/sangallimarco/bartender#readme"
 }
