@@ -4,38 +4,24 @@ import RecipeItem from './recipe-item';
 import Dialog from '../dialog/dialog';
 import Processing from '../processing/processing';
 import { browserHistory } from '../../core/browser-history';
-import { RootState } from '../../stores';
-import { connect } from 'react-redux';
-import { Recipe, RootActions, RootAction, RecipeFamily } from '../../types';
-// import { Dispatch } from 'redux';
-import { ReduxDispatch } from '../../core/types';
+import { Recipe, RecipeFamily } from '../../types';
 import { getCurrentFamily } from './recipe-utils';
 import { ROUTE } from '../../routes';
+import { StateMachineInjectedProps, withStateMachine } from 'react-xstate-hoc';
+import { RecipeListContext, RecipeListMachineEvent, RecipeListMachineState, RecipeListMachineStateSchema, RecipeListMachineAction, RecipeListStateMachine, RecipeListInitialContext } from './recipe-list-machine';
+import { webSocketService } from 'src/core/websocket';
 
-interface ReduxProps {
-    recipes: Recipe[];
-    recipe: Recipe | null;
-    processing: boolean;
-    families: RecipeFamily[];
+interface RecipeListBaseProps extends StateMachineInjectedProps<RecipeListContext, RecipeListMachineStateSchema, RecipeListMachineEvent> {
 }
 
-interface RecipeListBaseState {
-    edit: boolean;
-    dialogVisible: boolean;
-    message: string;
-}
-
-class RecipeListBase extends React.Component<ReduxProps & ReduxDispatch<RootAction>, RecipeListBaseState> {
-
-    public state = {
-        dialogVisible: false,
-        edit: false,
-        message: ''
-    };
+class RecipeListBase extends React.PureComponent<RecipeListBaseProps> {
 
     public componentDidMount() {
+        const { dispatch } = this.props;
         // enable edit mode
         document.addEventListener('keydown', this.handleKeyDown);
+        // auto bind actions
+        webSocketService.bindDispatcher(RecipeListMachineAction, dispatch);
     }
 
     public componentWillUnmount() {
@@ -44,8 +30,9 @@ class RecipeListBase extends React.Component<ReduxProps & ReduxDispatch<RootActi
     }
 
     public render() {
-        const { recipes, processing, families } = this.props;
-        const { dialogVisible, message } = this.state;
+        const { context: { recipes, families, message }, currentState } = this.props;
+        const dialogVisible = currentState === RecipeListMachineState.CONFIRMATION;
+        const processing = currentState === RecipeListMachineState.PROCESSING;
         return (
             <div className="recipe__list">
                 {this.renderItems(recipes, families)}
@@ -63,34 +50,27 @@ class RecipeListBase extends React.Component<ReduxProps & ReduxDispatch<RootActi
                 this.setState({ edit: true });
                 break;
             case 'n':
-                dispatch(RootActions.CMD_NEW());
+                dispatch({ type: RecipeListMachineAction.CMD_NEW });
                 browserHistory.push(ROUTE.edit);
                 break;
         }
     }
 
     private handleConfirm = () => {
-        const { dispatch, recipe } = this.props;
-        if (recipe) {
-            dispatch(RootActions.CMD_MAKE({ recipe }));
-        }
-        this.setState({ dialogVisible: false });
+        const { dispatch } = this.props;
+        dispatch({ type: RecipeListMachineAction.CMD_MAKE });
     }
 
     private handleDismiss = () => {
-        this.setState({ dialogVisible: false });
+        const { dispatch } = this.props;
+        dispatch({ type: RecipeListMachineAction.CANCEL });
     }
 
     private handleSelected = (recipe: Recipe) => {
-        const { dispatch } = this.props;
-        const { edit } = this.state;
-        const { label } = recipe;
-        dispatch(RootActions.SET_RECEPY(recipe));
-        if (edit) {
+        const { context: { admin }, dispatch } = this.props;
+        dispatch({ type: RecipeListMachineAction.SET_RECIPE, recipe });
+        if (admin) {
             browserHistory.push(ROUTE.edit);
-        } else {
-            const message = `Confirm ${label}?`;
-            this.setState({ dialogVisible: true, message });
         }
     }
 
@@ -107,11 +87,4 @@ class RecipeListBase extends React.Component<ReduxProps & ReduxDispatch<RootActi
     }
 }
 
-const mapStateToProps = (state: RootState): ReduxProps => {
-    const {
-        root: { processing, recipes, recipe, families }
-    } = state;
-    return { processing, recipes, recipe, families };
-};
-
-export const RecipeList = connect(mapStateToProps)(RecipeListBase);
+export const RecipeEdit = withStateMachine(RecipeListBase, RecipeListStateMachine, RecipeListInitialContext);

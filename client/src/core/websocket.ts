@@ -1,7 +1,6 @@
 import ReconnectingWebSocket from 'reconnecting-websocket';
 import { v4 } from 'uuid';
-import { Store } from 'redux';
-// import { getType } from 'typesafe-actions';
+import { EventObject } from 'xstate-ext';
 
 type WebSocketCallback<T> = (data: T) => void;
 
@@ -65,12 +64,12 @@ class WebSocketService {
     }
 
     // to be refactored
-    public bindActions<T>(actions: T, store: Store) {
+    public bindDispatcher<T, MachineEvents extends EventObject>(actions: T, dispatch: (action: MachineEvents) => void) {
         Object.keys(actions).forEach((action: string) => {
             const selectedAction = actions[action];
             // const type = getType(selectedAction);
             this.on<any>(action, (data: any) => {
-                store.dispatch(selectedAction(data));
+                dispatch(selectedAction(data));
             });
         });
     }
