@@ -1,4 +1,4 @@
-import { assign, raise, log } from 'xstate-ext/lib/actions';
+import { assign, send, log } from 'xstate-ext/lib/actions';
 import { MachineConfig, EventObject } from 'xstate-ext';
 import { StateMachineAction } from 'react-xstate-hoc';
 import { Recipe, RecipeFamily } from 'src/types';
@@ -30,7 +30,8 @@ export enum RecipeListMachineAction {
     DONE = 'DONE',
     CANCEL = 'CANCEL',
     CMD_NEW = 'CMD_NEW',
-    SET_RECIPE = 'SET_RECIPE'
+    SET_RECIPE = 'SET_RECIPE',
+    NULL = 'NULL'
 }
 
 export interface RecipeListMachineStateSchema {
@@ -50,6 +51,7 @@ export type RecipeListMachineEvent =
     | { type: RecipeListMachineAction.CMD_MAKE }
     | { type: RecipeListMachineAction.MAKE, processing: boolean, total: number }
     | { type: RecipeListMachineAction.DONE }
+    | { type: RecipeListMachineAction.NULL }
     | { type: RecipeListMachineAction.CMD_NEW }
     | { type: RecipeListMachineAction.CANCEL };
 
@@ -134,12 +136,13 @@ export const RecipeListStateMachine: MachineConfig<RecipeListContext, RecipeList
         [RecipeListMachineState.PROCESSING]: {
             on: {
                 [RecipeListMachineAction.MAKE]: {
-                    actions: (ctx, event) => {
+                    actions: send((ctx, event) => {
                         const { processing } = event as EventObject;
                         if (!processing) {
-                            raise(RecipeListMachineAction.DONE);
+                            return { type: RecipeListMachineAction.DONE };
                         }
-                    }
+                        return { type: RecipeListMachineAction.NULL };
+                    })
                 },
                 [RecipeListMachineAction.DONE]: {
                     target: RecipeListMachineState.LIST
