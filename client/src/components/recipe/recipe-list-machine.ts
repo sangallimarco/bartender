@@ -1,4 +1,4 @@
-import { assign, raise } from 'xstate-ext/lib/actions';
+import { assign, raise, log } from 'xstate-ext/lib/actions';
 import { MachineConfig, EventObject } from 'xstate-ext';
 import { StateMachineAction } from 'react-xstate-hoc';
 import { Recipe, RecipeFamily } from 'src/types';
@@ -66,7 +66,20 @@ export const RecipeListStateMachine: MachineConfig<RecipeListContext, RecipeList
         [RecipeListMachineState.LIST]: {
             on: {
                 [RecipeListMachineAction.CMD_RECIPES]: {
-                    actions: () => webSocketService.send(RecipeListMachineAction.CMD_FAMILIES, {})
+                    actions: [
+                        log(() => 'CMD_RECIPES'),
+                        () => {
+                            webSocketService.send(RecipeListMachineAction.CMD_RECIPES, {});
+                        },
+                    ]
+                },
+                [RecipeListMachineAction.CMD_FAMILIES]: {
+                    actions: [
+                        log(() => 'CMD_FAMILIES'),
+                        () => {
+                            webSocketService.send(RecipeListMachineAction.CMD_FAMILIES, {});
+                        },
+                    ]
                 },
                 [RecipeListMachineAction.RECIPES]: {
                     actions: assign((cxt, event) => {
@@ -76,7 +89,14 @@ export const RecipeListStateMachine: MachineConfig<RecipeListContext, RecipeList
                         }
                     })
                 },
-
+                [RecipeListMachineAction.FAMILIES]: {
+                    actions: assign((cxt, event) => {
+                        const { families } = event;
+                        return {
+                            families
+                        }
+                    })
+                },
                 [RecipeListMachineAction.CMD_NEW]: {
                     actions: (ctx, event) => {
                         webSocketService.send(RecipeListMachineAction.CMD_NEW, {});

@@ -69,7 +69,7 @@ class WebSocketService {
             const selectedAction = actions[action];
             // const type = getType(selectedAction);
             this.on<any>(action, (data: any) => {
-                dispatch(selectedAction(data));
+                dispatch({ type: selectedAction, ...data });
             });
         });
     }

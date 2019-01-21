@@ -26,7 +26,7 @@ recipeMaker.initDatabases();
 // REDUCER
 const MainDispatcher = (data, wsInstance, rootWs) => __awaiter(this, void 0, void 0, function* () {
     switch (data.type) {
-        case typesafe_actions_1.getType(types_1.RootActions.CMD_RECEPIES):
+        case typesafe_actions_1.getType(types_1.RootActions.CMD_RECIPES):
             const recipes = yield recipeMaker.getRecepies();
             services_1.WebSocketUtils.sendMessage(wsInstance, types_1.Actions.RECIPES, {
                 recipes

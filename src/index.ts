@@ -16,7 +16,7 @@ recipeMaker.initDatabases();
 // REDUCER
 const MainDispatcher = async (data: RootAction, wsInstance: ws, rootWs: Server) => {
     switch (data.type) {
-        case getType(RootActions.CMD_RECEPIES):
+        case getType(RootActions.CMD_RECIPES):
             const recipes = await recipeMaker.getRecepies();
             WebSocketUtils.sendMessage(wsInstance, Actions.RECIPES, {
                 recipes

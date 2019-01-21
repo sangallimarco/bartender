@@ -17,12 +17,20 @@ interface RecipeListBaseProps extends StateMachineInjectedProps<RecipeListContex
 
 class RecipeListBase extends React.PureComponent<RecipeListBaseProps> {
 
+    constructor(props: RecipeListBaseProps) {
+        super(props);
+        const { injectMachineOptions } = props;
+        injectMachineOptions({});
+    }
+
     public componentDidMount() {
         const { dispatch } = this.props;
         // enable edit mode
         document.addEventListener('keydown', this.handleKeyDown);
         // auto bind actions
         webSocketService.bindDispatcher(RecipeListMachineAction, dispatch);
+        dispatch({ type: RecipeListMachineAction.CMD_RECIPES });
+        dispatch({ type: RecipeListMachineAction.CMD_FAMILIES });
     }
 
     public componentWillUnmount() {

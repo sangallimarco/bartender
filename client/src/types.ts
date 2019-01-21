@@ -4,7 +4,7 @@ export enum Actions {
     TEST = 'TEST',
     CMD_MAKE = 'CMD_MAKE',
     MAKE = 'MAKE',
-    CMD_RECEPIES = 'CMD_RECEPIES',
+    CMD_RECIPES = 'CMD_RECIPES',
     RECIPES = 'RECIPES',
     CMD_NEW = 'CMD_NEW',
     NEW = 'NEW',
@@ -91,7 +91,7 @@ export const PumpPin = [
 // @TODO refactor this
 
 export const RootActions = {
-    [Actions.CMD_RECEPIES]: createAction(Actions.CMD_RECEPIES, resolve => {
+    [Actions.CMD_RECIPES]: createAction(Actions.CMD_RECIPES, resolve => {
         return () => {
             return resolve({});
         };

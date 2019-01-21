@@ -6,7 +6,7 @@ var Actions;
     Actions["TEST"] = "TEST";
     Actions["CMD_MAKE"] = "CMD_MAKE";
     Actions["MAKE"] = "MAKE";
-    Actions["CMD_RECEPIES"] = "CMD_RECEPIES";
+    Actions["CMD_RECIPES"] = "CMD_RECIPES";
     Actions["RECIPES"] = "RECIPES";
     Actions["CMD_NEW"] = "CMD_NEW";
     Actions["NEW"] = "NEW";
@@ -35,7 +35,7 @@ exports.PumpPin = [
 // }
 // @TODO refactor this
 exports.RootActions = {
-    [Actions.CMD_RECEPIES]: typesafe_actions_1.createAction(Actions.CMD_RECEPIES, resolve => {
+    [Actions.CMD_RECIPES]: typesafe_actions_1.createAction(Actions.CMD_RECIPES, resolve => {
         return () => {
             return resolve({});
         };
