@@ -31,7 +31,8 @@ export enum RecipeListMachineAction {
     CANCEL = 'CANCEL',
     CMD_NEW = 'CMD_NEW',
     SET_RECIPE = 'SET_RECIPE',
-    NULL = 'NULL'
+    NULL = 'NULL',
+    SET_ADMIN = 'SET_ADMIN'
 }
 
 export interface RecipeListMachineStateSchema {
@@ -52,6 +53,7 @@ export type RecipeListMachineEvent =
     | { type: RecipeListMachineAction.MAKE, processing: boolean, total: number }
     | { type: RecipeListMachineAction.DONE }
     | { type: RecipeListMachineAction.NULL }
+    | { type: RecipeListMachineAction.SET_ADMIN }
     | { type: RecipeListMachineAction.CMD_NEW }
     | { type: RecipeListMachineAction.CANCEL };
 
@@ -102,6 +104,11 @@ export const RecipeListStateMachine: MachineConfig<RecipeListContext, RecipeList
                 [RecipeListMachineAction.CMD_NEW]: {
                     actions: (ctx, event) => {
                         webSocketService.send(RecipeListMachineAction.CMD_NEW, {});
+                    }
+                },
+                [RecipeListMachineAction.SET_ADMIN]: {
+                    actions: (ctx, event) => {
+                        return { admin: true };
                     }
                 },
                 [RecipeListMachineAction.SET_RECIPE]: {

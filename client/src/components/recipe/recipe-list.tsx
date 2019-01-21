@@ -56,7 +56,7 @@ class RecipeListBase extends React.PureComponent<RecipeListBaseProps> {
         const { dispatch } = this.props;
         switch (key) {
             case 'e':
-                this.setState({ edit: true });
+                dispatch({ type: RecipeListMachineAction.SET_ADMIN });
                 break;
             case 'n':
                 dispatch({ type: RecipeListMachineAction.CMD_NEW });
