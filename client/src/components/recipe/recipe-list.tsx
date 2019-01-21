@@ -12,6 +12,7 @@ import { RecipeListContext, RecipeListMachineEvent, RecipeListMachineState, Reci
 import { webSocketService } from 'src/core/websocket';
 
 interface RecipeListBaseProps extends StateMachineInjectedProps<RecipeListContext, RecipeListMachineStateSchema, RecipeListMachineEvent> {
+    initial?: boolean;
 }
 
 class RecipeListBase extends React.PureComponent<RecipeListBaseProps> {
@@ -87,4 +88,4 @@ class RecipeListBase extends React.PureComponent<RecipeListBaseProps> {
     }
 }
 
-export const RecipeEdit = withStateMachine(RecipeListBase, RecipeListStateMachine, RecipeListInitialContext);
+export const RecipeList = withStateMachine(RecipeListBase, RecipeListStateMachine, RecipeListInitialContext);

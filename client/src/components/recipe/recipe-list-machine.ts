@@ -66,7 +66,7 @@ export const RecipeListStateMachine: MachineConfig<RecipeListContext, RecipeList
         [RecipeListMachineState.LIST]: {
             on: {
                 [RecipeListMachineAction.CMD_RECIPES]: {
-                    actions: webSocketService.send(RecipeListMachineAction.CMD_FAMILIES, {})
+                    actions: () => webSocketService.send(RecipeListMachineAction.CMD_FAMILIES, {})
                 },
                 [RecipeListMachineAction.RECIPES]: {
                     actions: assign((cxt, event) => {

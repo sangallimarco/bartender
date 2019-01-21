@@ -4,7 +4,6 @@
     "express-ws": "^4.0.0",
     "lodash": "^4.17.10",
     "lowdb": "^1.0.0",
-    "react-xstate-hoc": "^1.4.0",
     "rpi-gpio": "^1.0.0",
     "uniqid": "^5.0.3",
     "ws": "^5.2.2"
@@ -44,7 +43,7 @@
   },
   "author": "Marco Sangalli <sangalli.marco@gmail.com>",
   "license": "ISC",
-  "description": "Automatic Bartneder using RPI",
+  "description": "Automatic Bartender using RPI",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/sangallimarco/bartender.git"
