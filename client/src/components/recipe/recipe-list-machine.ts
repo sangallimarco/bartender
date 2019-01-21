@@ -136,7 +136,7 @@ export const RecipeListStateMachine: MachineConfig<RecipeListContext, RecipeList
                 [RecipeListMachineAction.MAKE]: {
                     actions: (ctx, event) => {
                         const { processing } = event as EventObject;
-                        if (processing) {
+                        if (!processing) {
                             raise(RecipeListMachineAction.DONE);
                         }
                     }
