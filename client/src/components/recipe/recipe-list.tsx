@@ -54,14 +54,14 @@ class RecipeListBase extends React.PureComponent<RecipeListBaseProps> {
 
     public handleKeyDown = (e: KeyboardEvent) => {
         const { key } = e;
-        const { dispatch } = this.props;
+        const { context: { families }, dispatch } = this.props;
         switch (key) {
             case 'e':
                 dispatch({ type: RecipeListMachineAction.SET_ADMIN });
                 break;
             case 'n':
                 dispatch({ type: RecipeListMachineAction.CMD_NEW });
-                browserHistory.push(ROUTE.edit);
+                browserHistory.push(ROUTE.edit, { families });
                 break;
         }
     }

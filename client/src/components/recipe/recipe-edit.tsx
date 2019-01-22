@@ -13,7 +13,7 @@ import { RecipeContext, RecipeMachineStateSchema, RecipeMachineEvent, RecipeInit
 import { RouteComponentProps } from 'react-router';
 
 interface RecipeRouterProps {
-    recipe: Recipe;
+    recipe?: Recipe;
     families: RecipeFamily[];
 }
 
@@ -36,7 +36,11 @@ export class RecipeEditBase extends React.PureComponent<RecipeEditBaseProps> {
     public componentDidMount() {
         const { history: { location: { state: { recipe, families } } }, dispatch } = this.props;
         this.families = families;
-        dispatch({ type: RecipeMachineAction.HYDRATE, recipe });
+        if (recipe) {
+            dispatch({ type: RecipeMachineAction.HYDRATE, recipe });
+        } else {
+            dispatch({ type: RecipeMachineAction.CREATE });
+        }
     }
 
     public render() {

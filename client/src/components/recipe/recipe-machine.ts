@@ -3,6 +3,7 @@ import { MachineConfig } from 'xstate-ext';
 import { StateMachineAction } from 'react-xstate-hoc';
 import { Recipe, Actions } from 'src/types';
 import { webSocketService } from 'src/core/websocket';
+import { v4 } from 'uuid';
 
 export type RecipeContext = Recipe;
 
@@ -22,7 +23,8 @@ export enum RecipeMachineAction {
     SAVE = 'SAVE',
     SUBMIT = 'SUBMIT',
     CANCEL = 'CANCEL',
-    HYDRATE = 'HYDRATE'
+    HYDRATE = 'HYDRATE',
+    CREATE = 'CREATE'
 }
 
 export interface RecipeMachineStateSchema {
@@ -41,6 +43,7 @@ export type RecipeMachineEvent =
     | { type: RecipeMachineAction.CMD_EDIT, recipe: Recipe }
     | { type: RecipeMachineAction.SET_PART, id: string, value: string }
     | { type: RecipeMachineAction.SAVE }
+    | { type: RecipeMachineAction.CREATE }
     | { type: RecipeMachineAction.CANCEL };
 
 export type RecipeMachineEventType = StateMachineAction<RecipeContext>;
@@ -60,6 +63,12 @@ export const RecipeStateMachine: MachineConfig<RecipeContext, RecipeMachineState
                     actions: assign((ctx, event) => {
                         const { recipe } = event;
                         return { ...recipe };
+                    })
+                },
+                [RecipeMachineAction.CREATE]: {
+                    target: RecipeMachineState.EDIT,
+                    actions: assign(() => {
+                        return { id: v4() };
                     })
                 }
             }
@@ -121,7 +130,7 @@ export const RecipeStateMachine: MachineConfig<RecipeContext, RecipeMachineState
 export const RecipeInitialContext: RecipeContext = {
     id: '',
     label: '',
-    parts: [],
+    parts: [1, 1, 1, 1],
     description: '',
-    recipeFamily: ''
+    recipeFamily: 'default'
 };
