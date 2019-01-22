@@ -1,7 +1,7 @@
 import { assign } from 'xstate-ext/lib/actions';
 import { MachineConfig } from 'xstate-ext';
 import { StateMachineAction } from 'react-xstate-hoc';
-import { Recipe, Actions } from 'src/types';
+import { Recipe, Actions, PumpPin } from 'src/types';
 import { webSocketService } from 'src/core/websocket';
 import { v4 } from 'uuid';
 
@@ -127,10 +127,13 @@ export const RecipeStateMachine: MachineConfig<RecipeContext, RecipeMachineState
     }
 };
 
+// parts from pump array
+const defaultParts = PumpPin.map(() => 1);
+
 export const RecipeInitialContext: RecipeContext = {
     id: '',
     label: '',
-    parts: [1, 1, 1, 1],
+    parts: [...defaultParts],
     description: '',
     recipeFamily: 'default'
 };
