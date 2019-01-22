@@ -39,8 +39,8 @@ const MainDispatcher = async (data: RootAction, wsInstance: ws, rootWs: Server) 
             break;
         }
         case getType(RootActions.CMD_DELETE): {
-            const { recipe } = data.payload;
-            await recipeMaker.delRecipe(recipe);
+            const { id } = data.payload;
+            await recipeMaker.delRecipe(id);
             const recipes = await recipeMaker.getRecepies();
             WebSocketUtils.broadcastMessage(rootWs, Actions.RECIPES, {
                 recipes

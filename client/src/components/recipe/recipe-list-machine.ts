@@ -10,7 +10,7 @@ export interface RecipeListContext {
     recipes: Recipe[];
     message: string;
     admin: boolean;
-    recipe: Recipe;
+    recipeId: string;
 }
 
 export enum RecipeListMachineState {
@@ -102,24 +102,24 @@ export const RecipeListStateMachine: MachineConfig<RecipeListContext, RecipeList
                     })
                 },
                 [RecipeListMachineAction.CMD_NEW]: {
-                    actions: (ctx, event) => {
+                    actions: () => {
                         webSocketService.send(RecipeListMachineAction.CMD_NEW, {});
                     }
                 },
                 [RecipeListMachineAction.SET_ADMIN]: {
-                    actions: (ctx, event) => {
-                        return { admin: true };
-                    }
+                    actions: assign((ctx) => {
+                        return { admin: !ctx.admin };
+                    })
                 },
                 [RecipeListMachineAction.SET_RECIPE]: {
                     target: RecipeListMachineState.CONFIRMATION,
                     actions: assign((ctx, event) => {
                         const { recipe } = event;
-                        const { label } = recipe;
+                        const { label, id: recipeId } = recipe;
                         const message = `Confirm ${label}?`;
 
                         return {
-                            recipe,
+                            recipeId,
                             message
                         }
                     })
@@ -130,9 +130,11 @@ export const RecipeListStateMachine: MachineConfig<RecipeListContext, RecipeList
             on: {
                 [RecipeListMachineAction.CMD_MAKE]: {
                     target: RecipeListMachineState.PROCESSING,
-                    actions: (ctx, event) => {
-                        const { recipe } = ctx;
-                        webSocketService.send(RecipeListMachineAction.CMD_MAKE, recipe);
+                    actions: (ctx) => {
+                        const recipe = ctx.recipes.find(r => r.id === ctx.recipeId);
+                        if (recipe) {
+                            webSocketService.send(RecipeListMachineAction.CMD_MAKE, recipe);
+                        }
                     }
                 },
                 [RecipeListMachineAction.CANCEL]: {
@@ -165,11 +167,5 @@ export const RecipeListInitialContext: RecipeListContext = {
     recipes: [],
     message: '',
     admin: false,
-    recipe: {
-        id: '',
-        recipeFamily: '',
-        label: '',
-        parts: [],
-        description: ''
-    },
+    recipeId: ''
 };

@@ -129,7 +129,7 @@ export const RootActions = {
     }),
 
     [Actions.CMD_DELETE]: createAction(Actions.CMD_DELETE, resolve => {
-        return (data: RecipePayload) => resolve(data);
+        return (data: RecipeNewPayload) => resolve(data);
     }),
 
     [Actions.SET_RECEPY]: createAction(Actions.SET_RECEPY, resolve => {

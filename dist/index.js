@@ -49,8 +49,8 @@ const MainDispatcher = (data, wsInstance, rootWs) => __awaiter(this, void 0, voi
             break;
         }
         case typesafe_actions_1.getType(types_1.RootActions.CMD_DELETE): {
-            const { recipe } = data.payload;
-            yield recipeMaker.delRecipe(recipe);
+            const { id } = data.payload;
+            yield recipeMaker.delRecipe(id);
             const recipes = yield recipeMaker.getRecepies();
             services_1.WebSocketUtils.broadcastMessage(rootWs, types_1.Actions.RECIPES, {
                 recipes

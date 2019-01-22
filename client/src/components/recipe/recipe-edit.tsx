@@ -33,8 +33,8 @@ export class RecipeEditBase extends React.PureComponent<RecipeEditBaseProps> {
         });
     }
 
-    componentDidMount() {
-        const { match: { params: { recipe, families } }, dispatch } = this.props;
+    public componentDidMount() {
+        const { history: { location: { state: { recipe, families } } }, dispatch } = this.props;
         this.families = families;
         dispatch({ type: RecipeMachineAction.HYDRATE, recipe });
     }
@@ -98,12 +98,9 @@ export class RecipeEditBase extends React.PureComponent<RecipeEditBaseProps> {
     }
 
     private handleRemove = () => {
-        const { context: { id } } = this.props;
         const { dispatch } = this.props;
-        if (id) {
-            dispatch({ type: RecipeMachineAction.CMD_DELETE, id });
-            browserHistory.push(ROUTE.root);
-        }
+        dispatch({ type: RecipeMachineAction.DELETE });
+        browserHistory.push(ROUTE.root);
     }
 
     private handleSubmit = () => {

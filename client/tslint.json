@@ -22,7 +22,10 @@
     ],
     "ordered-imports": false,
     "no-namespace": false,
-    "object-literal-sort-keys": false
+    "object-literal-sort-keys": false,
+    "no-console": {
+      "severity": "warning"
+    }
   },
   "jsRules": {
     "object-literal-sort-keys": false

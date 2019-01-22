@@ -1,7 +1,8 @@
 import { assign } from 'xstate-ext/lib/actions';
 import { MachineConfig } from 'xstate-ext';
 import { StateMachineAction } from 'react-xstate-hoc';
-import { Recipe } from 'src/types';
+import { Recipe, Actions } from 'src/types';
+import { webSocketService } from 'src/core/websocket';
 
 export type RecipeContext = Recipe;
 
@@ -15,7 +16,7 @@ export enum RecipeMachineAction {
     SET_LABEL = 'SET_LABEL',
     SET_FAMILY = 'SET_FAMILY',
     SET_DESCRIPTION = 'SET_DESCRIPTION',
-    CMD_DELETE = 'CMD_DELETE',
+    DELETE = 'DELETE',
     CMD_EDIT = 'CMD_EDIT',
     SET_PART = 'SET_PART',
     SAVE = 'SAVE',
@@ -36,7 +37,7 @@ export type RecipeMachineEvent =
     | { type: RecipeMachineAction.SET_LABEL, label: string }
     | { type: RecipeMachineAction.SET_DESCRIPTION, description: string }
     | { type: RecipeMachineAction.SET_FAMILY, recipeFamily: string }
-    | { type: RecipeMachineAction.CMD_DELETE, id: string }
+    | { type: RecipeMachineAction.DELETE }
     | { type: RecipeMachineAction.CMD_EDIT, recipe: Recipe }
     | { type: RecipeMachineAction.SET_PART, id: string, value: string }
     | { type: RecipeMachineAction.SAVE }
@@ -94,7 +95,7 @@ export const RecipeStateMachine: MachineConfig<RecipeContext, RecipeMachineState
                     actions: assign((ctx, event) => {
                         const { id, value } = event;
                         const parts = [...ctx.parts];
-                        parts[id as string] = value;
+                        parts[id as string] = parseInt(value, 10);
 
                         return {
                             parts
@@ -102,7 +103,15 @@ export const RecipeStateMachine: MachineConfig<RecipeContext, RecipeMachineState
                     })
                 },
                 [RecipeMachineAction.SAVE]: {
-                    actions: RecipeMachineAction.SUBMIT
+                    actions: (ctx) => {
+                        webSocketService.send(Actions.CMD_EDIT, { recipe: { ...ctx } });
+                    }
+                },
+                [RecipeMachineAction.DELETE]: {
+                    actions: (ctx) => {
+                        const { id } = ctx;
+                        webSocketService.send(Actions.CMD_DELETE, { id });
+                    }
                 }
             }
         }
