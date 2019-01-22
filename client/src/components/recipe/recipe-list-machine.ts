@@ -1,7 +1,7 @@
 import { assign, send, log } from 'xstate-ext/lib/actions';
 import { MachineConfig, EventObject } from 'xstate-ext';
 import { StateMachineAction } from 'react-xstate-hoc';
-import { Recipe, RecipeFamily } from 'src/types';
+import { Recipe, RecipeFamily, Actions } from 'src/types';
 import { webSocketService } from 'src/core/websocket';
 
 export interface RecipeListContext {
@@ -73,7 +73,7 @@ export const RecipeListStateMachine: MachineConfig<RecipeListContext, RecipeList
                     actions: [
                         log(() => 'CMD_RECIPES'),
                         () => {
-                            webSocketService.send(RecipeListMachineAction.CMD_RECIPES, {});
+                            webSocketService.send(Actions.CMD_RECIPES, {});
                         },
                     ]
                 },
@@ -81,7 +81,7 @@ export const RecipeListStateMachine: MachineConfig<RecipeListContext, RecipeList
                     actions: [
                         log(() => 'CMD_FAMILIES'),
                         () => {
-                            webSocketService.send(RecipeListMachineAction.CMD_FAMILIES, {});
+                            webSocketService.send(Actions.CMD_FAMILIES, {});
                         },
                     ]
                 },
@@ -103,7 +103,7 @@ export const RecipeListStateMachine: MachineConfig<RecipeListContext, RecipeList
                 },
                 [RecipeListMachineAction.CMD_NEW]: {
                     actions: () => {
-                        webSocketService.send(RecipeListMachineAction.CMD_NEW, {});
+                        webSocketService.send(Actions.CMD_NEW, {});
                     }
                 },
                 [RecipeListMachineAction.SET_ADMIN]: {
@@ -133,7 +133,7 @@ export const RecipeListStateMachine: MachineConfig<RecipeListContext, RecipeList
                     actions: (ctx) => {
                         const recipe = ctx.recipes.find(r => r.id === ctx.recipeId);
                         if (recipe) {
-                            webSocketService.send(RecipeListMachineAction.CMD_MAKE, recipe);
+                            webSocketService.send(Actions.CMD_MAKE, { recipe });
                         }
                     }
                 },
