@@ -76,17 +76,17 @@ class RecipeListBase extends React.PureComponent<RecipeListBaseProps> {
     }
 
     private handleSelected = (recipe: Recipe) => {
-        const { context: { admin }, dispatch } = this.props;
+        const { context: { admin, families }, dispatch } = this.props;
         dispatch({ type: RecipeListMachineAction.SET_RECIPE, recipe });
         if (admin) {
-            browserHistory.push(ROUTE.edit);
+            browserHistory.push(ROUTE.edit, { recipe, families });
         }
     }
 
     private renderItems(items: Recipe[], families: RecipeFamily[]) {
         return items.map((recipe: Recipe) => {
-            const { id } = recipe;
-            const family = getCurrentFamily(families, recipe);
+            const { id, recipeFamily } = recipe;
+            const family = getCurrentFamily(families, recipeFamily);
             if (family) {
                 const { ingredients } = family;
                 return <RecipeItem key={id} recipe={recipe} ingredients={ingredients} onClick={this.handleSelected} />;

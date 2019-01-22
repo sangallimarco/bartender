@@ -1,8 +1,7 @@
-import { RecipeIngredient, RecipeFamily, Recipe } from '../../types';
+import { RecipeIngredient, RecipeFamily } from '../../types';
 
-export function getCurrentFamily(families: RecipeFamily[], recipe: Recipe): RecipeFamily | null {
-    if (recipe && families) {
-        const { recipeFamily } = recipe;
+export function getCurrentFamily(families: RecipeFamily[], recipeFamily: string): RecipeFamily | null {
+    if (recipeFamily && families) {
         const currentFamily = families.find(family => family.id === recipeFamily);
         if (currentFamily) {
             return currentFamily;
