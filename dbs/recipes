@@ -51,7 +51,7 @@
     },
     {
       "id": "75njbo9zwjkxmwne7",
-      "label": "Fantasy2",
+      "label": "Fantasy2222",
       "recipeFamily": "default",
       "parts": [
         5,
@@ -79,9 +79,9 @@
       "label": "Mojito",
       "recipeFamily": "default",
       "parts": [
+        12,
         1,
-        1,
-        1,
+        12,
         1
       ],
       "description": "Traditionally, a mojito is a cocktail that consists of five ingredients: white rum, sugar (traditionally sugar cane juice), lime juice, soda water, and mint."

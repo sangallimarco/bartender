@@ -36,6 +36,7 @@ class RecipeListBase extends React.PureComponent<RecipeListBaseProps> {
     public componentWillUnmount() {
         // enable edit mode
         document.removeEventListener('keydown', this.handleKeyDown);
+        webSocketService.unbindAll();
     }
 
     public render() {

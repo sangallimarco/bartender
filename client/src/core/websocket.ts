@@ -74,6 +74,10 @@ class WebSocketService {
         });
     }
 
+    public unbindAll() { // TODO implement this for each bindDispatcher
+        this.routes = [];
+    }
+
     private processQueue() {
         if (this.messages.length > 0 && this.ready) {
             const item = this.messages.shift();
@@ -100,6 +104,7 @@ class WebSocketService {
     private detachListener(uuid: string) {
         this.routes = this.routes.filter((route: WebSocketRoute) => route.uuid !== uuid);
     }
+
 }
 
 export const webSocketService = new WebSocketService();
