@@ -27,9 +27,6 @@ export class RecipeEditBase extends React.PureComponent<RecipeEditBaseProps> {
         super(props);
         const { injectMachineOptions } = props;
         injectMachineOptions({
-            actions: {
-                [RecipeMachineAction.SAVE]: (ctx) => console.log(ctx)
-            }
         });
     }
 

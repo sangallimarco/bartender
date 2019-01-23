@@ -26,53 +26,53 @@ recipeMaker.initDatabases();
 // REDUCER
 const MainDispatcher = (data, wsInstance, rootWs) => __awaiter(this, void 0, void 0, function* () {
     switch (data.type) {
-        case typesafe_actions_1.getType(types_1.RootActions.CMD_RECIPES):
+        case typesafe_actions_1.getType(types_1.RootActions.SRV_CMD_RECIPES):
             const recipes = yield recipeMaker.getRecepies();
-            services_1.WebSocketUtils.sendMessage(wsInstance, types_1.Actions.RECIPES, {
+            services_1.WebSocketUtils.sendMessage(wsInstance, types_1.Actions.SRV_RECIPES, {
                 recipes
             });
             break;
-        case typesafe_actions_1.getType(types_1.RootActions.CMD_EDIT): {
+        case typesafe_actions_1.getType(types_1.RootActions.SRV_CMD_EDIT): {
             const { recipe } = data.payload;
             yield recipeMaker.upsertRecipe(recipe);
             const editRecepies = yield recipeMaker.getRecepies();
-            services_1.WebSocketUtils.broadcastMessage(rootWs, types_1.Actions.RECIPES, {
+            services_1.WebSocketUtils.broadcastMessage(rootWs, types_1.Actions.SRV_RECIPES, {
                 recipes: editRecepies
             });
             break;
         }
-        case typesafe_actions_1.getType(types_1.RootActions.CMD_NEW): {
+        case typesafe_actions_1.getType(types_1.RootActions.SRV_CMD_NEW): {
             const recipe = yield recipeMaker.createRecipe();
-            services_1.WebSocketUtils.sendMessage(wsInstance, types_1.Actions.NEW, {
+            services_1.WebSocketUtils.sendMessage(wsInstance, types_1.Actions.SRV_NEW, {
                 recipe
             });
             break;
         }
-        case typesafe_actions_1.getType(types_1.RootActions.CMD_DELETE): {
+        case typesafe_actions_1.getType(types_1.RootActions.SRV_CMD_DELETE): {
             const { id } = data.payload;
             yield recipeMaker.delRecipe(id);
             const recipes = yield recipeMaker.getRecepies();
-            services_1.WebSocketUtils.broadcastMessage(rootWs, types_1.Actions.RECIPES, {
+            services_1.WebSocketUtils.broadcastMessage(rootWs, types_1.Actions.SRV_RECIPES, {
                 recipes
             });
             break;
         }
-        case typesafe_actions_1.getType(types_1.RootActions.CMD_FAMILIES): {
+        case typesafe_actions_1.getType(types_1.RootActions.SRV_CMD_FAMILIES): {
             const families = yield recipeMaker.getFamilies();
-            services_1.WebSocketUtils.sendMessage(wsInstance, types_1.Actions.FAMILIES, {
+            services_1.WebSocketUtils.sendMessage(wsInstance, types_1.Actions.SRV_FAMILIES, {
                 families
             });
             break;
         }
-        case typesafe_actions_1.getType(types_1.RootActions.CMD_MAKE): {
+        case typesafe_actions_1.getType(types_1.RootActions.SRV_CMD_MAKE): {
             const { recipe } = data.payload;
             const totalTime = recipeMaker.getTotalTime(recipe);
-            services_1.WebSocketUtils.broadcastMessage(rootWs, types_1.Actions.MAKE, {
+            services_1.WebSocketUtils.broadcastMessage(rootWs, types_1.Actions.SRV_PROCESSING, {
                 processing: true,
                 totalTime
             });
             yield recipeMaker.setPumps(recipe);
-            services_1.WebSocketUtils.broadcastMessage(rootWs, types_1.Actions.MAKE, {
+            services_1.WebSocketUtils.broadcastMessage(rootWs, types_1.Actions.SRV_PROCESSING, {
                 processing: false,
                 totalTime: 0
             });

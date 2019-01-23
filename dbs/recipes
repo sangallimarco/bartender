@@ -54,25 +54,13 @@
       "label": "Fantasy",
       "recipeFamily": "default",
       "parts": [
-        5,
+        2,
         1,
         2,
         2,
         2
       ],
       "description": "here a description, nice one"
-    },
-    {
-      "id": "75njbowxkjm7eav6y",
-      "label": "Strong",
-      "recipeFamily": "default",
-      "parts": [
-        1,
-        1,
-        3,
-        3,
-        1
-      ]
     },
     {
       "id": "shbo19c7jmyybeoq",

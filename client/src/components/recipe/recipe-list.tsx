@@ -4,7 +4,7 @@ import RecipeItem from './recipe-item';
 import Dialog from '../dialog/dialog';
 import Processing from '../processing/processing';
 import { browserHistory } from '../../core/browser-history';
-import { Recipe, RecipeFamily } from '../../types';
+import { Recipe, RecipeFamily, Actions } from '../../types';
 import { getCurrentFamily } from './recipe-utils';
 import { ROUTE } from '../../routes';
 import { StateMachineInjectedProps, withStateMachine } from 'react-xstate-hoc';
@@ -28,9 +28,9 @@ class RecipeListBase extends React.PureComponent<RecipeListBaseProps> {
         // enable edit mode
         document.addEventListener('keydown', this.handleKeyDown);
         // auto bind actions
-        webSocketService.bindDispatcher(RecipeListMachineAction, dispatch);
-        dispatch({ type: RecipeListMachineAction.CMD_RECIPES });
-        dispatch({ type: RecipeListMachineAction.CMD_FAMILIES });
+        webSocketService.bindDispatcher(Actions, dispatch);
+        dispatch({ type: RecipeListMachineAction.FETCH_RECIPES });
+        dispatch({ type: RecipeListMachineAction.FETCH_FAMILIES });
     }
 
     public componentWillUnmount() {
@@ -60,7 +60,7 @@ class RecipeListBase extends React.PureComponent<RecipeListBaseProps> {
                 dispatch({ type: RecipeListMachineAction.SET_ADMIN });
                 break;
             case 'n':
-                dispatch({ type: RecipeListMachineAction.CMD_NEW });
+                dispatch({ type: RecipeListMachineAction.CREATE });
                 browserHistory.push(ROUTE.edit, { families });
                 break;
         }
@@ -68,7 +68,7 @@ class RecipeListBase extends React.PureComponent<RecipeListBaseProps> {
 
     private handleConfirm = () => {
         const { dispatch } = this.props;
-        dispatch({ type: RecipeListMachineAction.CMD_MAKE });
+        dispatch({ type: RecipeListMachineAction.MAKE });
     }
 
     private handleDismiss = () => {

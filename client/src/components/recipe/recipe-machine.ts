@@ -113,13 +113,13 @@ export const RecipeStateMachine: MachineConfig<RecipeContext, RecipeMachineState
                 },
                 [RecipeMachineAction.SAVE]: {
                     actions: (ctx) => {
-                        webSocketService.send(Actions.CMD_EDIT, { recipe: { ...ctx } });
+                        webSocketService.send(Actions.SRV_CMD_EDIT, { recipe: { ...ctx } });
                     }
                 },
                 [RecipeMachineAction.DELETE]: {
                     actions: (ctx) => {
                         const { id } = ctx;
-                        webSocketService.send(Actions.CMD_DELETE, { id });
+                        webSocketService.send(Actions.SRV_CMD_DELETE, { id });
                     }
                 }
             }

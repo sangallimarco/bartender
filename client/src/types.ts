@@ -1,22 +1,22 @@
 import { ActionType, createAction } from 'typesafe-actions';
 
 export enum Actions {
-    TEST = 'TEST',
-    CMD_MAKE = 'CMD_MAKE',
-    MAKE = 'MAKE',
-    CMD_RECIPES = 'CMD_RECIPES',
-    RECIPES = 'RECIPES',
-    CMD_NEW = 'CMD_NEW',
-    NEW = 'NEW',
-    CMD_EDIT = 'CMD_EDIT',
-    EDIT = 'EDIT',
-    GET = 'GET',
-    CMD_FAMILIES = 'CMD_FAMILIES',
-    FAMILIES = 'FAMILIES',
-    SET_RECEPY = 'SET_RECEPY',
-    SET_PART = 'SET_PART',
-    SET_ATTRIBUTE = 'SET_ATTRIBUTE',
-    CMD_DELETE = 'CMD_DELETE',
+    SRV_TEST = 'SRV_TEST',
+    SRV_CMD_MAKE = 'SRV_CMD_MAKE',
+    SRV_PROCESSING = 'SRV_PROCESSING',
+    SRV_CMD_RECIPES = 'SRV_CMD_RECIPES',
+    SRV_RECIPES = 'SRV_RECIPES',
+    SRV_CMD_NEW = 'SRV_CMD_NEW',
+    SRV_NEW = 'SRV_NEW',
+    SRV_CMD_EDIT = 'SRV_CMD_EDIT',
+    SRV_EDIT = 'SRV_EDIT',
+    SRV_GET = 'SRV_GET',
+    SRV_CMD_FAMILIES = 'SRV_CMD_FAMILIES',
+    SRV_FAMILIES = 'SRV_FAMILIES',
+    SRV_SET_RECEPY = 'SRV_SET_RECEPY',
+    SRV_SET_PART = 'SRV_SET_PART',
+    SRV_SET_ATTRIBUTE = 'SRV_SET_ATTRIBUTE',
+    SRV_CMD_DELETE = 'SRV_CMD_DELETE',
 }
 
 export interface ProcessingPayload {
@@ -91,54 +91,54 @@ export const PumpPin = [
 // @TODO refactor this
 
 export const RootActions = {
-    [Actions.CMD_RECIPES]: createAction(Actions.CMD_RECIPES, resolve => {
+    [Actions.SRV_CMD_RECIPES]: createAction(Actions.SRV_CMD_RECIPES, resolve => {
         return () => {
             return resolve({});
         };
     }),
-    [Actions.RECIPES]: createAction(Actions.RECIPES, resolve => {
+    [Actions.SRV_RECIPES]: createAction(Actions.SRV_RECIPES, resolve => {
         return (data: RecepiesPayload) => resolve(data);
     }),
 
-    [Actions.CMD_MAKE]: createAction(Actions.CMD_MAKE, resolve => {
+    [Actions.SRV_CMD_MAKE]: createAction(Actions.SRV_CMD_MAKE, resolve => {
         return (data: RecipePayload) => resolve(data);
     }),
-    [Actions.MAKE]: createAction(Actions.MAKE, resolve => {
+    [Actions.SRV_PROCESSING]: createAction(Actions.SRV_PROCESSING, resolve => {
         return (data: ProcessingPayload) => resolve(data);
     }),
 
-    [Actions.CMD_FAMILIES]: createAction(Actions.CMD_FAMILIES, resolve => {
+    [Actions.SRV_CMD_FAMILIES]: createAction(Actions.SRV_CMD_FAMILIES, resolve => {
         return () => resolve({});
     }),
-    [Actions.FAMILIES]: createAction(Actions.FAMILIES, resolve => {
+    [Actions.SRV_FAMILIES]: createAction(Actions.SRV_FAMILIES, resolve => {
         return (data: RecipeFamiliesPayload) => resolve(data);
     }),
 
-    [Actions.CMD_EDIT]: createAction(Actions.CMD_EDIT, resolve => {
+    [Actions.SRV_CMD_EDIT]: createAction(Actions.SRV_CMD_EDIT, resolve => {
         return (data: RecipePayload) => resolve(data);
     }),
-    [Actions.EDIT]: createAction(Actions.EDIT, resolve => {
+    [Actions.SRV_EDIT]: createAction(Actions.SRV_EDIT, resolve => {
         return () => resolve({});
     }),
 
-    [Actions.CMD_NEW]: createAction(Actions.CMD_NEW, resolve => {
+    [Actions.SRV_CMD_NEW]: createAction(Actions.SRV_CMD_NEW, resolve => {
         return () => resolve({});
     }),
-    [Actions.NEW]: createAction(Actions.NEW, resolve => {
+    [Actions.SRV_NEW]: createAction(Actions.SRV_NEW, resolve => {
         return (data: RecipePayload) => resolve(data);
     }),
 
-    [Actions.CMD_DELETE]: createAction(Actions.CMD_DELETE, resolve => {
+    [Actions.SRV_CMD_DELETE]: createAction(Actions.SRV_CMD_DELETE, resolve => {
         return (data: RecipeNewPayload) => resolve(data);
     }),
 
-    [Actions.SET_RECEPY]: createAction(Actions.SET_RECEPY, resolve => {
+    [Actions.SRV_SET_RECEPY]: createAction(Actions.SRV_SET_RECEPY, resolve => {
         return (data: Recipe) => resolve(data);
     }),
-    [Actions.SET_PART]: createAction(Actions.SET_PART, resolve => {
+    [Actions.SRV_SET_PART]: createAction(Actions.SRV_SET_PART, resolve => {
         return (data: AttributePayload) => resolve(data);
     }),
-    [Actions.SET_ATTRIBUTE]: createAction(Actions.SET_ATTRIBUTE, resolve => {
+    [Actions.SRV_SET_ATTRIBUTE]: createAction(Actions.SRV_SET_ATTRIBUTE, resolve => {
         return (data: AttributePayload) => resolve(data);
     }),
 };

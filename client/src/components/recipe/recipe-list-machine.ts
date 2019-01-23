@@ -21,15 +21,15 @@ export enum RecipeListMachineState {
 }
 
 export enum RecipeListMachineAction {
-    CMD_RECIPES = 'CMD_RECIPES',
-    RECIPES = 'RECIPES',
-    CMD_FAMILIES = 'CMD_FAMILIES',
-    FAMILIES = 'FAMILIES',
-    CMD_MAKE = 'CMD_MAKE',
+    FETCH_RECIPES = 'FETCH_RECIPES',
+    // RECIPES = 'RECIPES',
+    FETCH_FAMILIES = 'FETCH_FAMILIES',
+    // FAMILIES = 'FAMILIES',
     MAKE = 'MAKE',
+    // PROCESSING = 'PROCESSING',
     DONE = 'DONE',
     CANCEL = 'CANCEL',
-    CMD_NEW = 'CMD_NEW',
+    CREATE = 'CREATE',
     SET_RECIPE = 'SET_RECIPE',
     NULL = 'NULL',
     SET_ADMIN = 'SET_ADMIN'
@@ -44,17 +44,17 @@ export interface RecipeListMachineStateSchema {
 }
 
 export type RecipeListMachineEvent =
-    | { type: RecipeListMachineAction.CMD_RECIPES }
-    | { type: RecipeListMachineAction.RECIPES, recipes: Recipe[] }
-    | { type: RecipeListMachineAction.CMD_FAMILIES }
-    | { type: RecipeListMachineAction.FAMILIES, families: RecipeFamily[] }
+    | { type: RecipeListMachineAction.FETCH_RECIPES }
+    | { type: Actions.SRV_RECIPES, recipes: Recipe[] }
+    | { type: RecipeListMachineAction.FETCH_FAMILIES }
+    | { type: Actions.SRV_FAMILIES, families: RecipeFamily[] }
     | { type: RecipeListMachineAction.SET_RECIPE, recipe: Recipe }
-    | { type: RecipeListMachineAction.CMD_MAKE }
-    | { type: RecipeListMachineAction.MAKE, processing: boolean, total: number }
+    | { type: RecipeListMachineAction.MAKE }
+    | { type: Actions.SRV_PROCESSING, processing: boolean, total: number }
     | { type: RecipeListMachineAction.DONE }
     | { type: RecipeListMachineAction.NULL }
     | { type: RecipeListMachineAction.SET_ADMIN }
-    | { type: RecipeListMachineAction.CMD_NEW }
+    | { type: RecipeListMachineAction.CREATE }
     | { type: RecipeListMachineAction.CANCEL };
 
 export type RecipeListMachineEventType = StateMachineAction<RecipeListContext>;
@@ -69,23 +69,23 @@ export const RecipeListStateMachine: MachineConfig<RecipeListContext, RecipeList
     states: {
         [RecipeListMachineState.LIST]: {
             on: {
-                [RecipeListMachineAction.CMD_RECIPES]: {
+                [RecipeListMachineAction.FETCH_RECIPES]: {
                     actions: [
                         log(() => 'CMD_RECIPES'),
                         () => {
-                            webSocketService.send(Actions.CMD_RECIPES, {});
+                            webSocketService.send(Actions.SRV_CMD_RECIPES, {});
                         },
                     ]
                 },
-                [RecipeListMachineAction.CMD_FAMILIES]: {
+                [RecipeListMachineAction.FETCH_FAMILIES]: {
                     actions: [
                         log(() => 'CMD_FAMILIES'),
                         () => {
-                            webSocketService.send(Actions.CMD_FAMILIES, {});
+                            webSocketService.send(Actions.SRV_CMD_FAMILIES, {});
                         },
                     ]
                 },
-                [RecipeListMachineAction.RECIPES]: {
+                [Actions.SRV_RECIPES]: {
                     actions: assign((cxt, event) => {
                         const { recipes } = event;
                         return {
@@ -93,7 +93,7 @@ export const RecipeListStateMachine: MachineConfig<RecipeListContext, RecipeList
                         }
                     })
                 },
-                [RecipeListMachineAction.FAMILIES]: {
+                [Actions.SRV_FAMILIES]: {
                     actions: assign((cxt, event) => {
                         const { families } = event;
                         return {
@@ -101,9 +101,9 @@ export const RecipeListStateMachine: MachineConfig<RecipeListContext, RecipeList
                         }
                     })
                 },
-                [RecipeListMachineAction.CMD_NEW]: {
+                [RecipeListMachineAction.CREATE]: {
                     actions: () => {
-                        webSocketService.send(Actions.CMD_NEW, {});
+                        webSocketService.send(Actions.SRV_CMD_NEW, {});
                     }
                 },
                 [RecipeListMachineAction.SET_ADMIN]: {
@@ -128,12 +128,12 @@ export const RecipeListStateMachine: MachineConfig<RecipeListContext, RecipeList
         },
         [RecipeListMachineState.CONFIRMATION]: {
             on: {
-                [RecipeListMachineAction.CMD_MAKE]: {
+                [RecipeListMachineAction.MAKE]: {
                     target: RecipeListMachineState.PROCESSING,
                     actions: (ctx) => {
                         const recipe = ctx.recipes.find(r => r.id === ctx.recipeId);
                         if (recipe) {
-                            webSocketService.send(Actions.CMD_MAKE, { recipe });
+                            webSocketService.send(Actions.SRV_CMD_MAKE, { recipe });
                         }
                     }
                 },
@@ -144,7 +144,7 @@ export const RecipeListStateMachine: MachineConfig<RecipeListContext, RecipeList
         },
         [RecipeListMachineState.PROCESSING]: {
             on: {
-                [RecipeListMachineAction.MAKE]: {
+                [Actions.SRV_PROCESSING]: {
                     actions: send((ctx, event) => {
                         const { processing } = event as EventObject;
                         if (!processing) {
