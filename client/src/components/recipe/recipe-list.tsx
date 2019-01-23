@@ -4,7 +4,7 @@ import RecipeItem from './recipe-item';
 import Dialog from '../dialog/dialog';
 import Processing from '../processing/processing';
 import { browserHistory } from '../../core/browser-history';
-import { Recipe, RecipeFamily, Actions } from '../../types';
+import { Recipe, RecipeFamily, ServerActions } from '../../types';
 import { getCurrentFamily } from './recipe-utils';
 import { ROUTE } from '../../routes';
 import { StateMachineInjectedProps, withStateMachine } from 'react-xstate-hoc';
@@ -27,8 +27,8 @@ class RecipeListBase extends React.PureComponent<RecipeListBaseProps> {
         const { dispatch } = this.props;
         // enable edit mode
         document.addEventListener('keydown', this.handleKeyDown);
-        // auto bind actions
-        webSocketService.bindDispatcher(Actions, dispatch);
+        // auto bind ServerActions
+        webSocketService.bindDispatcher(ServerActions, dispatch);
         dispatch({ type: RecipeListMachineAction.FETCH_RECIPES });
         dispatch({ type: RecipeListMachineAction.FETCH_FAMILIES });
     }

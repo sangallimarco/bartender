@@ -1,7 +1,7 @@
 import { assign } from 'xstate-ext/lib/actions';
 import { MachineConfig } from 'xstate-ext';
 import { StateMachineAction } from 'react-xstate-hoc';
-import { Recipe, Actions, PumpPin } from 'src/types';
+import { Recipe, ServerActions, PumpPin } from 'src/types';
 import { webSocketService } from 'src/core/websocket';
 import { v4 } from 'uuid';
 
@@ -113,13 +113,13 @@ export const RecipeStateMachine: MachineConfig<RecipeContext, RecipeMachineState
                 },
                 [RecipeMachineAction.SAVE]: {
                     actions: (ctx) => {
-                        webSocketService.send(Actions.SRV_CMD_EDIT, { recipe: { ...ctx } });
+                        webSocketService.send(ServerActions.CMD_EDIT, { recipe: { ...ctx } });
                     }
                 },
                 [RecipeMachineAction.DELETE]: {
                     actions: (ctx) => {
                         const { id } = ctx;
-                        webSocketService.send(Actions.SRV_CMD_DELETE, { id });
+                        webSocketService.send(ServerActions.CMD_DELETE, { id });
                     }
                 }
             }

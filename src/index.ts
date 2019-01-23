@@ -4,7 +4,7 @@ import expressWs from 'express-ws';
 import ws, { Server } from 'ws';
 import { webSocketRouter, webSocketMiddleware, WebSocketUtils } from './services';
 import { RecipeService } from './services/recipe-parser';
-import { RootAction, RootActions, Actions } from './types';
+import { RootAction, RootActions, ServerActions } from './types';
 import { getType } from 'typesafe-actions';
 
 const expressWsInstance = expressWs(express());
@@ -16,54 +16,54 @@ recipeMaker.initDatabases();
 // REDUCER
 const MainDispatcher = async (data: RootAction, wsInstance: ws, rootWs: Server) => {
     switch (data.type) {
-        case getType(RootActions.SRV_CMD_RECIPES):
+        case getType(RootActions.CMD_RECIPES):
             const recipes = await recipeMaker.getRecepies();
-            WebSocketUtils.sendMessage(wsInstance, Actions.SRV_RECIPES, {
+            WebSocketUtils.sendMessage(wsInstance, ServerActions.RECIPES, {
                 recipes
             });
             break;
-        case getType(RootActions.SRV_CMD_EDIT): {
+        case getType(RootActions.CMD_EDIT): {
             const { recipe } = data.payload;
             await recipeMaker.upsertRecipe(recipe);
             const editRecepies = await recipeMaker.getRecepies();
-            WebSocketUtils.broadcastMessage(rootWs, Actions.SRV_RECIPES, {
+            WebSocketUtils.broadcastMessage(rootWs, ServerActions.RECIPES, {
                 recipes: editRecepies
             });
             break;
         }
-        case getType(RootActions.SRV_CMD_NEW): {
+        case getType(RootActions.CMD_NEW): {
             const recipe = await recipeMaker.createRecipe();
-            WebSocketUtils.sendMessage(wsInstance, Actions.SRV_NEW, {
+            WebSocketUtils.sendMessage(wsInstance, ServerActions.NEW, {
                 recipe
             });
             break;
         }
-        case getType(RootActions.SRV_CMD_DELETE): {
+        case getType(RootActions.CMD_DELETE): {
             const { id } = data.payload;
             await recipeMaker.delRecipe(id);
             const recipes = await recipeMaker.getRecepies();
-            WebSocketUtils.broadcastMessage(rootWs, Actions.SRV_RECIPES, {
+            WebSocketUtils.broadcastMessage(rootWs, ServerActions.RECIPES, {
                 recipes
             });
             break;
         }
-        case getType(RootActions.SRV_CMD_FAMILIES): {
+        case getType(RootActions.CMD_FAMILIES): {
             const families = await recipeMaker.getFamilies();
-            WebSocketUtils.sendMessage(wsInstance, Actions.SRV_FAMILIES, {
+            WebSocketUtils.sendMessage(wsInstance, ServerActions.FAMILIES, {
                 families
             });
             break;
         }
-        case getType(RootActions.SRV_CMD_MAKE): {
+        case getType(RootActions.CMD_MAKE): {
             const { recipe } = data.payload;
             const totalTime = recipeMaker.getTotalTime(recipe);
-            WebSocketUtils.broadcastMessage(rootWs, Actions.SRV_PROCESSING, {
+            WebSocketUtils.broadcastMessage(rootWs, ServerActions.PROCESSING, {
                 processing: true,
                 totalTime
             });
 
             await recipeMaker.setPumps(recipe);
-            WebSocketUtils.broadcastMessage(rootWs, Actions.SRV_PROCESSING, {
+            WebSocketUtils.broadcastMessage(rootWs, ServerActions.PROCESSING, {
                 processing: false,
                 totalTime: 0
             });

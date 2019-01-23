@@ -1,7 +1,7 @@
 import { assign, send, log } from 'xstate-ext/lib/actions';
 import { MachineConfig, EventObject } from 'xstate-ext';
 import { StateMachineAction } from 'react-xstate-hoc';
-import { Recipe, RecipeFamily, Actions } from 'src/types';
+import { Recipe, RecipeFamily, ServerActions } from 'src/types';
 import { webSocketService } from 'src/core/websocket';
 
 export interface RecipeListContext {
@@ -45,12 +45,12 @@ export interface RecipeListMachineStateSchema {
 
 export type RecipeListMachineEvent =
     | { type: RecipeListMachineAction.FETCH_RECIPES }
-    | { type: Actions.SRV_RECIPES, recipes: Recipe[] }
+    | { type: ServerActions.RECIPES, recipes: Recipe[] }
     | { type: RecipeListMachineAction.FETCH_FAMILIES }
-    | { type: Actions.SRV_FAMILIES, families: RecipeFamily[] }
+    | { type: ServerActions.FAMILIES, families: RecipeFamily[] }
     | { type: RecipeListMachineAction.SET_RECIPE, recipe: Recipe }
     | { type: RecipeListMachineAction.MAKE }
-    | { type: Actions.SRV_PROCESSING, processing: boolean, total: number }
+    | { type: ServerActions.PROCESSING, processing: boolean, total: number }
     | { type: RecipeListMachineAction.DONE }
     | { type: RecipeListMachineAction.NULL }
     | { type: RecipeListMachineAction.SET_ADMIN }
@@ -73,7 +73,7 @@ export const RecipeListStateMachine: MachineConfig<RecipeListContext, RecipeList
                     actions: [
                         log(() => 'CMD_RECIPES'),
                         () => {
-                            webSocketService.send(Actions.SRV_CMD_RECIPES, {});
+                            webSocketService.send(ServerActions.CMD_RECIPES, {});
                         },
                     ]
                 },
@@ -81,11 +81,11 @@ export const RecipeListStateMachine: MachineConfig<RecipeListContext, RecipeList
                     actions: [
                         log(() => 'CMD_FAMILIES'),
                         () => {
-                            webSocketService.send(Actions.SRV_CMD_FAMILIES, {});
+                            webSocketService.send(ServerActions.CMD_FAMILIES, {});
                         },
                     ]
                 },
-                [Actions.SRV_RECIPES]: {
+                [ServerActions.RECIPES]: {
                     actions: assign((cxt, event) => {
                         const { recipes } = event;
                         return {
@@ -93,7 +93,7 @@ export const RecipeListStateMachine: MachineConfig<RecipeListContext, RecipeList
                         }
                     })
                 },
-                [Actions.SRV_FAMILIES]: {
+                [ServerActions.FAMILIES]: {
                     actions: assign((cxt, event) => {
                         const { families } = event;
                         return {
@@ -103,7 +103,7 @@ export const RecipeListStateMachine: MachineConfig<RecipeListContext, RecipeList
                 },
                 [RecipeListMachineAction.CREATE]: {
                     actions: () => {
-                        webSocketService.send(Actions.SRV_CMD_NEW, {});
+                        webSocketService.send(ServerActions.CMD_NEW, {});
                     }
                 },
                 [RecipeListMachineAction.SET_ADMIN]: {
@@ -133,7 +133,7 @@ export const RecipeListStateMachine: MachineConfig<RecipeListContext, RecipeList
                     actions: (ctx) => {
                         const recipe = ctx.recipes.find(r => r.id === ctx.recipeId);
                         if (recipe) {
-                            webSocketService.send(Actions.SRV_CMD_MAKE, { recipe });
+                            webSocketService.send(ServerActions.CMD_MAKE, { recipe });
                         }
                     }
                 },
@@ -144,7 +144,7 @@ export const RecipeListStateMachine: MachineConfig<RecipeListContext, RecipeList
         },
         [RecipeListMachineState.PROCESSING]: {
             on: {
-                [Actions.SRV_PROCESSING]: {
+                [ServerActions.PROCESSING]: {
                     actions: send((ctx, event) => {
                         const { processing } = event as EventObject;
                         if (!processing) {
