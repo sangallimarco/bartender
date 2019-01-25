@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { PumpPin, Recipe, RecipeFamily } from '../../types';
+import { PumpPin, Recipe, RecipeFamily, ServerActions } from '../../types';
 import Button, { ButtonType } from '../button/button';
 import { Input } from '../input/input';
 import './recipe-edit.css';
@@ -11,6 +11,7 @@ import { ROUTE } from '../../routes';
 import { withStateMachine, StateMachineInjectedProps } from 'react-xstate-hoc';
 import { RecipeContext, RecipeMachineStateSchema, RecipeMachineEvent, RecipeInitialContext, RecipeStateMachine, RecipeMachineAction } from './recipe-machine';
 import { RouteComponentProps } from 'react-router';
+import { webSocketService } from 'src/core/websocket';
 
 interface RecipeRouterProps {
     recipe?: Recipe;
@@ -27,6 +28,15 @@ export class RecipeEditBase extends React.PureComponent<RecipeEditBaseProps> {
         super(props);
         const { injectMachineOptions } = props;
         injectMachineOptions({
+            actions: {
+                [ServerActions.CMD_EDIT]: (ctx) => {
+                    webSocketService.send(ServerActions.CMD_EDIT, { recipe: { ...ctx } });
+                },
+                [ServerActions.CMD_DELETE]: (ctx) => {
+                    const { id } = ctx;
+                    webSocketService.send(ServerActions.CMD_DELETE, { id });
+                }
+            }
         });
     }
 

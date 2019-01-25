@@ -20,7 +20,16 @@ class RecipeListBase extends React.PureComponent<RecipeListBaseProps> {
     constructor(props: RecipeListBaseProps) {
         super(props);
         const { injectMachineOptions } = props;
-        injectMachineOptions({});
+        injectMachineOptions({
+            actions: {
+                [ServerActions.CMD_RECIPES]: () => {
+                    webSocketService.send(ServerActions.CMD_RECIPES, {});
+                },
+                [ServerActions.CMD_FAMILIES]: () => {
+                    webSocketService.send(ServerActions.CMD_FAMILIES, {});
+                }
+            }
+        });
     }
 
     public componentDidMount() {

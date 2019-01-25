@@ -72,17 +72,13 @@ export const RecipeListStateMachine: MachineConfig<RecipeListContext, RecipeList
                 [RecipeListMachineAction.FETCH_RECIPES]: {
                     actions: [
                         log(() => 'CMD_RECIPES'),
-                        () => {
-                            webSocketService.send(ServerActions.CMD_RECIPES, {});
-                        },
+                        ServerActions.CMD_RECIPES
                     ]
                 },
                 [RecipeListMachineAction.FETCH_FAMILIES]: {
                     actions: [
                         log(() => 'CMD_FAMILIES'),
-                        () => {
-                            webSocketService.send(ServerActions.CMD_FAMILIES, {});
-                        },
+                        ServerActions.CMD_FAMILIES
                     ]
                 },
                 [ServerActions.RECIPES]: {
