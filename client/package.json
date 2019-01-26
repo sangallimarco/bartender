@@ -12,8 +12,6 @@
     "react-router-dom": "^4.3.1",
     "react-scripts-ts": "^4.0.8",
     "react-xstate-hoc": "^1.5.3",
-    "reconnecting-websocket": "^4.0.0-rc5",
-    "redux-thunk": "^2.3.0",
     "tslint": "^5.11.0",
     "uuid": "^3.3.2"
   },
@@ -32,17 +30,8 @@
     "@types/react-redux": "^6.0.6",
     "@types/react-router-dom": "^4.2.7",
     "@types/uuid": "^3.4.3",
+    "http-proxy-middleware": "^0.19.1",
     "typescript": "^3.2.2"
-  },
-  "proxy": {
-    "/ws": {
-      "target": "ws://localhost:8888",
-      "ws": true
-    },
-    "/assets": {
-      "target": "http://localhost:8888",
-      "ws": false
-    }
   },
   "browserslist": [
     ">0.2%",

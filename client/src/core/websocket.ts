@@ -1,4 +1,3 @@
-import ReconnectingWebSocket from 'reconnecting-websocket';
 import { v4 } from 'uuid';
 import { EventObject } from 'xstate-ext';
 
@@ -23,28 +22,52 @@ export interface WebSocketRoute {
 
 class WebSocketService {
     private routes: WebSocketRoute[];
-    private ws: ReconnectingWebSocket;
+    private ws: WebSocket;
     private messages: string[] = [];
     private ready: boolean = false;
+    private interval: NodeJS.Timer;
+    private retryInterval: NodeJS.Timer;
+    private uri: string;
 
-    constructor(action?: string) {
+    constructor(uri?: string) {
         const { location: { host } } = window;
-        action = action || `ws://${host}/ws`;
-
+        uri = uri || `ws://${host}/ws`;
         this.routes = [];
-        this.ws = new ReconnectingWebSocket(action);
-        this.ws.addEventListener('open', () => {
-            this.ready = true;
-        });
-        this.ws.addEventListener('close', () => {
-            this.ready = false;
+        this.uri = uri;
+
+        this.connect();
+    }
+
+    public connect() {
+        if (this.ws) {
+            clearInterval(this.interval);
+            this.ws.removeEventListener('open', this.setReady);
+            this.ws.removeEventListener('close', this.setClosed);
+            this.ws.removeEventListener('message', this.onMessage);
         }
-        );
+        this.ws = new WebSocket(this.uri);
+        this.ws.addEventListener('open', this.setReady);
+        this.ws.addEventListener('close', this.setClosed);
         this.ws.addEventListener('message', this.onMessage);
 
-        setInterval(() => {
+        this.interval = setInterval(() => {
             this.processQueue();
         }, 10);
+    }
+
+    public setReady = () => {
+        this.ready = true;
+        if (this.retryInterval) {
+            clearInterval(this.retryInterval);
+        }
+    }
+
+    public setClosed = () => {
+        this.ready = true;
+        if (this.retryInterval) {
+            clearInterval(this.retryInterval);
+        }
+        this.retryInterval = setInterval(() => this.connect(), 1000);
     }
 
     public on<T>(action: string, callback: WebSocketCallback<T>): WebSocketListener {
