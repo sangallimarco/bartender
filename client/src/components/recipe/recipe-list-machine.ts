@@ -81,12 +81,6 @@ export const RecipeListStateMachine: MachineConfig<RecipeListContext, RecipeList
                         ServerActions.CMD_FAMILIES
                     ]
                 },
-
-                [RecipeListMachineAction.CREATE]: {
-                    actions: () => {
-                        webSocketService.send(ServerActions.CMD_NEW, {});
-                    }
-                },
                 [RecipeListMachineAction.SET_ADMIN]: {
                     actions: assign((ctx) => {
                         return { admin: !ctx.admin };

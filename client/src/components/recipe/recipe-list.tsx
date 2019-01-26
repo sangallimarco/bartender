@@ -70,7 +70,6 @@ class RecipeListBase extends React.PureComponent<RecipeListBaseProps> {
                 dispatch({ type: RecipeListMachineAction.SET_ADMIN });
                 break;
             case 'n':
-                dispatch({ type: RecipeListMachineAction.CREATE });
                 browserHistory.push(ROUTE.edit, { families });
                 break;
         }
