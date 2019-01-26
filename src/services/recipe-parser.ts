@@ -84,8 +84,7 @@ export class RecipeService {
         }
     }
 
-    public async delRecipe(recipe: Recipe) {
-        const { id } = recipe;
+    public async delRecipe(id: string) {
         await this.db.get(Collection.recipes)
             .remove({ id })
             .write();

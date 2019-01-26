@@ -7,17 +7,14 @@
     "@types/d3": "^5.0.0",
     "d3": "^5.7.0",
     "history": "^4.7.2",
-    "react": "^16.4.1",
-    "react-dom": "^16.4.1",
-    "react-redux": "^5.0.7",
+    "react": "^16.7.0",
+    "react-dom": "^16.7.0",
     "react-router-dom": "^4.3.1",
-    "react-scripts-ts": "^2.16.0",
+    "react-scripts-ts": "^3.1.0",
+    "react-xstate-hoc": "^1.5.3",
     "reconnecting-websocket": "^4.0.0-rc5",
-    "redux": "^4.0.0",
     "redux-thunk": "^2.3.0",
-    "styled-components": "^3.3.3",
     "tslint": "^5.11.0",
-    "typesafe-actions": "^2.0.4",
     "uuid": "^3.3.2"
   },
   "scripts": {
@@ -30,12 +27,12 @@
     "@types/history": "^4.6.2",
     "@types/jest": "^23.1.4",
     "@types/node": "^10.5.2",
-    "@types/react": "^16.4.6",
-    "@types/react-dom": "^16.0.6",
+    "@types/react": "^16.7.20",
+    "@types/react-dom": "^16.0.11",
     "@types/react-redux": "^6.0.6",
     "@types/react-router-dom": "^4.2.7",
     "@types/uuid": "^3.4.3",
-    "typescript": "^3.0.1"
+    "typescript": "^3.2.2"
   },
   "proxy": {
     "/ws": {

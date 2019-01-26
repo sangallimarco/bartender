@@ -89,9 +89,8 @@ class RecipeService {
             }
         });
     }
-    delRecipe(recipe) {
+    delRecipe(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { id } = recipe;
             yield this.db.get(Collection.recipes)
                 .remove({ id })
                 .write();

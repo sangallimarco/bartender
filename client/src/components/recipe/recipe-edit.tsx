@@ -1,39 +1,68 @@
 import * as React from 'react';
-import { RouteComponentProps } from 'react-router';
-import { RootState } from '../../stores';
-import { Recipe, RecipeFamily, RootActions, RootAction, PumpPin } from '../../types';
+import { PumpPin, Recipe, RecipeFamily, ServerActions } from '../../types';
 import Button, { ButtonType } from '../button/button';
 import { Input } from '../input/input';
 import './recipe-edit.css';
 import { browserHistory } from '../../core/browser-history';
-import { connect } from 'react-redux';
 import { Select } from '../select/select';
 import InputContainer from '../input-container/input-container';
 import { getCurrentFamily } from './recipe-utils';
-import { ReduxDispatch } from '../../core/types';
 import { ROUTE } from '../../routes';
+import { withStateMachine, StateMachineInjectedProps } from 'react-xstate-hoc';
+import { RecipeContext, RecipeMachineStateSchema, RecipeMachineEvent, RecipeInitialContext, RecipeStateMachine, RecipeMachineAction } from './recipe-machine';
+import { RouteComponentProps } from 'react-router';
+import { webSocketService } from 'src/core/websocket';
 
-interface ReduxProps extends RouteComponentProps<any> {
-    id: string;
-    recipe: Recipe | null;
+interface RecipeRouterProps {
+    recipe?: Recipe;
     families: RecipeFamily[];
 }
 
-export class RecipeEditBase extends React.Component<ReduxProps & ReduxDispatch<RootAction>, {}> {
+type RecipeEditBaseProps = StateMachineInjectedProps<RecipeContext, RecipeMachineStateSchema, RecipeMachineEvent> & RouteComponentProps<RecipeRouterProps>;
+
+export class RecipeEditBase extends React.PureComponent<RecipeEditBaseProps> {
+
+    private families: RecipeFamily[] = [];
+
+    constructor(props: RecipeEditBaseProps) {
+        super(props);
+        const { injectMachineOptions } = props;
+        injectMachineOptions({
+            actions: {
+                [ServerActions.CMD_EDIT]: (ctx) => {
+                    webSocketService.send(ServerActions.CMD_EDIT, { recipe: { ...ctx } });
+                },
+                [ServerActions.CMD_DELETE]: (ctx) => {
+                    const { id } = ctx;
+                    webSocketService.send(ServerActions.CMD_DELETE, { id });
+                }
+            }
+        });
+    }
+
+    public componentDidMount() {
+        const { history: { location: { state: { recipe, families } } }, dispatch } = this.props;
+        this.families = families;
+        if (recipe) {
+            dispatch({ type: RecipeMachineAction.HYDRATE, recipe });
+        } else {
+            dispatch({ type: RecipeMachineAction.CREATE });
+        }
+    }
 
     public render() {
-        const { recipe, families } = this.props;
-        if (recipe && families) {
-            const { label, parts, recipeFamily, description } = recipe;
+        const { context: { id, label, recipeFamily, description, parts } } = this.props;
+        const families = this.families;
+        if (id && families) {
             return <div className="recipe-edit">
                 <InputContainer label="Label">
-                    <Input name="label" value={label} onChange={this.handleChange} />
+                    <Input name="label" value={label} onChange={this.handleLabelChange} />
                 </InputContainer>
                 <InputContainer label="Label">
                     <Select name="recipeFamily" value={recipeFamily} onChange={this.handleSelect} options={families} />
                 </InputContainer>
                 <InputContainer label="Description">
-                    <Input name="description" value={description} onChange={this.handleChange} />
+                    <Input name="description" value={description} onChange={this.handleDescriptionChange} />
                 </InputContainer>
                 <div />
                 {this.renderPumps(parts)}
@@ -45,9 +74,10 @@ export class RecipeEditBase extends React.Component<ReduxProps & ReduxDispatch<R
     }
 
     private renderPumps(parts: number[]) {
-        const { families, recipe } = this.props;
-        if (families && recipe) {
-            const family = getCurrentFamily(families, recipe);
+        const { context: { recipeFamily } } = this.props;
+        const families = this.families;
+        if (families && recipeFamily) {
+            const family = getCurrentFamily(families, recipeFamily);
             if (family) {
                 const { ingredients } = family;
                 return PumpPin.map((i: number, indx: number) => {
@@ -66,51 +96,41 @@ export class RecipeEditBase extends React.Component<ReduxProps & ReduxDispatch<R
         return null;
     }
 
-    private handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { recipe, dispatch } = this.props;
-        const { target: { value, name } } = e;
-        if (recipe) {
-            dispatch(RootActions.SET_ATTRIBUTE({ id: name, value }))
-        }
+    private handleLabelChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { dispatch } = this.props;
+        const { target: { value: label } } = e;
+        dispatch({ type: RecipeMachineAction.SET_LABEL, label });
+    }
+
+    private handleDescriptionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { dispatch } = this.props;
+        const { target: { value: description } } = e;
+        dispatch({ type: RecipeMachineAction.SET_DESCRIPTION, description });
     }
 
     private handleRemove = () => {
-        const { recipe } = this.props;
         const { dispatch } = this.props;
-        if (recipe) {
-            dispatch(RootActions.CMD_DELETE({ recipe }));
-            browserHistory.push(ROUTE.root);
-        }
+        dispatch({ type: RecipeMachineAction.DELETE });
+        browserHistory.push(ROUTE.root);
     }
 
     private handleSubmit = () => {
-        const { recipe, dispatch } = this.props;
-        if (recipe) {
-            dispatch(RootActions.CMD_EDIT({ recipe }));
-            browserHistory.push(ROUTE.root);
-        }
+        const { dispatch } = this.props;
+        dispatch({ type: RecipeMachineAction.SAVE });
+        browserHistory.push(ROUTE.root);
     }
 
     private handlePumpChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { dispatch } = this.props;
         const { target: { value, name } } = e;
-        dispatch(RootActions.SET_PART({ id: name, value }));
+        dispatch({ type: RecipeMachineAction.SET_PART, id: name, value });
     }
 
     private handleSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        const { recipe, dispatch } = this.props;
-        if (recipe) {
-            const { target: { value, name } } = e;
-            dispatch(RootActions.SET_ATTRIBUTE({ id: name, value }))
-        }
+        const { dispatch } = this.props;
+        const { target: { value: recipeFamily } } = e;
+        dispatch({ type: RecipeMachineAction.SET_FAMILY, recipeFamily })
     }
 }
 
-const mapStateToProps = (state: RootState) => {
-    const {
-        root: { recipe, families }
-    } = state;
-    return { recipe, families };
-};
-
-export const RecipeEdit = connect(mapStateToProps)(RecipeEditBase);
+export const RecipeEdit = withStateMachine(RecipeEditBase, RecipeStateMachine, RecipeInitialContext);

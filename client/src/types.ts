@@ -1,10 +1,10 @@
 import { ActionType, createAction } from 'typesafe-actions';
 
-export enum Actions {
+export enum ServerActions {
     TEST = 'TEST',
     CMD_MAKE = 'CMD_MAKE',
-    MAKE = 'MAKE',
-    CMD_RECEPIES = 'CMD_RECEPIES',
+    PROCESSING = 'PROCESSING',
+    CMD_RECIPES = 'CMD_RECIPES',
     RECIPES = 'RECIPES',
     CMD_NEW = 'CMD_NEW',
     NEW = 'NEW',
@@ -91,54 +91,54 @@ export const PumpPin = [
 // @TODO refactor this
 
 export const RootActions = {
-    [Actions.CMD_RECEPIES]: createAction(Actions.CMD_RECEPIES, resolve => {
+    [ServerActions.CMD_RECIPES]: createAction(ServerActions.CMD_RECIPES, resolve => {
         return () => {
             return resolve({});
         };
     }),
-    [Actions.RECIPES]: createAction(Actions.RECIPES, resolve => {
+    [ServerActions.RECIPES]: createAction(ServerActions.RECIPES, resolve => {
         return (data: RecepiesPayload) => resolve(data);
     }),
 
-    [Actions.CMD_MAKE]: createAction(Actions.CMD_MAKE, resolve => {
+    [ServerActions.CMD_MAKE]: createAction(ServerActions.CMD_MAKE, resolve => {
         return (data: RecipePayload) => resolve(data);
     }),
-    [Actions.MAKE]: createAction(Actions.MAKE, resolve => {
+    [ServerActions.PROCESSING]: createAction(ServerActions.PROCESSING, resolve => {
         return (data: ProcessingPayload) => resolve(data);
     }),
 
-    [Actions.CMD_FAMILIES]: createAction(Actions.CMD_FAMILIES, resolve => {
+    [ServerActions.CMD_FAMILIES]: createAction(ServerActions.CMD_FAMILIES, resolve => {
         return () => resolve({});
     }),
-    [Actions.FAMILIES]: createAction(Actions.FAMILIES, resolve => {
+    [ServerActions.FAMILIES]: createAction(ServerActions.FAMILIES, resolve => {
         return (data: RecipeFamiliesPayload) => resolve(data);
     }),
 
-    [Actions.CMD_EDIT]: createAction(Actions.CMD_EDIT, resolve => {
+    [ServerActions.CMD_EDIT]: createAction(ServerActions.CMD_EDIT, resolve => {
         return (data: RecipePayload) => resolve(data);
     }),
-    [Actions.EDIT]: createAction(Actions.EDIT, resolve => {
+    [ServerActions.EDIT]: createAction(ServerActions.EDIT, resolve => {
         return () => resolve({});
     }),
 
-    [Actions.CMD_NEW]: createAction(Actions.CMD_NEW, resolve => {
+    [ServerActions.CMD_NEW]: createAction(ServerActions.CMD_NEW, resolve => {
         return () => resolve({});
     }),
-    [Actions.NEW]: createAction(Actions.NEW, resolve => {
+    [ServerActions.NEW]: createAction(ServerActions.NEW, resolve => {
         return (data: RecipePayload) => resolve(data);
     }),
 
-    [Actions.CMD_DELETE]: createAction(Actions.CMD_DELETE, resolve => {
-        return (data: RecipePayload) => resolve(data);
+    [ServerActions.CMD_DELETE]: createAction(ServerActions.CMD_DELETE, resolve => {
+        return (data: RecipeNewPayload) => resolve(data);
     }),
 
-    [Actions.SET_RECEPY]: createAction(Actions.SET_RECEPY, resolve => {
+    [ServerActions.SET_RECEPY]: createAction(ServerActions.SET_RECEPY, resolve => {
         return (data: Recipe) => resolve(data);
     }),
-    [Actions.SET_PART]: createAction(Actions.SET_PART, resolve => {
+    [ServerActions.SET_PART]: createAction(ServerActions.SET_PART, resolve => {
         return (data: AttributePayload) => resolve(data);
     }),
-    [Actions.SET_ATTRIBUTE]: createAction(Actions.SET_ATTRIBUTE, resolve => {
+    [ServerActions.SET_ATTRIBUTE]: createAction(ServerActions.SET_ATTRIBUTE, resolve => {
         return (data: AttributePayload) => resolve(data);
     }),
 };

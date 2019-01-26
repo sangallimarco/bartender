@@ -43,7 +43,7 @@
   },
   "author": "Marco Sangalli <sangalli.marco@gmail.com>",
   "license": "ISC",
-  "description": "Automatic Bartneder using RPI",
+  "description": "Automatic Bartender using RPI",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/sangallimarco/bartender.git"
