@@ -77,7 +77,7 @@ webSocketRouter.setReducer(MainDispatcher);
 // ROUTES
 app.use('/ws', webSocketMiddleware);
 // app.use('/assets', express.static(path.join(__dirname, '../assets')));
-app.use('/', express.static(path.join(__dirname, '../client/build')));
+app.use('/', express.static(path.join(__dirname, '../client/dist')));
 
 app.listen(PORT, () => {
     console.log(`Open browser page: http://localhost:${PORT}/app`);

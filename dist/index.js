@@ -85,7 +85,7 @@ services_1.webSocketRouter.setReducer(MainDispatcher);
 // ROUTES
 app.use('/ws', services_1.webSocketMiddleware);
 // app.use('/assets', express.static(path.join(__dirname, '../assets')));
-app.use('/', express_1.default.static(path_1.default.join(__dirname, '../client/build')));
+app.use('/', express_1.default.static(path_1.default.join(__dirname, '../client/dist')));
 app.listen(PORT, () => {
     console.log(`Open browser page: http://localhost:${PORT}/app`);
     console.log('  Press CTRL-C to stop\n');
