@@ -76,7 +76,7 @@ webSocketRouter.setReducer(MainDispatcher);
 
 // ROUTES
 app.use('/ws', webSocketMiddleware);
-app.use('/assets', express.static(path.join(__dirname, '../assets')));
+// app.use('/assets', express.static(path.join(__dirname, '../assets')));
 app.use('/', express.static(path.join(__dirname, '../client/build')));
 
 app.listen(PORT, () => {

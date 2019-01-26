@@ -10,16 +10,15 @@
     "react": "^16.7.0",
     "react-dom": "^16.7.0",
     "react-router-dom": "^4.3.1",
-    "react-scripts-ts": "^4.0.8",
     "react-xstate-hoc": "^1.5.3",
+    "src": "^1.1.2",
     "tslint": "^5.11.0",
     "uuid": "^3.3.2"
   },
   "scripts": {
-    "start": "react-scripts-ts start",
-    "build": "react-scripts-ts build",
-    "test": "react-scripts-ts test --env=jsdom",
-    "eject": "react-scripts-ts eject"
+    "start": "node devBundler.js",
+    "build": "rm -Rf build && parcel build index.html",
+    "test": "jest --env=jsdom"
   },
   "devDependencies": {
     "@types/history": "^4.6.2",
@@ -30,7 +29,9 @@
     "@types/react-redux": "^6.0.6",
     "@types/react-router-dom": "^4.2.7",
     "@types/uuid": "^3.4.3",
+    "express": "^4.16.4",
     "http-proxy-middleware": "^0.19.1",
+    "parcel-bundler": "^1.11.0",
     "typescript": "^3.2.2"
   },
   "browserslist": [

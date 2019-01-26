@@ -2,12 +2,12 @@
 
 ### Server
 ```
-NODE_ENV='emulate' npm run watch
+NODE_ENV='emulate' yarn watch
 ```
 
 #### Debug on VSC
 ```
-npm run watch-ts
+yarn watch-ts
 ```
 
 launch program on VSC
@@ -21,7 +21,7 @@ npm start
 ## Build project
 ```
 npm build-all
-npm run serve
+yarn serve
 ```
 
 ## Development
