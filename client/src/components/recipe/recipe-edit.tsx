@@ -9,7 +9,7 @@ import InputContainer from '../input-container/input-container';
 import { getCurrentFamily } from './recipe-utils';
 import { ROUTE } from '../../routes';
 import { withStateMachine, StateMachineInjectedProps } from 'react-xstate-hoc';
-import { RecipeContext, RecipeMachineStateSchema, RecipeMachineEvent, RecipeInitialContext, RecipeStateMachine, RecipeMachineAction } from './recipe-machine';
+import { RecipeContext, RecipeMachineStateSchema, RecipeMachineEvent, RecipeInitialContext, RecipeStateMachine, RecipeMachineAction } from './recipe-edit-machine';
 import { RouteComponentProps } from 'react-router';
 import { webSocketService } from 'src/core/websocket';
 

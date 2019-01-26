@@ -49,11 +49,12 @@ class RecipeListBase extends React.PureComponent<RecipeListBaseProps> {
     }
 
     public render() {
-        const { context: { recipes, families, message }, currentState } = this.props;
+        const { context: { recipes, families, message, admin }, currentState } = this.props;
         const dialogVisible = currentState === RecipeListMachineState.CONFIRMATION;
         const processing = currentState === RecipeListMachineState.PROCESSING;
+        const listClassName = admin ? 'recipe__list recipe__list--admin' : 'recipe__list';
         return (
-            <div className="recipe__list">
+            <div className={listClassName}>
                 {this.renderItems(recipes, families)}
                 <Dialog active={dialogVisible} onConfirm={this.handleConfirm} onDismiss={this.handleDismiss} message={message} />
                 <Processing active={processing} />

@@ -81,22 +81,7 @@ export const RecipeListStateMachine: MachineConfig<RecipeListContext, RecipeList
                         ServerActions.CMD_FAMILIES
                     ]
                 },
-                [ServerActions.RECIPES]: {
-                    actions: assign((cxt, event) => {
-                        const { recipes } = event;
-                        return {
-                            recipes
-                        }
-                    })
-                },
-                [ServerActions.FAMILIES]: {
-                    actions: assign((cxt, event) => {
-                        const { families } = event;
-                        return {
-                            families
-                        }
-                    })
-                },
+
                 [RecipeListMachineAction.CREATE]: {
                     actions: () => {
                         webSocketService.send(ServerActions.CMD_NEW, {});
@@ -120,6 +105,28 @@ export const RecipeListStateMachine: MachineConfig<RecipeListContext, RecipeList
                         }
                     })
                 },
+                [ServerActions.RECIPES]: {
+                    actions: assign((cxt, event) => {
+                        const { recipes } = event;
+                        return {
+                            recipes
+                        }
+                    })
+                },
+                [ServerActions.FAMILIES]: {
+                    actions: assign((cxt, event) => {
+                        const { families } = event;
+                        return {
+                            families
+                        }
+                    })
+                },
+                [ServerActions.PROCESSING]: {
+                    target: RecipeListMachineState.PROCESSING,
+                    actions: [
+                        log(() => 'PROCESSING')
+                    ]
+                }
             }
         },
         [RecipeListMachineState.CONFIRMATION]: {
