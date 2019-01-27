@@ -11,7 +11,7 @@ import { ROUTE } from '../../routes';
 import { withStateMachine, StateMachineInjectedProps } from 'react-xstate-hoc';
 import { RecipeContext, RecipeMachineStateSchema, RecipeMachineEvent, RecipeInitialContext, RecipeStateMachine, RecipeMachineAction } from './recipe-edit-machine';
 import { RouteComponentProps } from 'react-router';
-import { webSocketService } from 'src/core/websocket';
+import { webSocketService } from '../../core/websocket';
 
 interface RecipeRouterProps {
     recipe?: Recipe;

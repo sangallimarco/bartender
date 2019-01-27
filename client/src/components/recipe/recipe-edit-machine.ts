@@ -1,7 +1,7 @@
 import { assign } from 'xstate-ext/lib/actions';
 import { MachineConfig } from 'xstate-ext';
 import { StateMachineAction } from 'react-xstate-hoc';
-import { Recipe, ServerActions, PumpPin } from 'src/types';
+import { Recipe, ServerActions, PumpPin } from '../..//types';
 import { v4 } from 'uuid';
 
 export type RecipeContext = Recipe;

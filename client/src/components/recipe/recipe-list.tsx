@@ -9,7 +9,7 @@ import { getCurrentFamily } from './recipe-utils';
 import { ROUTE } from '../../routes';
 import { StateMachineInjectedProps, withStateMachine } from 'react-xstate-hoc';
 import { RecipeListContext, RecipeListMachineEvent, RecipeListMachineState, RecipeListMachineStateSchema, RecipeListMachineAction, RecipeListStateMachine, RecipeListInitialContext } from './recipe-list-machine';
-import { webSocketService } from 'src/core/websocket';
+import { webSocketService } from '../../core/websocket';
 
 interface RecipeListBaseProps extends StateMachineInjectedProps<RecipeListContext, RecipeListMachineStateSchema, RecipeListMachineEvent> {
     initial?: boolean;

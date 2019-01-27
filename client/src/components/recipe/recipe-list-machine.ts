@@ -1,8 +1,8 @@
 import { assign, send, log } from 'xstate-ext/lib/actions';
 import { MachineConfig, EventObject } from 'xstate-ext';
 import { StateMachineAction } from 'react-xstate-hoc';
-import { Recipe, RecipeFamily, ServerActions } from 'src/types';
-import { webSocketService } from 'src/core/websocket';
+import { Recipe, RecipeFamily, ServerActions } from '../../types';
+import { webSocketService } from '../../core/websocket';
 
 export interface RecipeListContext {
     family: string;
