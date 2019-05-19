@@ -1,8 +1,7 @@
 import { assign, send, log } from 'xstate-ext/lib/actions';
-import { MachineConfig, EventObject } from 'xstate-ext';
+import { MachineConfig } from 'xstate-ext';
 import { StateMachineAction } from 'react-xstate-hoc';
 import { Recipe, RecipeFamily, ServerActions } from '../../types';
-import { webSocketService } from '../../core/websocket';
 
 export interface RecipeListContext {
     family: string;
@@ -127,12 +126,7 @@ export const RecipeListStateMachine: MachineConfig<RecipeListContext, RecipeList
             on: {
                 [RecipeListMachineAction.MAKE]: {
                     target: RecipeListMachineState.PROCESSING,
-                    actions: (ctx) => {
-                        const recipe = ctx.recipes.find(r => r.id === ctx.recipeId);
-                        if (recipe) {
-                            webSocketService.send(ServerActions.CMD_MAKE, { recipe });
-                        }
-                    }
+                    actions: ServerActions.CMD_MAKE
                 },
                 [RecipeListMachineAction.CANCEL]: {
                     target: RecipeListMachineState.LIST
@@ -143,7 +137,7 @@ export const RecipeListStateMachine: MachineConfig<RecipeListContext, RecipeList
             on: {
                 [ServerActions.PROCESSING]: {
                     actions: send((ctx, event) => {
-                        const { processing } = event as EventObject;
+                        const { processing } = event;
                         if (!processing) {
                             return { type: RecipeListMachineAction.DONE };
                         }

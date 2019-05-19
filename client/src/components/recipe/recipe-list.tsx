@@ -27,6 +27,12 @@ class RecipeListBase extends React.PureComponent<RecipeListBaseProps> {
                 },
                 [ServerActions.CMD_FAMILIES]: () => {
                     webSocketService.send(ServerActions.CMD_FAMILIES, {});
+                },
+                [ServerActions.CMD_MAKE]: (ctx) => {
+                    const recipe = ctx.recipes.find(r => r.id === ctx.recipeId);
+                    if (recipe) {
+                        webSocketService.send(ServerActions.CMD_MAKE, { recipe });
+                    }
                 }
             }
         });

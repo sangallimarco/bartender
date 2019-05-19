@@ -4,35 +4,36 @@
   "homepage": "/",
   "private": true,
   "dependencies": {
-    "@types/d3": "^5.0.0",
     "d3": "^5.7.0",
     "history": "^4.7.2",
-    "react": "^16.7.0",
-    "react-dom": "^16.7.0",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
     "react-router-dom": "^4.3.1",
-    "react-xstate-hoc": "^1.5.3",
+    "react-xstate-hoc": "^1.8.5",
     "src": "^1.1.2",
     "tslint": "^5.11.0",
-    "uuid": "^3.3.2"
+    "uuid": "^3.3.2",
+    "xstate-ext": "^4.2.4-ext"
   },
   "scripts": {
     "start": "node devBundler.js",
-    "build": "rm -Rf build && parcel build index.html",
+    "build": "rm -Rf ./dist && parcel build index.html",
     "test": "jest --env=jsdom"
   },
   "devDependencies": {
+    "@types/d3": "^5.0.0",
     "@types/history": "^4.6.2",
     "@types/jest": "^23.1.4",
     "@types/node": "^10.5.2",
-    "@types/react": "^16.7.20",
-    "@types/react-dom": "^16.0.11",
+    "@types/react": "^16.8.17",
+    "@types/react-dom": "^16.8.4",
     "@types/react-redux": "^6.0.6",
     "@types/react-router-dom": "^4.2.7",
     "@types/uuid": "^3.4.3",
     "express": "^4.16.4",
     "http-proxy-middleware": "^0.19.1",
-    "parcel-bundler": "^1.11.0",
-    "typescript": "^3.2.2"
+    "parcel-bundler": "^1.12.3",
+    "typescript": "^3.4.5"
   },
   "browserslist": [
     ">0.2%",
