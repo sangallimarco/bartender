@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { buildGlass } from '../../core/glass-builder';
-import './glass.css';
+import './glass.less';
 import { RecipeIngredient } from '../../types';
 import { getIngredientColors } from '../recipe/recipe-utils';
 

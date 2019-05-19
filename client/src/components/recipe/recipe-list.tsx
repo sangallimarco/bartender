@@ -1,5 +1,5 @@
 import * as React from 'react';
-import './recipe-list.css';
+import './recipe-list.less';
 import RecipeItem from './recipe-item';
 import Dialog from '../dialog/dialog';
 import Processing from '../processing/processing';
@@ -58,7 +58,7 @@ class RecipeListBase extends React.PureComponent<RecipeListBaseProps> {
         const { context: { recipes, families, message, admin }, currentState } = this.props;
         const dialogVisible = currentState === RecipeListMachineState.CONFIRMATION;
         const processing = currentState === RecipeListMachineState.PROCESSING;
-        const listClassName = admin ? 'recipe__list recipe__list--admin' : 'recipe__list';
+        const listClassName = admin ? 'recipe-list recipe-list--admin' : 'recipe-list';
         return (
             <div className={listClassName}>
                 {this.renderItems(recipes, families)}

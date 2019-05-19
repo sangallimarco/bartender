@@ -1,5 +1,5 @@
 import * as React from 'react';
-import './App.css';
+import './App.less';
 import { Router, Route, Switch } from 'react-router';
 import { RecipeList } from './components/recipe/recipe-list';
 import { browserHistory } from './core/browser-history';

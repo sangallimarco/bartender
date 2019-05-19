@@ -1,0 +1,23 @@
+.button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    border: none;
+    cursor: pointer;
+    padding: var(--padding);
+
+    &--action {
+        background-color: var(--button-action-color);
+        color: var(--button-action-text-color);
+    }
+
+    &--default {
+        background-color: var(--button-default-color);
+        color: var(--button-default-text-color);
+    }
+
+    &:hover {
+        filter: brightness(85%);
+    }
+}

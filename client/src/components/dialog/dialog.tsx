@@ -1,5 +1,5 @@
 import * as React from 'react';
-import './dialog.css';
+import './dialog.less';
 import Button, { ButtonType } from '../button/button';
 import { CSSUtils } from '../../core/css-utils';
 
@@ -14,7 +14,7 @@ export default class Dialog extends React.Component<DialogProps, any> {
     public render() {
         const { active, onConfirm, onDismiss, message } = this.props;
         const className = CSSUtils.parse('dialog', {
-            'dialog-active': active
+            'dialog--active': active
         });
         return (
             <div className={className}>
