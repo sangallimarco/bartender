@@ -1,23 +1,16 @@
-import {
-    webSocketRouter,
-} from './websocket-router';
-import { NextFunction, Response, RequestHandler } from 'express';
+import { NextFunction, Response } from 'express';
+import { webSocketRouter } from './websocket-router';
 import { WebsocketRequest, WebsocketRequestHandler } from './websocket-types';
-import { EventEmitter } from 'events';
 
 export const webSocketMiddleware: WebsocketRequestHandler = (
-    req: WebsocketRequest,
-    res: Response,
-    next: NextFunction
-) => {
-    const {
-        ws
-    } = req;
-    if (ws) {
-        ws.on('message', (payload: string) => {
-            webSocketRouter.dispatch(ws, payload);
-        });
-    } else {
-        next();
-    }
+  req: WebsocketRequest,
+  res: Response,
+  next: NextFunction,
+): void => {
+  const { ws } = req;
+  if (ws) {
+    ws.on('message', (payload: string): void => webSocketRouter.dispatch(ws, payload));
+  } else {
+    next();
+  }
 };

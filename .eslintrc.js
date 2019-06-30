@@ -50,7 +50,9 @@ module.exports = {
     ],
     '@typescript-eslint/no-use-before-define': ['error', { functions: false }],
     '@typescript-eslint/no-empty-interface': 0,
-    '@typescript-eslint/explicit-member-accessibility': 0
+    '@typescript-eslint/explicit-member-accessibility': 0,
+    'import/prefer-default-export': 0,
+    'class-methods-use-this': 0
   },
   overrides: [
     {

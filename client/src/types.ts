@@ -1,91 +1,83 @@
 import { ActionType, createAction } from 'typesafe-actions';
 
 export enum ServerActions {
-    TEST = 'TEST',
-    CMD_MAKE = 'CMD_MAKE',
-    PROCESSING = 'PROCESSING',
-    CMD_RECIPES = 'CMD_RECIPES',
-    RECIPES = 'RECIPES',
-    CMD_NEW = 'CMD_NEW',
-    NEW = 'NEW',
-    CMD_EDIT = 'CMD_EDIT',
-    EDIT = 'EDIT',
-    GET = 'GET',
-    CMD_FAMILIES = 'CMD_FAMILIES',
-    FAMILIES = 'FAMILIES',
-    SET_RECEPY = 'SET_RECEPY',
-    SET_PART = 'SET_PART',
-    SET_ATTRIBUTE = 'SET_ATTRIBUTE',
-    CMD_DELETE = 'CMD_DELETE',
+  TEST = 'TEST',
+  CMD_MAKE = 'CMD_MAKE',
+  PROCESSING = 'PROCESSING',
+  CMD_RECIPES = 'CMD_RECIPES',
+  RECIPES = 'RECIPES',
+  CMD_NEW = 'CMD_NEW',
+  NEW = 'NEW',
+  CMD_EDIT = 'CMD_EDIT',
+  EDIT = 'EDIT',
+  GET = 'GET',
+  CMD_FAMILIES = 'CMD_FAMILIES',
+  FAMILIES = 'FAMILIES',
+  SET_RECEPY = 'SET_RECEPY',
+  SET_PART = 'SET_PART',
+  SET_ATTRIBUTE = 'SET_ATTRIBUTE',
+  CMD_DELETE = 'CMD_DELETE'
 }
 
 export interface ProcessingPayload {
-    processing: boolean;
-    total: number;
+  processing: boolean;
+  total: number;
 }
 
 export interface RecipePayload {
-    recipe: Recipe;
+  recipe: Recipe;
 }
 
 export interface RecipeNewPayload {
-    id: string;
+  id: string;
 }
 
-
-
-
-
-
-
-
-
 export interface RecipeFamiliesPayload {
-    families: RecipeFamily[];
+  families: RecipeFamily[];
 }
 
 export interface RecepiesPayload {
-    recipes: Recipe[];
+  recipes: Recipe[];
 }
 
 export interface MakePayload {
-    id: string;
+  id: string;
 }
 
 export interface GetPayload {
-    id: string;
+  id: string;
 }
 
 export interface AttributePayload {
-    id: string;
-    value: string;
+  id: string;
+  value: string;
 }
 
 export interface Recipe {
-    id: string;
-    recipeFamily: string;
-    label: string;
-    parts: number[];
-    description: string;
+  id: string;
+  recipeFamily: string;
+  label: string;
+  parts: number[];
+  description: string;
 }
 
 export interface RecipeFamily {
-    id: string;
-    label: string;
-    ingredients: RecipeIngredient[];
+  id: string;
+  label: string;
+  ingredients: RecipeIngredient[];
 }
 
 export interface RecipeIngredient {
-    label: string;
-    color: string;
+  label: string;
+  color: string;
 }
 
 export const PumpPin = [
-    7,
-    11,
-    12,
-    13,
-    // 15
+  7,
+  11,
+  12,
+  13,
+  // 15
 ];
 
 // export enum Pump {
@@ -99,56 +91,26 @@ export const PumpPin = [
 // @TODO refactor this
 
 export const RootActions = {
-    [ServerActions.CMD_RECIPES]: createAction(ServerActions.CMD_RECIPES, resolve => {
-        return () => {
-            return resolve({});
-        };
-    }),
-    [ServerActions.RECIPES]: createAction(ServerActions.RECIPES, resolve => {
-        return (data: RecepiesPayload) => resolve(data);
-    }),
+  [ServerActions.CMD_RECIPES]: createAction(ServerActions.CMD_RECIPES, resolve => () => resolve({})),
+  [ServerActions.RECIPES]: createAction(ServerActions.RECIPES, resolve => (data: RecepiesPayload) => resolve(data)),
 
-    [ServerActions.CMD_MAKE]: createAction(ServerActions.CMD_MAKE, resolve => {
-        return (data: RecipePayload) => resolve(data);
-    }),
-    [ServerActions.PROCESSING]: createAction(ServerActions.PROCESSING, resolve => {
-        return (data: ProcessingPayload) => resolve(data);
-    }),
+  [ServerActions.CMD_MAKE]: createAction(ServerActions.CMD_MAKE, resolve => (data: RecipePayload) => resolve(data)),
+  [ServerActions.PROCESSING]: createAction(ServerActions.PROCESSING, resolve => (data: ProcessingPayload) => resolve(data)),
 
-    [ServerActions.CMD_FAMILIES]: createAction(ServerActions.CMD_FAMILIES, resolve => {
-        return () => resolve({});
-    }),
-    [ServerActions.FAMILIES]: createAction(ServerActions.FAMILIES, resolve => {
-        return (data: RecipeFamiliesPayload) => resolve(data);
-    }),
+  [ServerActions.CMD_FAMILIES]: createAction(ServerActions.CMD_FAMILIES, resolve => () => resolve({})),
+  [ServerActions.FAMILIES]: createAction(ServerActions.FAMILIES, resolve => (data: RecipeFamiliesPayload) => resolve(data)),
 
-    [ServerActions.CMD_EDIT]: createAction(ServerActions.CMD_EDIT, resolve => {
-        return (data: RecipePayload) => resolve(data);
-    }),
-    [ServerActions.EDIT]: createAction(ServerActions.EDIT, resolve => {
-        return () => resolve({});
-    }),
+  [ServerActions.CMD_EDIT]: createAction(ServerActions.CMD_EDIT, resolve => (data: RecipePayload) => resolve(data)),
+  [ServerActions.EDIT]: createAction(ServerActions.EDIT, resolve => () => resolve({})),
 
-    [ServerActions.CMD_NEW]: createAction(ServerActions.CMD_NEW, resolve => {
-        return () => resolve({});
-    }),
-    [ServerActions.NEW]: createAction(ServerActions.NEW, resolve => {
-        return (data: RecipePayload) => resolve(data);
-    }),
+  [ServerActions.CMD_NEW]: createAction(ServerActions.CMD_NEW, resolve => () => resolve({})),
+  [ServerActions.NEW]: createAction(ServerActions.NEW, resolve => (data: RecipePayload) => resolve(data)),
 
-    [ServerActions.CMD_DELETE]: createAction(ServerActions.CMD_DELETE, resolve => {
-        return (data: RecipeNewPayload) => resolve(data);
-    }),
+  [ServerActions.CMD_DELETE]: createAction(ServerActions.CMD_DELETE, resolve => (data: RecipeNewPayload) => resolve(data)),
 
-    [ServerActions.SET_RECEPY]: createAction(ServerActions.SET_RECEPY, resolve => {
-        return (data: Recipe) => resolve(data);
-    }),
-    [ServerActions.SET_PART]: createAction(ServerActions.SET_PART, resolve => {
-        return (data: AttributePayload) => resolve(data);
-    }),
-    [ServerActions.SET_ATTRIBUTE]: createAction(ServerActions.SET_ATTRIBUTE, resolve => {
-        return (data: AttributePayload) => resolve(data);
-    }),
+  [ServerActions.SET_RECEPY]: createAction(ServerActions.SET_RECEPY, resolve => (data: Recipe) => resolve(data)),
+  [ServerActions.SET_PART]: createAction(ServerActions.SET_PART, resolve => (data: AttributePayload) => resolve(data)),
+  [ServerActions.SET_ATTRIBUTE]: createAction(ServerActions.SET_ATTRIBUTE, resolve => (data: AttributePayload) => resolve(data)),
 };
 
 export type RootAction = ActionType<typeof RootActions>;
