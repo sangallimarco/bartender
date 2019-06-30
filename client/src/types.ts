@@ -90,6 +90,13 @@ export const PumpPin = [
 
 // @TODO refactor this
 
+// type ActionType = (
+//   actionType: ServerActions.CMD_RECIPES,
+//   actionResolverHandler?: (resolve: <P, M>(payload?: P, meta?: M) => PayloadMetaAction<ServerActions.CMD_RECIPES, P, M>) => () => {
+//   type: ServerActions.CMD_RECIPES;
+//   payload: {};
+// });
+
 export const RootActions = {
   [ServerActions.CMD_RECIPES]: createAction(ServerActions.CMD_RECIPES, resolve => () => resolve({})),
   [ServerActions.RECIPES]: createAction(ServerActions.RECIPES, resolve => (data: RecepiesPayload) => resolve(data)),
