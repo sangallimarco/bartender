@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { CSSUtils } from '../../core/css-utils';
-import './input.css';
+import './input.less';
 
 export interface InputProps {
     disabled?: boolean;

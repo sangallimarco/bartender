@@ -1,0 +1,60 @@
+.dialog {
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    visibility: hidden;
+    background-color: rgba(0, 0, 0, 0.5);
+
+    &__container {
+        /* border: 0.2rem solid white; */
+        display: grid;
+        grid-template-rows: auto auto;
+        grid-template-columns: auto auto;
+        grid-template-areas: "message message""dismiss confirm";
+        background-color: var(--dialog-color);
+    }
+
+    &__message {
+        grid-area: message;
+        color: var(--text-color);
+        font-size: 2rem;
+        padding: var(--padding);
+        display: flex;
+        justify-content: center;
+    }
+
+    &__dismiss {
+        grid-area: dismiss;
+        display: flex;
+        justify-content: flex-start;
+        padding: var(--padding);
+    }
+
+    &__confirm {
+        grid-area: confirm;
+        display: flex;
+        justify-content: flex-end;
+        padding: var(--padding);
+    }
+
+    &--active {
+        visibility: visible;
+    }
+}
+
+@media (max-width: 800px) {
+    .dialog {
+        align-items: flex-end;
+
+        &__container {
+            flex: 1;
+        }
+    }
+}

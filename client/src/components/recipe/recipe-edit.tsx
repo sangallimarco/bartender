@@ -2,7 +2,7 @@ import * as React from 'react';
 import { PumpPin, Recipe, RecipeFamily, ServerActions } from '../../types';
 import Button, { ButtonType } from '../button/button';
 import { Input } from '../input/input';
-import './recipe-edit.css';
+import './recipe-edit.less';
 import { browserHistory } from '../../core/browser-history';
 import { Select } from '../select/select';
 import InputContainer from '../input-container/input-container';

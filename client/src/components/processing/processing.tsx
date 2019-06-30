@@ -1,5 +1,5 @@
 import * as React from 'react';
-import './processing.css';
+import './processing.less';
 import { CSSUtils } from '../../core/css-utils';
 
 export interface ProcessingProps {
@@ -10,7 +10,7 @@ export default class Processing extends React.Component<ProcessingProps, any> {
     public render() {
         const { active } = this.props;
         const className = CSSUtils.parse('processing', {
-            'processing-active': active
+            'processing--active': active
         });
         return (
             <div className={className}>

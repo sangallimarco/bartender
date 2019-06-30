@@ -1,5 +1,5 @@
 import * as React from 'react';
-import './input-container.css';
+import './input-container.less';
 
 export interface InputContainerProps {
     label: string;

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { CSSUtils } from '../../core/css-utils';
-import './button.css';
+import './button.less';
 
 export enum ButtonType {
     DEFAULT = 'default',
@@ -16,7 +16,7 @@ export interface ButtonProps {
 export default class Button extends React.Component<ButtonProps, any> {
     public render() {
         const { type, children, onClick } = this.props;
-        const className = CSSUtils.parse('button', `button-${type}`)
+        const className = CSSUtils.parse('button', `button--${type}`)
         return (
             <button className={className} onClick={onClick}>
                 {children}
