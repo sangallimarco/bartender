@@ -1,26 +1,30 @@
 import { EventEmitter } from 'events';
-import { RequestHandler, NextFunction, Request, Response } from 'express';
+import {
+  RequestHandler, NextFunction, Request, Response,
+} from 'express';
 import ws from 'ws';
 
 export interface WebsocketPayload<T> {
-    action: string;
-    data: T;
+  action: string;
+  data: T;
 }
 
 export type WebsocketCallback<T> = (ws: EventEmitter, action: string, data: T) => void;
 
 export interface WebsocketListenerUri {
-    action: string;
+  action: string;
 }
 
 export interface WebsocketListener<T> extends WebsocketListenerUri {
-    callback: WebsocketCallback<T>;
+  callback: WebsocketCallback<T>;
 }
 
 export interface WebsocketRequest extends Request {
-    ws: ws;
+  ws: ws;
 }
 
 export interface WebsocketRequestHandler extends RequestHandler {
-    (req: WebsocketRequest, res: Response, next: NextFunction): any;
+  // FIXME: remove any from here
+  /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
+  (req: WebsocketRequest, res: Response, next: NextFunction): any;
 }

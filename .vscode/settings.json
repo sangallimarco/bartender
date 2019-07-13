@@ -1,3 +1,70 @@
 {
-    "typescript.tsdk": "node_modules/typescript/lib"
+  "terminal.integrated.shell.windows": "C:\\Program Files\\Git\\bin\\bash.exe",
+  "workbench.colorTheme": "Material Theme Palenight High Contrast",
+  "editor.mouseWheelZoom": true,
+  "window.zoomLevel": 0,
+  "workbench.startupEditor": "newUntitledFile",
+  "sync.gist": "ff9781c289f83d56ca0825e5a6cc1d36",
+  "sync.lastUpload": "2018-04-21T20:57:58.495Z",
+  "sync.autoDownload": false,
+  "sync.autoUpload": false,
+  "sync.lastDownload": "",
+  "sync.forceDownload": false,
+  "sync.host": "",
+  "sync.pathPrefix": "",
+  "sync.quietSync": false,
+  "sync.askGistName": false,
+  "gitlens.advanced.messages": {
+    "suppressCommitHasNoPreviousCommitWarning": false,
+    "suppressCommitNotFoundWarning": false,
+    "suppressFileNotUnderSourceControlWarning": false,
+    "suppressGitVersionWarning": false,
+    "suppressLineUncommittedWarning": false,
+    "suppressNoRepositoryWarning": false,
+    "suppressResultsExplorerNotice": false,
+    "suppressShowKeyBindingsNotice": true,
+    "suppressUpdateNotice": false,
+    "suppressWelcomeNotice": true
+  },
+  "editor.renderIndentGuides": false,
+  "editor.tabSize": 2,
+  "editor.insertSpaces": true,
+  "editor.detectIndentation": false,
+  "files.eol": "\n",
+  "gitlens.keymap": "chorded",
+  "codeseparator.separatorChar": "=",
+  "codeseparator.separatorLength": 30,
+  "sync.removeExtensions": true,
+  "sync.syncExtensions": true,
+  "files.autoSave": "off", // no fix on save with auto save on :-)
+  "eslint.autoFixOnSave": false,
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    {
+      "language": "typescript",
+      "autoFix": true
+    },
+    {
+      "language": "typescriptreact",
+      "autoFix": true
+    },
+    {
+      "language": "html",
+      "autoFix": true
+    },
+  ],
+  "eslint.trace.server": "messages",
+  "editor.suggestSelection": "first",
+  "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "vscode.json-language-features"
+  },
+  "typescript.updateImportsOnFileMove.enabled": "always"
 }

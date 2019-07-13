@@ -1,0 +1,18 @@
+{
+  "recommendations": [
+    "dbaeumer.vscode-eslint",
+    "Equinusocio.vsc-material-theme",
+    "esbenp.prettier-vscode",
+    "mkloubert.vscode-remote-workspace",
+    "PKief.material-icon-theme",
+    "pmneo.tsimporter",
+    "rbbit.typescript-hero",
+    "redhat.java",
+    "VisualStudioExptTeam.vscodeintellicode",
+    "vscjava.vscode-java-debug",
+    "vscjava.vscode-java-dependency",
+    "vscjava.vscode-java-pack",
+    "vscjava.vscode-java-test",
+    "vscjava.vscode-maven"
+  ]
+}
