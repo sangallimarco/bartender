@@ -29,7 +29,7 @@
     "@types/react-redux": "^6.0.6",
     "@types/react-router-dom": "^4.2.7",
     "@types/uuid": "^3.4.3",
-    "express": "^4.16.4",
+    "express": "^4.17.3",
     "http-proxy-middleware": "^0.19.1",
     "parcel-bundler": "^1.11.0",
     "typescript": "^3.2.2"
